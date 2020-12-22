@@ -1,0 +1,15 @@
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\bin\Debug\netcoreapp3.1\Munharaunda.Infrastucture.deps.json
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\bin\Debug\netcoreapp3.1\Munharaunda.Infrastucture.dll
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\bin\Debug\netcoreapp3.1\Munharaunda.Infrastucture.pdb
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\bin\Debug\netcoreapp3.1\Munharaunda.Domain.dll
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\bin\Debug\netcoreapp3.1\Munharaunda.Domain.pdb
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\obj\Debug\netcoreapp3.1\Munharaunda.Infrastucture.csprojAssemblyReference.cache
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\obj\Debug\netcoreapp3.1\Munharaunda.Infrastucture.AssemblyInfoInputs.cache
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\obj\Debug\netcoreapp3.1\Munharaunda.Infrastucture.AssemblyInfo.cs
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\obj\Debug\netcoreapp3.1\Munharaunda.Infrastucture.csproj.CoreCompileInputs.cache
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\obj\Debug\netcoreapp3.1\Munharaunda.Infrastucture.csproj.CopyComplete
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\obj\Debug\netcoreapp3.1\Munharaunda.Infrastucture.dll
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\obj\Debug\netcoreapp3.1\Munharaunda.Infrastucture.pdb
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\bin\Debug\netcoreapp3.1\Munharaunda.Infrastucture.runtimeconfig.json
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\bin\Debug\netcoreapp3.1\Munharaunda.Infrastucture.runtimeconfig.dev.json
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Infrastucture\obj\Debug\netcoreapp3.1\Munharaunda.Infrastucture.genruntimeconfig.cache
