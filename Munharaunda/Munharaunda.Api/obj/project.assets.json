@@ -2272,14 +2272,28 @@
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
       },
+      "Munharaunda.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "System.ComponentModel.Annotations": "5.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Munharaunda.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Munharaunda.Core.dll": {}
+        }
+      },
       "Munharaunda.Domain/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
+        "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "5.0.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.1",
           "Microsoft.Extensions.Configuration.Abstractions": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0",
+          "Munharaunda.Core": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Munharaunda.Domain.dll": {}
@@ -2288,9 +2302,9 @@
           "bin/placeholder/Munharaunda.Domain.dll": {}
         }
       },
-      "Munharaunda.Infrastucture/1.0.0": {
+      "Munharaunda.Infrastructure/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
+        "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "5.0.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.1",
@@ -2298,10 +2312,10 @@
           "System.Configuration.ConfigurationManager": "5.0.0"
         },
         "compile": {
-          "bin/placeholder/Munharaunda.Infrastucture.dll": {}
+          "bin/placeholder/Munharaunda.Infrastructure.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Munharaunda.Infrastucture.dll": {}
+          "bin/placeholder/Munharaunda.Infrastructure.dll": {}
         }
       }
     }
@@ -7718,15 +7732,20 @@
         "system.xml.xmlserializer.nuspec"
       ]
     },
+    "Munharaunda.Core/1.0.0": {
+      "type": "project",
+      "path": "../Munharaunda.Core/Munharaunda.Core.csproj",
+      "msbuildProject": "../Munharaunda.Core/Munharaunda.Core.csproj"
+    },
     "Munharaunda.Domain/1.0.0": {
       "type": "project",
       "path": "../Munharaunda.Domain/Munharaunda.Domain.csproj",
       "msbuildProject": "../Munharaunda.Domain/Munharaunda.Domain.csproj"
     },
-    "Munharaunda.Infrastucture/1.0.0": {
+    "Munharaunda.Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../Munharaunda.Infrastucture/Munharaunda.Infrastucture.csproj",
-      "msbuildProject": "../Munharaunda.Infrastucture/Munharaunda.Infrastucture.csproj"
+      "path": "../Munharaunda.Infrastructure/Munharaunda.Infrastructure.csproj",
+      "msbuildProject": "../Munharaunda.Infrastructure/Munharaunda.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -7738,7 +7757,7 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 5.0.1",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.1",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.1",
-      "Munharaunda.Infrastucture >= 1.0.0",
+      "Munharaunda.Infrastructure >= 1.0.0",
       "Swashbuckle.AspNetCore >= 5.6.3"
     ]
   },
@@ -7769,8 +7788,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastucture\\Munharaunda.Infrastucture.csproj": {
-              "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastucture\\Munharaunda.Infrastucture.csproj"
+            "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj"
             }
           }
         }

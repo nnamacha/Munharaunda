@@ -32,7 +32,7 @@
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.1",
           "Microsoft.EntityFrameworkCore.Tools": "5.0.1",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.1",
-          "Munharaunda.Infrastucture": "1.0.0",
+          "Munharaunda.Infrastructure": "1.0.0",
           "Swashbuckle.AspNetCore": "5.6.3",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
@@ -2071,12 +2071,24 @@
           "System.Xml.XmlDocument": "4.3.0"
         }
       },
+      "Munharaunda.Core/1.0.0": {
+        "dependencies": {
+          "System.ComponentModel.Annotations": "5.0.0"
+        },
+        "runtime": {
+          "Munharaunda.Core.dll": {}
+        },
+        "compile": {
+          "Munharaunda.Core.dll": {}
+        }
+      },
       "Munharaunda.Domain/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "5.0.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.1",
           "Microsoft.Extensions.Configuration.Abstractions": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0",
+          "Munharaunda.Core": "1.0.0"
         },
         "runtime": {
           "Munharaunda.Domain.dll": {}
@@ -2085,7 +2097,7 @@
           "Munharaunda.Domain.dll": {}
         }
       },
-      "Munharaunda.Infrastucture/1.0.0": {
+      "Munharaunda.Infrastructure/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "5.0.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.1",
@@ -2093,10 +2105,10 @@
           "System.Configuration.ConfigurationManager": "5.0.0"
         },
         "runtime": {
-          "Munharaunda.Infrastucture.dll": {}
+          "Munharaunda.Infrastructure.dll": {}
         },
         "compile": {
-          "Munharaunda.Infrastucture.dll": {}
+          "Munharaunda.Infrastructure.dll": {}
         }
       },
       "Microsoft.AspNetCore.Antiforgery/5.0.0.0": {
@@ -4786,12 +4798,17 @@
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
+    "Munharaunda.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Munharaunda.Domain/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Munharaunda.Infrastucture/1.0.0": {
+    "Munharaunda.Infrastructure/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -87,7 +87,6 @@ C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\bin\Debu
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
-C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debug\netcoreapp3.1\Munharaunda.Test.csprojAssemblyReference.cache
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debug\netcoreapp3.1\Munharaunda.Test.AssemblyInfoInputs.cache
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debug\netcoreapp3.1\Munharaunda.Test.AssemblyInfo.cs
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debug\netcoreapp3.1\Munharaunda.Test.csproj.CoreCompileInputs.cache

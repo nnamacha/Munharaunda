@@ -15,6 +15,9 @@ namespace Munharaunda.Domain.Models
         public decimal Amount { get; set; }
         [Required]
         public int TransactionCode { get; set; }
+
+        
+        public bool Contribution { get; set; }
         public string Comment { get; set; }
         [Required]
         public int CreatedBy { get; set; }

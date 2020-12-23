@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Munharaunda.Domain.Models;
-using Munharaunda.Infrastucture.Database;
+using Munharaunda.Infrastructure.Database;
 
 namespace Munharaunda.Api.Controllers
 {
@@ -25,7 +25,9 @@ namespace Munharaunda.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Profile>>> GetProfile()
         {
-            return await _context.Profile.ToListAsync();
+            return await _context.Profile
+                .Include(p => p.PaidFuneral)
+                .ToListAsync();
         }
 
         // GET: api/Profiles/5

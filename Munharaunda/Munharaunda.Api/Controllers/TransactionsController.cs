@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Munharaunda.Domain.Models;
-using Munharaunda.Infrastucture.Database;
+using Munharaunda.Infrastructure.Database;
 
 namespace Munharaunda.Api.Controllers
 {
