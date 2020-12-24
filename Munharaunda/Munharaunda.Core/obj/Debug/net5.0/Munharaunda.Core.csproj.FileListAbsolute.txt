@@ -9,3 +9,4 @@ C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debu
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debug\net5.0\Munharaunda.Core.dll
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debug\net5.0\ref\Munharaunda.Core.dll
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debug\net5.0\Munharaunda.Core.pdb
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debug\net5.0\Munharaunda.Core.csprojAssemblyReference.cache

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Munharaunda.Core.Constants;
 using Munharaunda.Domain.Models;
 using Munharaunda.Infrastructure.Database;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Munharaunda.Api.Controllers
 {
@@ -14,34 +12,45 @@ namespace Munharaunda.Api.Controllers
     [ApiController]
     public class ProfilesController : ControllerBase
     {
-        private readonly MunharaundaDbContext _context;
+        
+        private readonly IMunharaundaRepository _db;
 
-        public ProfilesController(MunharaundaDbContext context)
+        public ProfilesController(IMunharaundaRepository db)
         {
-            _context = context;
+           
+            _db = db;
         }
 
         // GET: api/Profiles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Profile>>> GetProfile()
+        public async Task<ActionResult<IEnumerable<ProfileResponse>>> GetProfile()
         {
-            return await _context.Profile
-                .Include(p => p.PaidFuneral)
-                .ToListAsync();
-        }
-
-        // GET: api/Profiles/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
-        {
-            var profile = await _context.Profile.FindAsync(id);
-
-            if (profile == null)
+            var response = await _db.GetProfiles();
+            if (response == null)
             {
                 return NotFound();
             }
 
-            return profile;
+            return Ok(response);
+        }
+
+        // GET: api/Profiles/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProfileResponse>> GetProfile(int id)
+        {
+            var response = await _db.GetProfile(id);
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
+            {
+                return NotFound();
+            }
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+
+
         }
 
         // PUT: api/Profiles/5
@@ -54,25 +63,21 @@ namespace Munharaunda.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(profile).State = EntityState.Modified;
+            var response = await _db.UpdateProfile(id, profile);
 
-            try
+            if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            else if (response.ResponseCode == ReturnCodesConstant.R06 || (response.ResponseCode == ReturnCodesConstant.R07))
             {
-                if (!ProfileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(response);
             }
-
-            return NoContent();
+            else 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            
         }
 
         // POST: api/Profiles
@@ -80,31 +85,51 @@ namespace Munharaunda.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Profile>> PostProfile(Profile profile)
         {
-            _context.Profile.Add(profile);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProfile", new { id = profile.ProfileNumber }, profile);
+            var response = await _db.CreateProfile(profile);
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return CreatedAtAction("GetProfile", response);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+                
+
         }
 
         // DELETE: api/Profiles/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProfile(int id)
         {
-            var profile = await _context.Profile.FindAsync(id);
+            var profile = await _db.GetProfile(id);
+
             if (profile == null)
             {
                 return NotFound();
             }
+            var response = await _db.DeleteProfile(id);
 
-            _context.Profile.Remove(profile);
-            await _context.SaveChangesAsync();
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return NoContent();
+            }
+            else if(response.ResponseCode == ReturnCodesConstant.R06)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+                
 
-            return NoContent();
+
         }
 
-        private bool ProfileExists(int id)
-        {
-            return _context.Profile.Any(e => e.ProfileNumber == id);
-        }
+
+
     }
 }

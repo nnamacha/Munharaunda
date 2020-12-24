@@ -13,6 +13,8 @@ namespace Munharaunda.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+
+            services.AddScoped<IMunharaundaRepository, MunharaundaRepository>();
             #region DBContext
             // Register Entity Framework
             services.AddDbContext<MunharaundaDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default"), x => x.MigrationsAssembly("Munharaunda.Infrastructure")));

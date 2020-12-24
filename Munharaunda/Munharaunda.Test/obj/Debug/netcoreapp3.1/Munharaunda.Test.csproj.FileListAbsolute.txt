@@ -94,3 +94,4 @@ C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debu
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debug\netcoreapp3.1\Munharaunda.Test.dll
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debug\netcoreapp3.1\Munharaunda.Test.pdb
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debug\netcoreapp3.1\Munharaunda.Test.genruntimeconfig.cache
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Test\obj\Debug\netcoreapp3.1\Munharaunda.Test.csprojAssemblyReference.cache

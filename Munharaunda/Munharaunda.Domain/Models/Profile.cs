@@ -10,7 +10,7 @@ namespace Munharaunda.Domain.Models
     public class Profile : ProfileDto
     {
 
-        public virtual ICollection<Funeral> PaidFuneral { get; set; } = new List<Funeral>();
+        
 
 
 
