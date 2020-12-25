@@ -10,16 +10,20 @@ namespace Munharaunda.Infrastructure.Database
 {
     public interface IMunharaundaRepository
     {
-        Task<Funeral> GetFuneral(int id);
-        Task<IdentityTypes> GetIdentityTypes(int id);
+        Task<ResponseModel<Funeral>> GetFuneral(int id);
         Task<ICollection<Funeral>> GetPaidFunerals(int profileId);
         Task<ResponseModel<ProfileResponse>> GetProfile(int id);
         Task<IEnumerable<ProfileResponse>> GetProfiles();
-        Task<ProfileTypes> GetProfileType(int id);
         Task<ResponseModel<Profile>> UpdateProfile(int id, Profile profile);
         bool ProfileExists(int id);
         Task<ResponseModel<Profile>> CreateProfile(Profile profile);
         Task<ResponseModel<string>> DeleteProfile(int id);
+
+        Task<ResponseModel<Funeral>> GetFunerals();
+        Task<ResponseModel<Funeral>> UpdateFuneral(int id, Funeral funeral);
+        Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral);
+        Task<ResponseModel<Funeral>> DeleteFuneral(int id);
+        bool FuneralExists(int id);
     }
 
     public class MunharaundaRepository : IMunharaundaRepository
@@ -32,6 +36,8 @@ namespace Munharaunda.Infrastructure.Database
         }
 
         #region ProfileController
+
+        
         private async Task<ProfileResponse> GenerateProfileDetails(Profile profile)
         {
             return new ProfileResponse
@@ -44,11 +50,65 @@ namespace Munharaunda.Infrastructure.Database
                 DateOfBirth = profile.DateOfBirth,
                 PhoneNumber = profile.PhoneNumber,
                 PaidFuneral = await GetPaidFunerals(profile.ProfileNumber),
-                Status = profile.Status,
+                StatusDescription = await GetStatus(profile.Status),
                 Address = profile.Address,
-                ActiveDate = profile.ActiveDate
+                ActiveDate = profile.ActiveDate,
+                NextOfKin = profile.NextOfKin,
+                Created = profile.Created,
+                CreatedBy = profile.CreatedBy,
+                Updated = profile.Updated,
+                UpdatedBy = profile.UpdatedBy
 
             };
+        }
+
+        public async Task<ICollection<Funeral>> GetPaidFunerals(int profileId)
+        {
+            var Funerals = new List<Funeral>();
+            var transactions = await _context.Transactions.Where(f => f.Contribution == true && f.CreatedBy == profileId).ToListAsync();
+
+            foreach (var item in transactions)
+            {
+                var funeral = await GetFuneral(item.FuneralId);
+
+                if (funeral != null)
+                {
+                    foreach (var i in funeral.ResponseData)
+                    {
+                        Funerals.Add(i);
+                    }
+
+                }
+
+            }
+
+            return Funerals;
+        }
+
+        private async Task<IdentityTypes> GetIdentityTypes(int id)
+        {
+            var identityTypes = await _context.IdentityTypes.FindAsync(id);
+
+            return identityTypes;
+        }
+
+        private async Task<ProfileTypes> GetProfileType(int id)
+        {
+            var profileTypes = await _context.ProfileTypes.FindAsync(id);
+
+            return profileTypes;
+        }
+        private async Task<string> GetStatus(int id)
+        {
+
+            var status = await _context.Statuses.FindAsync(id);
+
+            if (status == null)
+            {
+                return "No Status Found";
+            }
+
+            return status.StatusDescription;
         }
 
         public async Task<ResponseModel<ProfileResponse>> GetProfile(int id)
@@ -78,7 +138,7 @@ namespace Munharaunda.Infrastructure.Database
 
 
                 }
-                
+
             }
             else
             {
@@ -215,42 +275,214 @@ namespace Munharaunda.Infrastructure.Database
         }
 
         #endregion
-        public async Task<IdentityTypes> GetIdentityTypes(int id)
+
+
+        #region FuneralController
+
+        public async Task<ResponseModel<Funeral>> GetFunerals()
         {
-            var identityTypes = await _context.IdentityTypes.FindAsync(id);
+                                       
+            ResponseModel<Funeral> response = Initialize();
 
-            return identityTypes;
-        }
-
-        public async Task<ProfileTypes> GetProfileType(int id)
-        {
-            var profileTypes = await _context.ProfileTypes.FindAsync(id);
-
-            return profileTypes;
-        }
-
-        public async Task<Funeral> GetFuneral(int id)
-        {
-            var funeral = await _context.Funeral.FindAsync(id);
-            return funeral;
-        }
-        public async Task<ICollection<Funeral>> GetPaidFunerals(int profileId)
-        {
-            var Funerals = new List<Funeral>();
-            var transactions = await _context.Transactions.Where(f => f.Contribution == true && f.CreatedBy == profileId).ToListAsync();
-
-            foreach (var item in transactions)
+            try
             {
-                var funeral = await GetFuneral(item.FuneralId);
+                var _DbResponse = await _context.Funeral.ToListAsync();
 
-                if (funeral != null)
+                if (_DbResponse.Count == 0 )
                 {
-                    Funerals.Add(funeral);
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                    
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData = _DbResponse;
+                }
+
+                
+
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            
+
+
+            return response;
+
+        }
+        public async Task<ResponseModel<Funeral>> GetFuneral(int id)
+        {
+            ResponseModel<Funeral> response = Initialize();
+            try
+            {
+                var dbResponse = await _context.Funeral.FindAsync(id);
+
+                if (dbResponse == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                    
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(dbResponse);
+                }             
+                
+
+            }
+
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+                
+            }
+            
+                return response;
+            
+        }
+
+        public async Task<ResponseModel<Funeral>> UpdateFuneral(int id, Funeral funeral)
+        {
+            ResponseModel<Funeral> response = Initialize();
+
+            try
+            {
+                _context.Entry(funeral).State = EntityState.Modified;
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(funeral);
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message + "Funeral Not Updated";
                 }
 
             }
 
-            return Funerals;
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!FuneralExists(id))
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R99;
+                    response.ResponseMessage = ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            
+            return response;
         }
+
+        public async Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral)
+        {
+            ResponseModel<Funeral> response = Initialize();
+
+            try
+            {
+               var test = _context.Funeral.Add(funeral);
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(funeral);
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message + " Record not created try again..";
+                   
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            
+
+            
+            return response;
+        }
+
+        public async Task<ResponseModel<Funeral>> DeleteFuneral(int id)
+        {
+            ResponseModel<Funeral> response = Initialize();
+
+            try
+            {
+                var dbResponse = await GetFuneral(id);
+
+                if (dbResponse.ResponseCode == ReturnCodesConstant.R00)
+                {
+                    _context.Funeral.Remove(dbResponse.ResponseData[0]);
+                    var _response = await _context.SaveChangesAsync();
+
+                    if (_response > 0)
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R00;
+                        response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    }
+                    else
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R05;
+                        response.ResponseMessage = ReturnCodesConstant.R05Message + " Record not deleted";
+                    }
+
+                }
+               
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        private static ResponseModel<Funeral> Initialize()
+        {
+            var response = new ResponseModel<Funeral>();
+            response.ResponseData = new List<Funeral>();
+            return response;
+        }
+
+        public bool FuneralExists(int id)
+        {
+            return _context.Funeral.Any(e => e.FuneralId == id);
+        }
+
+
+
+        #endregion
     }
 }

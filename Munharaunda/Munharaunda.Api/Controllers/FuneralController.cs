@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Munharaunda.Core.Constants;
 using Munharaunda.Domain.Models;
 using Munharaunda.Infrastructure.Database;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Munharaunda.Api.Controllers
 {
@@ -14,36 +13,58 @@ namespace Munharaunda.Api.Controllers
     [ApiController]
     public class FuneralController : ControllerBase
     {
-        private readonly MunharaundaDbContext _context;
+        
+        private readonly IMunharaundaRepository _db;
 
-        public FuneralController(MunharaundaDbContext context)
+        public FuneralController(IMunharaundaRepository Db)
         {
-            _context = context;
+
+            _db = Db;
         }
 
         // GET: api/Funeral
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Funeral>>> Funeral()
+        public async Task<IActionResult> Funeral()
         {
-            return await _context.Funeral.ToListAsync();
+            var response = await _db.GetFunerals();
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
+            {
+                return NotFound(response);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
         // GET: api/Funeral/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Funeral>> Funeral(int id)
         {
-            var funeral = await _context.Funeral.FindAsync(id);
+            var response = await _db.GetFuneral(id);
 
-            if (funeral == null)
+            if (response.ResponseCode == ReturnCodesConstant.R06)
             {
-                return NotFound();
+                return NotFound(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
 
-            return funeral;
         }
 
         // PUT: api/Funerals/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFuneral(int id, Funeral funeral)
         {
@@ -52,57 +73,70 @@ namespace Munharaunda.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(funeral).State = EntityState.Modified;
+            var response = await _db.UpdateFuneral(id, funeral);
 
-            try
+            if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
-                if (!FuneralExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
 
-            return NoContent();
+            
         }
 
         // POST: api/Funerals
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        
         [HttpPost]
-        public async Task<ActionResult<Funeral>> PostFuneral(Funeral funeral)
+        public async Task<IActionResult> PostFuneral(Funeral funeral)
         {
-            _context.Funeral.Add(funeral);
-            await _context.SaveChangesAsync();
+            var response = await _db.CreateFuneral(funeral);
 
-            return CreatedAtAction("funeral", new { id = funeral.FuneralId }, funeral);
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return CreatedAtAction("funeral", response.ResponseData[0]);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+            
         }
 
         // DELETE: api/Funerals/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFuneral(int id)
         {
-            var funeral = await _context.Funeral.FindAsync(id);
-            if (funeral == null)
+            
+            if (!_db.FuneralExists(id))
             {
                 return NotFound();
             }
 
-            _context.Funeral.Remove(funeral);
-            await _context.SaveChangesAsync();
 
-            return NoContent();
+            var response = await _db.DeleteFuneral(id);
+
+            if (response.ResponseCode ==  ReturnCodesConstant.R00)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+
+            
         }
 
         private bool FuneralExists(int id)
         {
-            return _context.Funeral.Any(e => e.FuneralId == id);
+            return _db.FuneralExists(id);
         }
     }
 }

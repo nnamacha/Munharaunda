@@ -11,6 +11,7 @@ namespace Munharaunda.Domain.Models
         public ICollection<Funeral> PaidFuneral { get; set; } = new List<Funeral>();
         public virtual string FullName { get; set;  }
         public virtual IdentityTypes IdentityType { get; set; }
+        public virtual string StatusDescription { get; set; }
 
         public ProfileTypes ProfileType { get; set; }
     }
