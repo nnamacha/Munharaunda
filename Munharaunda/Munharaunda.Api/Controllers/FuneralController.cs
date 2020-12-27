@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Munharaunda.Core.Constants;
+using Munharaunda.Domain.Contracts;
 using Munharaunda.Domain.Models;
 using Munharaunda.Infrastructure.Database;
 using System.Linq;

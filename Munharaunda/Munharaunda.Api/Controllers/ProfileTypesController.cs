@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Munharaunda.Core.Constants;
+using Munharaunda.Domain.Contracts;
 using Munharaunda.Domain.Models;
 using Munharaunda.Infrastructure.Database;
+using System.Threading.Tasks;
 
 namespace Munharaunda.Api.Controllers
 {
@@ -15,35 +13,59 @@ namespace Munharaunda.Api.Controllers
     public class ProfileTypesController : ControllerBase
     {
         private readonly MunharaundaDbContext _context;
+        private readonly IMunharaundaRepository _db;
 
-        public ProfileTypesController(MunharaundaDbContext context)
+        public ProfileTypesController(MunharaundaDbContext context, IMunharaundaRepository db)
         {
-            _context = context;
+
+            _db = db;
         }
 
         // GET: api/ProfileTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProfileTypes>>> GetProfileTypes()
+        public async Task<IActionResult> GetProfileTypes()
         {
-            return await _context.ProfileTypes.ToListAsync();
+            var response = await _db.GetProfileTypes();
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+
+
         }
 
         // GET: api/ProfileTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProfileTypes>> GetProfileTypes(int id)
+        public async Task<IActionResult> GetProfileTypes(int id)
         {
-            var profileTypes = await _context.ProfileTypes.FindAsync(id);
+            var response = await _db.GetProfileTypes(id);
 
-            if (profileTypes == null)
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
                 return NotFound();
             }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
 
-            return profileTypes;
         }
 
         // PUT: api/ProfileTypes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfileTypes(int id, ProfileTypes profileTypes)
         {
@@ -52,57 +74,60 @@ namespace Munharaunda.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(profileTypes).State = EntityState.Modified;
+            var response = await _db.UpdateProfileType(id, profileTypes);
 
-            try
+            if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                await _context.SaveChangesAsync();
+                return StatusCode(StatusCodes.Status202Accepted, response);
             }
-            catch (DbUpdateConcurrencyException)
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
-                if (!ProfileTypesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
 
-            return NoContent();
         }
 
         // POST: api/ProfileTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ProfileTypes>> PostProfileTypes(ProfileTypes profileTypes)
+        public async Task<IActionResult> PostProfileTypes(ProfileTypes profileTypes)
         {
-            _context.ProfileTypes.Add(profileTypes);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProfileTypes", new { id = profileTypes.ProfileTypeId }, profileTypes);
+            var response = await _db.CreateProfileType(profileTypes);
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return CreatedAtAction("GetProfileTypes", response);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+
         }
 
         // DELETE: api/ProfileTypes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProfileTypes(int id)
         {
-            var profileTypes = await _context.ProfileTypes.FindAsync(id);
-            if (profileTypes == null)
+            var response = await _db.DeleteProfileType(id);
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status202Accepted, response);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
 
-            _context.ProfileTypes.Remove(profileTypes);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            
         }
 
-        private bool ProfileTypesExists(int id)
-        {
-            return _context.ProfileTypes.Any(e => e.ProfileTypeId == id);
-        }
+
     }
 }

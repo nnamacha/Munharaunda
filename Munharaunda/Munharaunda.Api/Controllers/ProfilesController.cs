@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Munharaunda.Core.Constants;
+using Munharaunda.Domain.Contracts;
 using Munharaunda.Domain.Models;
 using Munharaunda.Infrastructure.Database;
 using System.Collections.Generic;

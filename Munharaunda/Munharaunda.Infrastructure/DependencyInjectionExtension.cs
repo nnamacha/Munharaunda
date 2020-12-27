@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Munharaunda.Domain.Contracts;
 using Munharaunda.Infrastructure.Database;
 using System;
 using System.Collections.Generic;

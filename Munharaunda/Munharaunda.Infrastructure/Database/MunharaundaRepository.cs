@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Munharaunda.Core.Constants;
+using Munharaunda.Domain.Contracts;
 using Munharaunda.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -8,30 +9,6 @@ using System.Threading.Tasks;
 
 namespace Munharaunda.Infrastructure.Database
 {
-    public interface IMunharaundaRepository
-    {
-        Task<ResponseModel<Funeral>> GetFuneral(int id);
-        Task<ICollection<Funeral>> GetPaidFunerals(int profileId);
-        Task<ResponseModel<ProfileResponse>> GetProfile(int id);
-        Task<IEnumerable<ProfileResponse>> GetProfiles();
-        Task<ResponseModel<Profile>> UpdateProfile(int id, Profile profile);
-        bool ProfileExists(int id);
-        Task<ResponseModel<Profile>> CreateProfile(Profile profile);
-        Task<ResponseModel<string>> DeleteProfile(int id);
-
-        Task<ResponseModel<Funeral>> GetFunerals();
-        Task<ResponseModel<Funeral>> UpdateFuneral(int id, Funeral funeral);
-        Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral);
-        Task<ResponseModel<Funeral>> DeleteFuneral(int id);
-        bool FuneralExists(int id);
-
-        Task<ResponseModel<IdentityTypes>> GetIdentityTypes();
-        Task<ResponseModel<IdentityTypes>> GetIdentityType(int id);
-        Task<ResponseModel<IdentityTypes>> UpdateIdentityType(int id, IdentityTypes identityType);
-        Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType);
-        Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id);
-        public bool IdentityTypeExists(int id);
-    }
 
     public class MunharaundaRepository : IMunharaundaRepository
     {
@@ -490,6 +467,14 @@ namespace Munharaunda.Infrastructure.Database
             return response;
         }
 
+        private static ResponseModel<ProfileTypes> InitializeProfileType()
+        {
+            var response = new ResponseModel<ProfileTypes>();
+            response.ResponseData = new List<ProfileTypes>();
+            return response;
+        }
+
+
         public bool IdentityTypeExists(int id)
         {
             return _context.IdentityTypes.Any(e => e.IdentityTypeId == id);
@@ -679,11 +664,11 @@ namespace Munharaunda.Infrastructure.Database
                 response.ResponseMessage = ex.Message;
             }
 
-            
+
 
             return response;
         }
-        private bool IdentityTypesExists(int id)
+        public bool IdentityTypesExists(int id)
         {
             return _context.IdentityTypes.Any(e => e.IdentityTypeId == id);
         }
@@ -691,6 +676,185 @@ namespace Munharaunda.Infrastructure.Database
         public bool FuneralExists(int id)
         {
             return _context.Funeral.Any(e => e.FuneralId == id); ;
+        }
+        #endregion
+
+        #region ProfileType
+
+        public async Task<ResponseModel<ProfileTypes>> GetProfileTypes()
+        {
+            ResponseModel<ProfileTypes> response = InitializeProfileType();
+
+            try
+            {
+                var dbResponse = await _context.ProfileTypes.ToListAsync();
+
+                if (dbResponse.Count > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData = dbResponse;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseModel<ProfileTypes>> GetProfileTypes(int id)
+        {
+            ResponseModel<ProfileTypes> response = InitializeProfileType();
+
+            try
+            {
+                var profileTypes = await _context.ProfileTypes.FindAsync(id);
+
+                if (profileTypes == null)
+                {
+
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(profileTypes);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<ProfileTypes>> UpdateProfileType(int id, ProfileTypes profileTypes)
+        {
+            ResponseModel<ProfileTypes> response = InitializeProfileType();
+
+            _context.Entry(profileTypes).State = EntityState.Modified;
+
+            try
+            {
+                var dbResponse = await _context.SaveChangesAsync();
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(profileTypes);
+                }
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!ProfileTypesExists(id))
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R99;
+                    response.ResponseMessage = ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<ProfileTypes>> CreateProfileType(ProfileTypes profileTypes)
+        {
+            ResponseModel<ProfileTypes> response = InitializeProfileType();
+
+            try
+            {
+                _context.ProfileTypes.Add(profileTypes);
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(profileTypes);
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message;
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public  async Task<ResponseModel<ProfileTypes>> DeleteProfileType(int id)
+        {
+            ResponseModel<ProfileTypes> response = InitializeProfileType();
+
+            try
+            {
+                if (ProfileTypesExists(id))
+                {
+                    var profileTypes = await _context.ProfileTypes.FindAsync(id);
+
+                    _context.ProfileTypes.Remove(profileTypes);
+
+                    var dbResponse = await _context.SaveChangesAsync();
+
+                    if (dbResponse > 0)
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R00;
+                        response.ResponseMessage = ReturnCodesConstant.R00Message;
+
+                    }
+                    else
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R05;
+                        response.ResponseMessage = ReturnCodesConstant.R05Message;
+                    }
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            
+            return response;
+        }
+        public bool ProfileTypesExists(int id)
+        {
+            return _context.ProfileTypes.Any(e => e.ProfileTypeId == id);
         }
         #endregion
     }
