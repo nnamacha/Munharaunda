@@ -1044,6 +1044,372 @@ namespace Munharaunda.Infrastructure.Database
         }
         #endregion
 
+        #region TransactionsController
+
+        public async Task<ResponseModel<Transactions>> GetTransactions()
+        {
+            ResponseModel<Transactions> response = InitializeTransactions();
+
+            try
+            {
+                var dbResponse = await _context.Transactions.ToListAsync();
+
+                if (dbResponse.Count > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData = dbResponse;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<Transactions>> GetTransaction(int id)
+        {
+            ResponseModel<Transactions> response = InitializeTransactions();
+
+            try
+            {
+                var transactions = await _context.Transactions.FindAsync(id);
+
+                if (transactions == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(transactions);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<Transactions>> UpdateTransactions(int id, Transactions Transaction)
+        {
+            ResponseModel<Transactions> response = InitializeTransactions();
+
+            _context.Entry(Transaction).State = EntityState.Modified;
+
+            try
+            {
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(Transaction);
+                }
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!StatusesExists(id))
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+
+        }
+
+        public async Task<ResponseModel<Transactions>> CreateTransaction(Transactions transaction)
+        {
+            ResponseModel<Transactions> response = InitializeTransactions();
+
+            try
+            {
+                _context.Transactions.Add(transaction);
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(transaction);
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<Transactions>> DeleteTransaction(int id)
+        {
+            ResponseModel<Transactions> response = InitializeTransactions();
+
+            try
+            {
+                var transaction = await _context.Transactions.FindAsync(id);
+                if (transaction == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+                }
+                else
+                {
+
+                    _context.Transactions.Remove(transaction);
+                    var dbResponse = await _context.SaveChangesAsync();
+
+                    if (dbResponse > 0)
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R00;
+                        response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    }
+                    else
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R05;
+                        response.ResponseMessage = ReturnCodesConstant.R05Message;
+                    }
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        private static ResponseModel<Transactions> InitializeTransactions()
+        {
+            var response = new ResponseModel<Transactions>();
+            response.ResponseData = new List<Transactions>();
+            return response;
+        }
+
+        #endregion
+
+        #region TransactionCodesController
+
+        public async Task<ResponseModel<TransactionCodes>> GetTransactionCodes()
+        {
+            ResponseModel<TransactionCodes> response = InitializeTransactionCodes();
+
+            try
+            {
+                var dbResponse = await _context.TransactionCodes.ToListAsync();
+
+                if (dbResponse.Count > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData = dbResponse;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<TransactionCodes>> GetTransactionCode(int id)
+        {
+            ResponseModel<TransactionCodes> response = InitializeTransactionCodes();
+
+            try
+            {
+                var transactionCodes = await _context.TransactionCodes.FindAsync(id);
+
+                if (transactionCodes == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(transactionCodes);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<TransactionCodes>> UpdateTransactionCodes(int id, TransactionCodes TransactionCode)
+        {
+            ResponseModel<TransactionCodes> response = InitializeTransactionCodes();
+
+            _context.Entry(TransactionCode).State = EntityState.Modified;
+
+            try
+            {
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(TransactionCode);
+                }
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!StatusesExists(id))
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+
+        }
+
+        public async Task<ResponseModel<TransactionCodes>> CreateTransactionCode(TransactionCodes transactionCode)
+        {
+            ResponseModel<TransactionCodes> response = InitializeTransactionCodes();
+
+            try
+            {
+                _context.TransactionCodes.Add(transactionCode);
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(transactionCode);
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<TransactionCodes>> DeleteTransactionCode(int id)
+        {
+            ResponseModel<TransactionCodes> response = InitializeTransactionCodes();
+
+            try
+            {
+                var transactionCode = await _context.TransactionCodes.FindAsync(id);
+                if (transactionCode == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+                }
+                else
+                {
+
+                    _context.TransactionCodes.Remove(transactionCode);
+                    var dbResponse = await _context.SaveChangesAsync();
+
+                    if (dbResponse > 0)
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R00;
+                        response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    }
+                    else
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R05;
+                        response.ResponseMessage = ReturnCodesConstant.R05Message;
+                    }
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+        private static ResponseModel<TransactionCodes> InitializeTransactionCodes()
+        {
+            var response = new ResponseModel<TransactionCodes>();
+            response.ResponseData = new List<TransactionCodes>();
+            return response;
+        }
+        #endregion
+
 
     }
 }

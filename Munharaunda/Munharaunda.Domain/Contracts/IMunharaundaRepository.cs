@@ -43,5 +43,17 @@ namespace Munharaunda.Domain.Contracts
         Task<ResponseModel<Statuses>> CreateStatus(Statuses statuses);
         Task<ResponseModel<Statuses>> DeleteStatus(int id);
 
+        Task<ResponseModel<Transactions>> GetTransactions();
+        Task<ResponseModel<Transactions>> GetTransaction(int id);
+        Task<ResponseModel<Transactions>> UpdateTransactions(int id, Transactions Transaction);
+        Task<ResponseModel<Transactions>> CreateTransaction(Transactions transaction);
+        Task<ResponseModel<Transactions>> DeleteTransaction(int id);
+
+        Task<ResponseModel<TransactionCodes>> GetTransactionCodes();
+        Task<ResponseModel<TransactionCodes>> GetTransactionCode(int id);
+        Task<ResponseModel<TransactionCodes>> UpdateTransactionCodes(int id, TransactionCodes TransactionCode);
+        Task<ResponseModel<TransactionCodes>> CreateTransactionCode(TransactionCodes transactionCode);
+        Task<ResponseModel<TransactionCodes>> DeleteTransactionCode(int id);
+
     }
 }

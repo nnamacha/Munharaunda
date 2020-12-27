@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Munharaunda.Core.Constants;
+using Munharaunda.Domain.Contracts;
 using Munharaunda.Domain.Models;
 using Munharaunda.Infrastructure.Database;
 
@@ -14,32 +16,53 @@ namespace Munharaunda.Api.Controllers
     [ApiController]
     public class TransactionCodesController : ControllerBase
     {
-        private readonly MunharaundaDbContext _context;
+        
+        private readonly IMunharaundaRepository _db;
 
-        public TransactionCodesController(MunharaundaDbContext context)
+        public TransactionCodesController(IMunharaundaRepository db)
         {
-            _context = context;
+            
+            _db = db;
         }
 
         // GET: api/TransactionCodes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TransactionCodes>>> GetTransactionCodes()
+        public async Task<IActionResult> GetTransactionCodes()
         {
-            return await _context.TransactionCodes.ToListAsync();
+            var response = await _db.GetTransactionCodes();
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
         // GET: api/TransactionCodes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TransactionCodes>> GetTransactionCodes(int id)
+        public async Task<IActionResult> GetTransactionCodes(int id)
         {
-            var transactionCodes = await _context.TransactionCodes.FindAsync(id);
+            var response = await _db.GetTransactionCode(id);
 
-            if (transactionCodes == null)
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
                 return NotFound();
             }
-
-            return transactionCodes;
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
         // PUT: api/TransactionCodes/5
@@ -52,25 +75,20 @@ namespace Munharaunda.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(transactionCodes).State = EntityState.Modified;
+            var response = await _db.UpdateTransactionCodes(id, transactionCodes);
 
-            try
+            if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
-                if (!TransactionCodesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
-
-            return NoContent();
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
         // POST: api/TransactionCodes
@@ -78,31 +96,40 @@ namespace Munharaunda.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<TransactionCodes>> PostTransactionCodes(TransactionCodes transactionCodes)
         {
-            _context.TransactionCodes.Add(transactionCodes);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTransactionCodes", new { id = transactionCodes.TransactionCodeId }, transactionCodes);
+            var response = await _db.CreateTransactionCode(transactionCodes);
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return CreatedAtAction("GetTransactionCodes", response);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+           
         }
 
         // DELETE: api/TransactionCodes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransactionCodes(int id)
         {
-            var transactionCodes = await _context.TransactionCodes.FindAsync(id);
-            if (transactionCodes == null)
+            var response = await _db.DeleteTransactionCode(id);
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return StatusCode(StatusCodes.Status202Accepted, response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
                 return NotFound();
             }
-
-            _context.TransactionCodes.Remove(transactionCodes);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
-        private bool TransactionCodesExists(int id)
-        {
-            return _context.TransactionCodes.Any(e => e.TransactionCodeId == id);
-        }
+    
     }
 }

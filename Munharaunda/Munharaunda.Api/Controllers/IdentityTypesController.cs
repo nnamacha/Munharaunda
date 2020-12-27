@@ -125,7 +125,7 @@ namespace Munharaunda.Api.Controllers
 
             if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                return NoContent();
+                return StatusCode(StatusCodes.Status202Accepted, response);
             }
             else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
@@ -135,7 +135,6 @@ namespace Munharaunda.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
-            
         }
 
 

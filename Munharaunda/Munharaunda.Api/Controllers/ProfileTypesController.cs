@@ -12,10 +12,10 @@ namespace Munharaunda.Api.Controllers
     [ApiController]
     public class ProfileTypesController : ControllerBase
     {
-        private readonly MunharaundaDbContext _context;
+        
         private readonly IMunharaundaRepository _db;
 
-        public ProfileTypesController(MunharaundaDbContext context, IMunharaundaRepository db)
+        public ProfileTypesController(IMunharaundaRepository db)
         {
 
             _db = db;
