@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Munharaunda.Core.Constants;
 using Munharaunda.Domain.Models;
 using Munharaunda.Infrastructure.Database;
 
@@ -14,32 +15,53 @@ namespace Munharaunda.Api.Controllers
     [ApiController]
     public class IdentityTypesController : ControllerBase
     {
-        private readonly MunharaundaDbContext _context;
+        
+        private readonly IMunharaundaRepository _db;
 
-        public IdentityTypesController(MunharaundaDbContext context)
+        public IdentityTypesController(IMunharaundaRepository db)
         {
-            _context = context;
+            
+            _db = db;
         }
 
         // GET: api/IdentityType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IdentityTypes>>> GetIdentityTypes()
+        public async Task<IActionResult> GetIdentityTypes()
         {
-            return await _context.IdentityTypes.ToListAsync();
+            var response = await _db.GetIdentityTypes();
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
         // GET: api/IdentityType/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IdentityTypes>> GetIdentityTypes(int id)
+        public async Task<IActionResult> GetIdentityTypes(int id)
         {
-            var identityTypes = await _context.IdentityTypes.FindAsync(id);
+            var response = await _db.GetIdentityType(id);
 
-            if (identityTypes == null)
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
                 return NotFound();
             }
-
-            return identityTypes;
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
         // PUT: api/IdentityType/5
@@ -52,57 +74,69 @@ namespace Munharaunda.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(identityTypes).State = EntityState.Modified;
+            var response = await _db.UpdateIdentityType(id, identityTypes);
 
-            try
+            if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
             {
-                if (!IdentityTypesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
 
-            return NoContent();
+            
         }
 
         // POST: api/IdentityType
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+       
         [HttpPost]
-        public async Task<ActionResult<IdentityTypes>> PostIdentityTypes(IdentityTypes identityTypes)
+        public async Task<IActionResult> PostIdentityTypes(IdentityTypes identityTypes)
         {
-            _context.IdentityTypes.Add(identityTypes);
-            await _context.SaveChangesAsync();
+            var response = await _db.CreateIdentityType(identityTypes);
 
-            return CreatedAtAction("GetIdentityTypes", new { id = identityTypes.IdentityTypeId }, identityTypes);
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return CreatedAtAction("GetIdentityTypes", response);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+            
         }
 
         // DELETE: api/IdentityType/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteIdentityTypes(int id)
         {
-            var identityTypes = await _context.IdentityTypes.FindAsync(id);
-            if (identityTypes == null)
+            
+            if (!_db.IdentityTypeExists(id))
             {
                 return NotFound();
             }
 
-            _context.IdentityTypes.Remove(identityTypes);
-            await _context.SaveChangesAsync();
+            var response = await _db.DeleteIdentityType(id);
 
-            return NoContent();
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return NoContent();
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+            
         }
 
-        private bool IdentityTypesExists(int id)
-        {
-            return _context.IdentityTypes.Any(e => e.IdentityTypeId == id);
-        }
+        
     }
 }

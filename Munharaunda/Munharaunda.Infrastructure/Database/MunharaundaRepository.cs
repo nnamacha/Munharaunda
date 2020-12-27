@@ -24,6 +24,13 @@ namespace Munharaunda.Infrastructure.Database
         Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral);
         Task<ResponseModel<Funeral>> DeleteFuneral(int id);
         bool FuneralExists(int id);
+
+        Task<ResponseModel<IdentityTypes>> GetIdentityTypes();
+        Task<ResponseModel<IdentityTypes>> GetIdentityType(int id);
+        Task<ResponseModel<IdentityTypes>> UpdateIdentityType(int id, IdentityTypes identityType);
+        Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType);
+        Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id);
+        public bool IdentityTypeExists(int id);
     }
 
     public class MunharaundaRepository : IMunharaundaRepository
@@ -37,7 +44,7 @@ namespace Munharaunda.Infrastructure.Database
 
         #region ProfileController
 
-        
+
         private async Task<ProfileResponse> GenerateProfileDetails(Profile profile)
         {
             return new ProfileResponse
@@ -281,18 +288,18 @@ namespace Munharaunda.Infrastructure.Database
 
         public async Task<ResponseModel<Funeral>> GetFunerals()
         {
-                                       
-            ResponseModel<Funeral> response = Initialize();
+
+            ResponseModel<Funeral> response = InitializeFuneral();
 
             try
             {
                 var _DbResponse = await _context.Funeral.ToListAsync();
 
-                if (_DbResponse.Count == 0 )
+                if (_DbResponse.Count == 0)
                 {
                     response.ResponseCode = ReturnCodesConstant.R06;
                     response.ResponseMessage = ReturnCodesConstant.R06Message;
-                    
+
                 }
                 else
                 {
@@ -301,7 +308,7 @@ namespace Munharaunda.Infrastructure.Database
                     response.ResponseData = _DbResponse;
                 }
 
-                
+
 
 
             }
@@ -311,7 +318,7 @@ namespace Munharaunda.Infrastructure.Database
                 response.ResponseCode = ReturnCodesConstant.R99;
                 response.ResponseMessage = ex.Message;
             }
-            
+
 
 
             return response;
@@ -319,7 +326,7 @@ namespace Munharaunda.Infrastructure.Database
         }
         public async Task<ResponseModel<Funeral>> GetFuneral(int id)
         {
-            ResponseModel<Funeral> response = Initialize();
+            ResponseModel<Funeral> response = InitializeFuneral();
             try
             {
                 var dbResponse = await _context.Funeral.FindAsync(id);
@@ -328,15 +335,15 @@ namespace Munharaunda.Infrastructure.Database
                 {
                     response.ResponseCode = ReturnCodesConstant.R06;
                     response.ResponseMessage = ReturnCodesConstant.R06Message;
-                    
+
                 }
                 else
                 {
                     response.ResponseCode = ReturnCodesConstant.R00;
                     response.ResponseMessage = ReturnCodesConstant.R00Message;
                     response.ResponseData.Add(dbResponse);
-                }             
-                
+                }
+
 
             }
 
@@ -345,16 +352,16 @@ namespace Munharaunda.Infrastructure.Database
 
                 response.ResponseCode = ReturnCodesConstant.R99;
                 response.ResponseMessage = ex.Message;
-                
+
             }
-            
-                return response;
-            
+
+            return response;
+
         }
 
         public async Task<ResponseModel<Funeral>> UpdateFuneral(int id, Funeral funeral)
         {
-            ResponseModel<Funeral> response = Initialize();
+            ResponseModel<Funeral> response = InitializeFuneral();
 
             try
             {
@@ -377,7 +384,7 @@ namespace Munharaunda.Infrastructure.Database
 
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!FuneralExists(id))
+                if (!IdentityTypeExists(id))
                 {
                     response.ResponseCode = ReturnCodesConstant.R06;
                     response.ResponseMessage = ReturnCodesConstant.R06Message;
@@ -394,17 +401,17 @@ namespace Munharaunda.Infrastructure.Database
                 response.ResponseCode = ReturnCodesConstant.R99;
                 response.ResponseMessage = ex.Message;
             }
-            
+
             return response;
         }
 
         public async Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral)
         {
-            ResponseModel<Funeral> response = Initialize();
+            ResponseModel<Funeral> response = InitializeFuneral();
 
             try
             {
-               var test = _context.Funeral.Add(funeral);
+                var test = _context.Funeral.Add(funeral);
                 var dbResponse = await _context.SaveChangesAsync();
 
                 if (dbResponse > 0)
@@ -417,9 +424,9 @@ namespace Munharaunda.Infrastructure.Database
                 {
                     response.ResponseCode = ReturnCodesConstant.R05;
                     response.ResponseMessage = ReturnCodesConstant.R05Message + " Record not created try again..";
-                   
+
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -427,15 +434,15 @@ namespace Munharaunda.Infrastructure.Database
                 response.ResponseCode = ReturnCodesConstant.R99;
                 response.ResponseMessage = ex.Message;
             }
-            
 
-            
+
+
             return response;
         }
 
         public async Task<ResponseModel<Funeral>> DeleteFuneral(int id)
         {
-            ResponseModel<Funeral> response = Initialize();
+            ResponseModel<Funeral> response = InitializeFuneral();
 
             try
             {
@@ -458,7 +465,7 @@ namespace Munharaunda.Infrastructure.Database
                     }
 
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -469,20 +476,222 @@ namespace Munharaunda.Infrastructure.Database
             return response;
         }
 
-        private static ResponseModel<Funeral> Initialize()
+        private static ResponseModel<Funeral> InitializeFuneral()
         {
             var response = new ResponseModel<Funeral>();
             response.ResponseData = new List<Funeral>();
             return response;
         }
 
-        public bool FuneralExists(int id)
+        private static ResponseModel<IdentityTypes> InitializeIdType()
         {
-            return _context.Funeral.Any(e => e.FuneralId == id);
+            var response = new ResponseModel<IdentityTypes>();
+            response.ResponseData = new List<IdentityTypes>();
+            return response;
+        }
+
+        public bool IdentityTypeExists(int id)
+        {
+            return _context.IdentityTypes.Any(e => e.IdentityTypeId == id);
         }
 
 
 
+        #endregion
+
+        #region IdentityTypesController
+
+        public async Task<ResponseModel<IdentityTypes>> GetIdentityTypes()
+        {
+            ResponseModel<IdentityTypes> response = InitializeIdType();
+            try
+            {
+                var dbResponse = await _context.IdentityTypes.ToListAsync();
+
+                if (dbResponse.Count > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+
+                    foreach (var item in dbResponse)
+                    {
+                        response.ResponseData.Add(item);
+                    }
+
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseModel<IdentityTypes>> GetIdentityType(int id)
+        {
+            ResponseModel<IdentityTypes> response = InitializeIdType();
+            try
+            {
+                var dbResponse = await _context.IdentityTypes.FindAsync(id);
+
+                if (dbResponse == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(dbResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseModel<IdentityTypes>> UpdateIdentityType(int id, IdentityTypes identityType)
+        {
+            ResponseModel<IdentityTypes> response = InitializeIdType();
+
+            _context.Entry(identityType).State = EntityState.Modified;
+
+            try
+            {
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(identityType);
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message + "Update failed";
+                }
+
+
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!IdentityTypesExists(id))
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R99;
+                    response.ResponseMessage = ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType)
+        {
+            ResponseModel<IdentityTypes> response = InitializeIdType();
+
+            try
+            {
+                _context.IdentityTypes.Add(identityType);
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(identityType);
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message + "Record Not Created";
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id)
+        {
+            ResponseModel<IdentityTypes> response = InitializeIdType();
+
+            try
+            {
+                if (IdentityTypesExists(id))
+                {
+                    var dbResponse = await _context.IdentityTypes.FindAsync(id);
+                    _context.IdentityTypes.Remove(dbResponse);
+                    var _response = await _context.SaveChangesAsync();
+
+                    if (_response > 0)
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R00;
+                        response.ResponseMessage = ReturnCodesConstant.R00Message;
+
+                    }
+                    else
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R05;
+                        response.ResponseMessage = ReturnCodesConstant.R05Message;
+                    }
+
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            
+
+            return response;
+        }
+        private bool IdentityTypesExists(int id)
+        {
+            return _context.IdentityTypes.Any(e => e.IdentityTypeId == id);
+        }
+
+        public bool FuneralExists(int id)
+        {
+            return _context.Funeral.Any(e => e.FuneralId == id); ;
+        }
         #endregion
     }
 }

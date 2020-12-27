@@ -10,6 +10,6 @@ namespace Munharaunda.Domain.Models
         [Required]
         public string Description { get; set; }
 
-        public ICollection<Profile> Profiles { get; set; }
+       //public ICollection<Profile> Profiles { get; set; }
     }
 }
