@@ -36,6 +36,12 @@ namespace Munharaunda.Domain.Contracts
         Task<ResponseModel<ProfileTypes>> UpdateProfileType(int id, ProfileTypes profileTypes);
         Task<ResponseModel<ProfileTypes>> CreateProfileType(ProfileTypes profileTypes);
         Task<ResponseModel<ProfileTypes>> DeleteProfileType(int id);
+        Task<ResponseModel<Statuses>> GetStatuses();
+        Task<ResponseModel<Statuses>> GetStatuses(int id);
+
+        Task<ResponseModel<Statuses>> UpdateStatuses(int id, Statuses statuses);
+        Task<ResponseModel<Statuses>> CreateStatus(Statuses statuses);
+        Task<ResponseModel<Statuses>> DeleteStatus(int id);
 
     }
 }

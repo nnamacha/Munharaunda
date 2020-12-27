@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Munharaunda.Core.Constants;
+using Munharaunda.Domain.Contracts;
 using Munharaunda.Domain.Models;
 using Munharaunda.Infrastructure.Database;
 
@@ -14,32 +16,52 @@ namespace Munharaunda.Api.Controllers
     [ApiController]
     public class StatusesController : ControllerBase
     {
-        private readonly MunharaundaDbContext _context;
+        
+        private readonly IMunharaundaRepository _db;
 
-        public StatusesController(MunharaundaDbContext context)
+        public StatusesController(IMunharaundaRepository db)
         {
-            _context = context;
+           
+            _db = db;
         }
 
         // GET: api/Statuses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Statuses>>> GetStatuses()
+        public async Task<IActionResult> GetStatuses()
         {
-            return await _context.Statuses.ToListAsync();
+            var response =  await _db.GetStatuses();
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06)
+            {
+                return NotFound();
+            }
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
         }
 
         // GET: api/Statuses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Statuses>> GetStatuses(int id)
+        public async Task<IActionResult> GetStatuses(int id)
         {
-            var statuses = await _context.Statuses.FindAsync(id);
+            var response = await _db.GetStatuses(id);
 
-            if (statuses == null)
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return Ok(response);
+            }
+            else if (response.ResponseCode == ReturnCodesConstant.R06Message)
             {
                 return NotFound();
             }
-
-            return statuses;
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+                
         }
 
         // PUT: api/Statuses/5
@@ -52,57 +74,59 @@ namespace Munharaunda.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(statuses).State = EntityState.Modified;
+            var response = await _db.UpdateStatuses(id, statuses);
 
-            try
+            if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                await _context.SaveChangesAsync();
+                return StatusCode(StatusCodes.Status202Accepted, response);
             }
-            catch (DbUpdateConcurrencyException)
+            else if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                if (!StatusesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
 
-            return NoContent();
+            
         }
 
         // POST: api/Statuses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Statuses>> PostStatuses(Statuses statuses)
+        public async Task<IActionResult> PostStatuses(Statuses statuses)
         {
-            _context.Statuses.Add(statuses);
-            await _context.SaveChangesAsync();
+            var response = await _db.CreateStatus(statuses);
 
-            return CreatedAtAction("GetStatuses", new { id = statuses.StatusId }, statuses);
+            if (response.ResponseCode == ReturnCodesConstant.R00)
+            {
+                return CreatedAtAction("GetStatuses",  statuses);
+            }
+            else 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+
+            
         }
 
         // DELETE: api/Statuses/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStatuses(int id)
         {
-            var statuses = await _context.Statuses.FindAsync(id);
-            if (statuses == null)
+            var response = await _db.DeleteStatus(id);
+
+            if (response.ResponseCode == ReturnCodesConstant.R00)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status202Accepted, response);
             }
-
-            _context.Statuses.Remove(statuses);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
         }
 
-        private bool StatusesExists(int id)
-        {
-            return _context.Statuses.Any(e => e.StatusId == id);
-        }
+       
     }
 }

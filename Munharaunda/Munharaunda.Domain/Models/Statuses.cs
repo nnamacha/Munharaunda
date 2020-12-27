@@ -10,11 +10,11 @@ namespace Munharaunda.Domain.Models
         [Key]
         public int StatusId { get; set; }
 
-        [Required,StringLength(200)]
+        [Required]
         public string StatusDescription { get; set; }
         public int Status { get; set; }
 
-        [Required, StringLength(200)]
+        [Required]
         public int CreatedBy { get; set; }
         [Required]
         public DateTime Created { get; set; }

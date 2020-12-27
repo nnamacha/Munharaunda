@@ -260,7 +260,6 @@ namespace Munharaunda.Infrastructure.Database
 
         #endregion
 
-
         #region FuneralController
 
         public async Task<ResponseModel<Funeral>> GetFunerals()
@@ -679,7 +678,7 @@ namespace Munharaunda.Infrastructure.Database
         }
         #endregion
 
-        #region ProfileType
+        #region ProfileTypeController
 
         public async Task<ResponseModel<ProfileTypes>> GetProfileTypes()
         {
@@ -857,5 +856,194 @@ namespace Munharaunda.Infrastructure.Database
             return _context.ProfileTypes.Any(e => e.ProfileTypeId == id);
         }
         #endregion
+
+        #region StatusController
+        
+        public async Task<ResponseModel<Statuses>> GetStatuses()
+        {
+            ResponseModel<Statuses> response = InitializeStatuses();
+
+            try
+            {
+                var dbResponse = await _context.Statuses.ToListAsync();
+
+                if (dbResponse.Count > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData = dbResponse;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<Statuses>> GetStatuses(int id)
+        {
+            ResponseModel<Statuses> response = InitializeStatuses();
+
+            try
+            {
+                var statuses = await _context.Statuses.FindAsync(id);
+
+                if (statuses == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                    
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(statuses);
+                }
+            }
+            catch (Exception ex )
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<Statuses>> UpdateStatuses(int id, Statuses statuses)
+        {
+            ResponseModel<Statuses> response = InitializeStatuses();
+
+            _context.Entry(statuses).State = EntityState.Modified;
+
+            try
+            {
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(statuses);
+                }
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!StatusesExists(id))
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+
+        }
+
+        public async Task<ResponseModel<Statuses>> CreateStatus(Statuses statuses)
+        {
+            ResponseModel<Statuses> response = InitializeStatuses();
+
+            try
+            {
+                _context.Statuses.Add(statuses);
+                var dbResponse = await _context.SaveChangesAsync();
+
+                if (dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    response.ResponseData.Add(statuses);
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseModel<Statuses>> DeleteStatus(int id)
+        {
+            ResponseModel<Statuses> response = InitializeStatuses();
+
+            try
+            {
+                var statuses = await _context.Statuses.FindAsync(id);
+                if (statuses == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                    
+                }
+                else
+                {
+
+                    _context.Statuses.Remove(statuses);
+                    var dbResponse = await _context.SaveChangesAsync();
+
+                    if (dbResponse > 0)
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R00;
+                        response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    }
+                    else
+                    {
+                        response.ResponseCode = ReturnCodesConstant.R05;
+                        response.ResponseMessage = ReturnCodesConstant.R05Message;
+                    }
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+        private static ResponseModel<Statuses> InitializeStatuses()
+        {
+            var response = new ResponseModel<Statuses>();
+            response.ResponseData = new List<Statuses>();
+            return response;
+        }
+
+        private bool StatusesExists(int id)
+        {
+            return _context.Statuses.Any(e => e.StatusId == id);
+        }
+        #endregion
+
+
     }
 }
