@@ -14,11 +14,13 @@ namespace Munharaunda.Api.Controllers
     {
         
         private readonly IMunharaundaRepository _db;
+        private readonly IResponsesService _responsesService;
 
-        public ProfileTypesController(IMunharaundaRepository db)
+        public ProfileTypesController(IMunharaundaRepository db, IResponsesService responsesService)
         {
 
             _db = db;
+            _responsesService = responsesService;
         }
 
         // GET: api/ProfileTypes
@@ -27,21 +29,11 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.GetProfileTypes();
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
-
+            return _responsesService.GetResponse(response);
 
         }
+
+       
 
         // GET: api/ProfileTypes/5
         [HttpGet("{id}")]
@@ -49,18 +41,7 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.GetProfileTypes(id);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.GetResponse(response);
 
         }
 
@@ -76,20 +57,11 @@ namespace Munharaunda.Api.Controllers
 
             var response = await _db.UpdateProfileType(id, profileTypes);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return StatusCode(StatusCodes.Status202Accepted, response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.PutResponse(response);
 
         }
+
+        
 
         // POST: api/ProfileTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -99,16 +71,11 @@ namespace Munharaunda.Api.Controllers
 
             var response = await _db.CreateProfileType(profileTypes);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return CreatedAtAction("GetProfileTypes", response);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.PostResponse(response);
 
         }
+
+        
 
         // DELETE: api/ProfileTypes/5
         [HttpDelete("{id}")]
@@ -116,18 +83,10 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.DeleteProfileType(id);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return StatusCode(StatusCodes.Status202Accepted, response);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.DeleteResponse(response);
 
-            
         }
 
-
+        
     }
 }

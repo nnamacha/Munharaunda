@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Munharaunda.Domain;
 using Munharaunda.Infrastructure;
 
 namespace Munharaunda.Api
@@ -22,6 +23,7 @@ namespace Munharaunda.Api
         {
 
             services.AddControllers();
+            services.AddApplications(Configuration);
             services.AddInfrastructure(Configuration);
 
             services.AddSwaggerGen(c =>

@@ -16,11 +16,13 @@ namespace Munharaunda.Api.Controllers
     {
         
         private readonly IMunharaundaRepository _db;
+        private readonly IResponsesService _responsesService;
 
-        public FuneralController(IMunharaundaRepository Db)
+        public FuneralController(IMunharaundaRepository db, IResponsesService responsesService)
         {
 
-            _db = Db;
+            _db = db;
+            _responsesService = responsesService;
         }
 
         // GET: api/Funeral
@@ -29,38 +31,16 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.GetFunerals();
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound(response);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.GetResponse(response);
         }
 
         // GET: api/Funeral/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Funeral>> Funeral(int id)
+        public async Task<IActionResult> Funeral(int id)
         {
             var response = await _db.GetFuneral(id);
 
-            if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.GetResponse(response);
 
         }
 
@@ -76,18 +56,9 @@ namespace Munharaunda.Api.Controllers
 
             var response = await _db.UpdateFuneral(id, funeral);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return NoContent();
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+           
+
+            return _responsesService.PutResponse(response);
 
             
         }
@@ -99,45 +70,22 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.CreateFuneral(funeral);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return CreatedAtAction("funeral", response.ResponseData[0]);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
-            
+            return _responsesService.PostResponse(response);
+
         }
 
         // DELETE: api/Funerals/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFuneral(int id)
         {
-            
-            if (!_db.FuneralExists(id))
-            {
-                return NotFound();
-            }
-
-
+           
             var response = await _db.DeleteFuneral(id);
 
-            if (response.ResponseCode ==  ReturnCodesConstant.R00)
-            {
-                return NoContent();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.DeleteResponse(response);
 
-            
+
         }
 
-        private bool FuneralExists(int id)
-        {
-            return _db.FuneralExists(id);
-        }
+        
     }
 }

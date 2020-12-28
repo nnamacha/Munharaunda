@@ -2,6 +2,7 @@ C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\bin\Debu
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\bin\Debug\net5.0\Munharaunda.Core.dll
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\bin\Debug\net5.0\ref\Munharaunda.Core.dll
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\bin\Debug\net5.0\Munharaunda.Core.pdb
+C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debug\net5.0\Munharaunda.Core.csprojAssemblyReference.cache
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debug\net5.0\Munharaunda.Core.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debug\net5.0\Munharaunda.Core.AssemblyInfoInputs.cache
 C:\Users\NB181916\source\repos\munharaunda\Munharaunda\Munharaunda.Core\obj\Debug\net5.0\Munharaunda.Core.AssemblyInfo.cs

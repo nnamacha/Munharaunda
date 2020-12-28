@@ -18,11 +18,13 @@ namespace Munharaunda.Api.Controllers
     {
         
         private readonly IMunharaundaRepository _db;
+        private readonly IResponsesService _responsesService;
 
-        public IdentityTypesController(IMunharaundaRepository db)
+        public IdentityTypesController(IMunharaundaRepository db, IResponsesService responsesService)
         {
             
             _db = db;
+            _responsesService = responsesService;
         }
 
         // GET: api/IdentityType
@@ -31,18 +33,7 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.GetIdentityTypes();
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.GetResponse(response);
         }
 
         // GET: api/IdentityType/5
@@ -51,18 +42,7 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.GetIdentityType(id);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.GetResponse(response);
         }
 
         // PUT: api/IdentityType/5
@@ -77,20 +57,9 @@ namespace Munharaunda.Api.Controllers
 
             var response = await _db.UpdateIdentityType(id, identityTypes);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return NoContent();
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.PutResponse(response);
 
-            
+
         }
 
         // POST: api/IdentityType
@@ -100,15 +69,8 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.CreateIdentityType(identityTypes);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return CreatedAtAction("GetIdentityTypes", response);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
-            
+            return _responsesService.PostResponse(response);
+
         }
 
         // DELETE: api/IdentityType/5
@@ -116,25 +78,9 @@ namespace Munharaunda.Api.Controllers
         public async Task<IActionResult> DeleteIdentityTypes(int id)
         {
             
-            if (!_db.IdentityTypeExists(id))
-            {
-                return NotFound();
-            }
-
             var response = await _db.DeleteIdentityType(id);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return StatusCode(StatusCodes.Status202Accepted, response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.DeleteResponse(response);
         }
 
 

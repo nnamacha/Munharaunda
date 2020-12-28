@@ -13,11 +13,338 @@ namespace Munharaunda.Infrastructure.Database
     public class MunharaundaRepository : IMunharaundaRepository
     {
         private readonly MunharaundaDbContext _context;
+        
 
         public MunharaundaRepository(MunharaundaDbContext context)
         {
             _context = context;
         }
+
+        #region Initialize
+        private static ResponseModel<Funeral> InitializeFuneral()
+        {
+            var response = new ResponseModel<Funeral>();
+            response.ResponseData = new List<Funeral>();
+            return response;
+        }
+
+        private static ResponseModel<IdentityTypes> InitializeIdType()
+        {
+            var response = new ResponseModel<IdentityTypes>();
+            response.ResponseData = new List<IdentityTypes>();
+            return response;
+        }
+
+        private static ResponseModel<ProfileTypes> InitializeProfileType()
+        {
+            var response = new ResponseModel<ProfileTypes>();
+            response.ResponseData = new List<ProfileTypes>();
+            return response;
+        }
+
+        private static ResponseModel<Profile> InitializeProfile()
+        {
+            var response = new ResponseModel<Profile>();
+            response.ResponseData = new List<Profile>();
+            return response;
+        }
+
+        private static ResponseModel<Statuses> InitializeStatuses()
+        {
+            var response = new ResponseModel<Statuses>();
+            response.ResponseData = new List<Statuses>();
+            return response;
+        }
+
+        private static ResponseModel<Transactions> InitializeTransactions()
+        {
+            var response = new ResponseModel<Transactions>();
+            response.ResponseData = new List<Transactions>();
+            return response;
+        }
+
+        private static ResponseModel<TransactionCodes> InitializeTransactionCodes()
+        {
+            var response = new ResponseModel<TransactionCodes>();
+            response.ResponseData = new List<TransactionCodes>();
+            return response;
+        }
+
+        #endregion
+
+        #region Classwide Methods
+
+        private static ResponseModel<T> GetResponseList<T>(ResponseModel<T> response, List<T> _DbResponse)
+        {
+            if (_DbResponse.Count == 0)
+            {
+                response.ResponseCode = ReturnCodesConstant.R06;
+                response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+            }
+            else
+            {
+                response.ResponseCode = ReturnCodesConstant.R00;
+                response.ResponseMessage = ReturnCodesConstant.R00Message;
+                response.ResponseData = _DbResponse;
+            }
+            return response;
+        }
+
+        private static ResponseModel<T> GetResponse<T>(ResponseModel<T> response, T _DbResponse)
+        {
+            if (_DbResponse == null)
+            {
+                response.ResponseCode = ReturnCodesConstant.R06;
+                response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+            }
+            else
+            {
+                response.ResponseCode = ReturnCodesConstant.R00;
+                response.ResponseMessage = ReturnCodesConstant.R00Message;
+                response.ResponseData.Add(_DbResponse);
+            }
+            return response;
+        }
+
+        private async Task<ResponseModel<T>> UpdateRecord<T>(int id, T rec, ResponseModel<T> response)
+        {
+
+            return await SaveToDb(response);
+                
+            
+        }
+
+        private async Task<ResponseModel<T>> CreateRecord<T>(T rec, ResponseModel<T> response)
+        {
+            try
+            {
+
+                if (typeof(T).Equals(typeof(Profile)))
+                {
+                    var profile = rec as Profile;
+                   
+                    _context.Profile.Add(profile);
+                    
+                }
+                else if (typeof(T).Equals(typeof(Funeral)))
+                {
+                    var funeral = rec as Funeral;
+                    _context.Funeral.Add(funeral);
+                   
+                }
+                else if (typeof(T).Equals(typeof(IdentityTypes)))
+                {
+                    var identityTypes = rec as IdentityTypes;
+                    _context.IdentityTypes.Add(identityTypes);
+                }
+                else if (typeof(T).Equals(typeof(ProfileTypes)))
+                {
+                    var profileTypes = rec as ProfileTypes;
+                    _context.ProfileTypes.Add(profileTypes);
+                }
+                else if (typeof(T).Equals(typeof(Statuses)))
+                {
+                    var statuses = rec as Statuses;
+                    _context.Statuses.Add(statuses);
+                }
+                else if (typeof(T).Equals(typeof(TransactionCodes)))
+                {
+                    var transactionCodes = rec as TransactionCodes;
+                    _context.TransactionCodes.Add(transactionCodes);
+                }
+                else if (typeof(T).Equals(typeof(Transactions)))
+                {
+                    var transactions = rec as Transactions;
+                    _context.Transactions.Add(transactions);
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Type", paramName: nameof(rec));
+
+                }
+                              
+               
+
+                response = await SaveToDb(response);
+                response.ResponseData.Add(rec);
+                
+
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+
+            }
+
+            return response;
+        }
+        private async Task<ResponseModel<T>> DeleteRecord<T>(int id, ResponseModel<T> response)
+        {
+            response.ResponseCode = ReturnCodesConstant.R06;
+            response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+            try
+            {
+                if (typeof(T).Equals(typeof(Profile)))
+                {
+
+                    var profile = await _context.Profile.FindAsync(id);
+
+                    if (profile == null)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        _context.Profile.Remove(profile);
+
+
+                        response = await SaveToDb(response);
+                    }
+
+
+                }
+                else if (typeof(T).Equals(typeof(Funeral)))
+                {
+
+                    var funeral = await _context.Funeral.FindAsync(id);
+
+                    if (funeral == null)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        _context.Funeral.Remove(funeral);
+                        response = await SaveToDb(response);
+                    }
+                }
+                else if (typeof(T).Equals(typeof(IdentityTypes)))
+                {
+                    var identityType = await _context.IdentityTypes.FindAsync(id);
+
+                    if (identityType == null)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        _context.IdentityTypes.Remove(identityType);
+                        response = await SaveToDb(response);
+                    }
+                }
+                else if (typeof(T).Equals(typeof(ProfileTypes)))
+                {
+                    var profileType = await _context.ProfileTypes.FindAsync(id);
+
+                    if (profileType == null)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        _context.ProfileTypes.Remove(profileType);
+                        response = await SaveToDb(response);
+                    }
+                }
+                else if (typeof(T).Equals(typeof(Statuses)))
+                {
+                    var status = await _context.Statuses.FindAsync(id);
+
+                    if (status == null)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        _context.Statuses.Remove(status);
+                        response = await SaveToDb(response);
+                    }
+                }
+                else if (typeof(T).Equals(typeof(TransactionCodes)))
+                {
+                    var transactionCode = await _context.TransactionCodes.FindAsync(id);
+
+                    if (transactionCode == null)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        _context.TransactionCodes.Remove(transactionCode);
+                        response = await SaveToDb(response);
+                    }
+                }
+                else if (typeof(T).Equals(typeof(Transactions)))
+                {
+                    var transaction = await _context.Transactions.FindAsync(id);
+
+                    if (transaction == null)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        _context.Transactions.Remove(transaction);
+                        response = await SaveToDb(response);
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Type", paramName: nameof(response));
+
+                }
+
+
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+            return response;
+        }
+
+        private async Task<ResponseModel<T>> SaveToDb<T>(ResponseModel<T> response)
+        {
+
+            try
+            {
+                var _dbResponse = await _context.SaveChangesAsync();
+
+                if (_dbResponse > 0)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R00;
+                    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                    
+
+                }
+                else
+                {
+                    response.ResponseCode = ReturnCodesConstant.R05;
+                    response.ResponseMessage = ReturnCodesConstant.R05Message;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+
+        }
+        #endregion
 
         #region ProfileController
 
@@ -95,168 +422,98 @@ namespace Munharaunda.Infrastructure.Database
             return status.StatusDescription;
         }
 
-        public async Task<ResponseModel<ProfileResponse>> GetProfile(int id)
+        public async Task<ResponseModel<Profile>> GetProfile(int id)
         {
-            var response = new ResponseModel<ProfileResponse>
+            ResponseModel<Profile> response = InitializeProfile();
+
+            try
             {
-                ResponseData = new List<ProfileResponse>()
-            };
 
-            var profile = await _context.Profile.FindAsync(id);
+                var _DbResponse = await _context.Profile.FindAsync(id);
+                response = GetResponse(response, _DbResponse);
 
-            if (profile != null)
-            {
-                try
-                {
-                    var _response = await GenerateProfileDetails(profile);
-                    response.ResponseData.Add(_response);
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-
-                }
-                catch (Exception ex)
-                {
-
-                    response.ResponseCode = ReturnCodesConstant.R99;
-                    response.ResponseMessage = ex.Message;
-
-
-                }
 
             }
-            else
+            catch (Exception ex)
             {
-                response.ResponseCode = ReturnCodesConstant.R06;
-                response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+
+
             }
+
+
+
 
 
             return response;
         }
 
-        public async Task<IEnumerable<ProfileResponse>> GetProfiles()
+        public async Task<ResponseModel<Profile>> GetProfiles()
         {
-            List<ProfileResponse> response = new List<ProfileResponse>();
+            ResponseModel<Profile> response = InitializeProfile();
 
-            var profiles = _context.Profile;
 
-            foreach (var profile in profiles)
+
+            try
             {
-                ProfileResponse profileDetails = await GenerateProfileDetails(profile);
+                var _DbResponse = await _context.Profile.ToListAsync();
 
-                response.Add(profileDetails);
+                response = GetResponseList(response, _DbResponse);
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
             }
             return response;
         }
+
+        
 
         public async Task<ResponseModel<Profile>> UpdateProfile(int id, Profile profile)
         {
 
-            var response = new ResponseModel<Profile>
-            {
-
-                ResponseData = new List<Profile>()
-            };
+            ResponseModel<Profile> response = InitializeProfile();
 
             _context.Entry(profile).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-                response.ResponseCode = ReturnCodesConstant.R00;
-                response.ResponseMessage = ReturnCodesConstant.R00Message;
-                response.ResponseData.Add(profile);
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!ProfileExists(id))
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R07;
-                    response.ResponseMessage = ReturnCodesConstant.R07Message;
-                    response.Errors.Add(ex.Message);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-
-            }
-            return response;
+            
+            return await UpdateRecord(id, profile, response);
         }
+
+        
 
         public async Task<ResponseModel<Profile>> CreateProfile(Profile profile)
         {
 
-            var response = new ResponseModel<Profile>
-            {
-                ResponseData = new List<Profile>()
-            };
+            ResponseModel<Profile> response = InitializeProfile();
 
-            try
-            {
-                _context.Profile.Add(profile);
-                await _context.SaveChangesAsync();
-
-                response.ResponseCode = ReturnCodesConstant.R00;
-                response.ResponseMessage = ReturnCodesConstant.R00Message;
-                response.ResponseData.Add(profile);
-
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-
-            return response;
+            return await CreateRecord(profile, response);
         }
 
-        public async Task<ResponseModel<string>> DeleteProfile(int id)
+        
+
+        public async Task<ResponseModel<Profile>> DeleteProfile(int id)
         {
-            var response = new ResponseModel<string>
-            {
-                ResponseData = new List<string>()
-            };
+            ResponseModel<Profile> response = InitializeProfile();
 
-            try
-            {
-                var profile = await _context.Profile.FindAsync(id);
-
-                if (profile == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                    return response;
-                }
-                _context.Profile.Remove(profile);
-                await _context.SaveChangesAsync();
-
-                response.ResponseCode = ReturnCodesConstant.R00;
-                response.ResponseMessage = ReturnCodesConstant.R00Message;
-                response.ResponseData.Add("Record Deleted Successfully");
-
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await DeleteRecord(id, response);
         }
+
+        
+
+        
+
         public bool ProfileExists(int id)
         {
             return _context.Profile.Any(e => e.ProfileNumber == id);
         }
+
+        
 
         #endregion
 
@@ -269,23 +526,8 @@ namespace Munharaunda.Infrastructure.Database
 
             try
             {
-                var _DbResponse = await _context.Funeral.ToListAsync();
-
-                if (_DbResponse.Count == 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData = _DbResponse;
-                }
-
-
-
+                var dbResponse = await _context.Funeral.ToListAsync();
+                response = GetResponseList(response, dbResponse);
 
             }
             catch (Exception ex)
@@ -300,6 +542,8 @@ namespace Munharaunda.Infrastructure.Database
             return response;
 
         }
+
+        
         public async Task<ResponseModel<Funeral>> GetFuneral(int id)
         {
             ResponseModel<Funeral> response = InitializeFuneral();
@@ -307,18 +551,20 @@ namespace Munharaunda.Infrastructure.Database
             {
                 var dbResponse = await _context.Funeral.FindAsync(id);
 
-                if (dbResponse == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                response = GetResponse(response, dbResponse);
 
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(dbResponse);
-                }
+                //if (dbResponse == null)
+                //{
+                //    response.ResponseCode = ReturnCodesConstant.R06;
+                //    response.ResponseMessage = ReturnCodesConstant.R06Message;
+
+                //}
+                //else
+                //{
+                //    response.ResponseCode = ReturnCodesConstant.R00;
+                //    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                //    response.ResponseData.Add(dbResponse);
+                //}
 
 
             }
@@ -339,44 +585,24 @@ namespace Munharaunda.Infrastructure.Database
         {
             ResponseModel<Funeral> response = InitializeFuneral();
 
-            try
-            {
-                _context.Entry(funeral).State = EntityState.Modified;
-                var dbResponse = await _context.SaveChangesAsync();
+            
+                _context.Entry(funeral).State = EntityState.Modified;              
 
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(funeral);
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ReturnCodesConstant.R05Message + "Funeral Not Updated";
-                }
+                response = await UpdateRecord(id, funeral, response);
 
-            }
+                //if (dbResponse > 0)
+                //{
+                //    response.ResponseCode = ReturnCodesConstant.R00;
+                //    response.ResponseMessage = ReturnCodesConstant.R00Message;
+                //    response.ResponseData.Add(funeral);
+                //}
+                //else
+                //{
+                //    response.ResponseCode = ReturnCodesConstant.R05;
+                //    response.ResponseMessage = ReturnCodesConstant.R05Message + "Funeral Not Updated";
+                //}
 
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!IdentityTypeExists(id))
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R99;
-                    response.ResponseMessage = ex.Message;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
+            
 
             return response;
         }
@@ -385,35 +611,9 @@ namespace Munharaunda.Infrastructure.Database
         {
             ResponseModel<Funeral> response = InitializeFuneral();
 
-            try
-            {
-                var test = _context.Funeral.Add(funeral);
-                var dbResponse = await _context.SaveChangesAsync();
+            return await CreateRecord(funeral, response);
 
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(funeral);
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ReturnCodesConstant.R05Message + " Record not created try again..";
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-
-
-
-            return response;
+           
         }
 
         public async Task<ResponseModel<Funeral>> DeleteFuneral(int id)
@@ -424,23 +624,25 @@ namespace Munharaunda.Infrastructure.Database
             {
                 var dbResponse = await GetFuneral(id);
 
-                if (dbResponse.ResponseCode == ReturnCodesConstant.R00)
-                {
-                    _context.Funeral.Remove(dbResponse.ResponseData[0]);
-                    var _response = await _context.SaveChangesAsync();
+                return await DeleteRecord(id, response);
 
-                    if (_response > 0)
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R00;
-                        response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    }
-                    else
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R05;
-                        response.ResponseMessage = ReturnCodesConstant.R05Message + " Record not deleted";
-                    }
+                //if (dbResponse.ResponseCode == ReturnCodesConstant.R00)
+                //{
+                //    _context.Funeral.Remove(dbResponse.ResponseData[0]);
+                //    var _response = await _context.SaveChangesAsync();
 
-                }
+                //    if (_response > 0)
+                //    {
+                //        response.ResponseCode = ReturnCodesConstant.R00;
+                //        response.ResponseMessage = ReturnCodesConstant.R00Message;
+                //    }
+                //    else
+                //    {
+                //        response.ResponseCode = ReturnCodesConstant.R05;
+                //        response.ResponseMessage = ReturnCodesConstant.R05Message + " Record not deleted";
+                //    }
+
+                //}
 
             }
             catch (Exception ex)
@@ -451,35 +653,6 @@ namespace Munharaunda.Infrastructure.Database
             }
             return response;
         }
-
-        private static ResponseModel<Funeral> InitializeFuneral()
-        {
-            var response = new ResponseModel<Funeral>();
-            response.ResponseData = new List<Funeral>();
-            return response;
-        }
-
-        private static ResponseModel<IdentityTypes> InitializeIdType()
-        {
-            var response = new ResponseModel<IdentityTypes>();
-            response.ResponseData = new List<IdentityTypes>();
-            return response;
-        }
-
-        private static ResponseModel<ProfileTypes> InitializeProfileType()
-        {
-            var response = new ResponseModel<ProfileTypes>();
-            response.ResponseData = new List<ProfileTypes>();
-            return response;
-        }
-
-
-        public bool IdentityTypeExists(int id)
-        {
-            return _context.IdentityTypes.Any(e => e.IdentityTypeId == id);
-        }
-
-
 
         #endregion
 
@@ -491,23 +664,7 @@ namespace Munharaunda.Infrastructure.Database
             try
             {
                 var dbResponse = await _context.IdentityTypes.ToListAsync();
-
-                if (dbResponse.Count > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-
-                    foreach (var item in dbResponse)
-                    {
-                        response.ResponseData.Add(item);
-                    }
-
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
+                response = GetResponseList(response, dbResponse);
             }
             catch (Exception ex)
             {
@@ -526,17 +683,8 @@ namespace Munharaunda.Infrastructure.Database
             {
                 var dbResponse = await _context.IdentityTypes.FindAsync(id);
 
-                if (dbResponse == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(dbResponse);
-                }
+                response = GetResponse(response, dbResponse);
+            
             }
             catch (Exception ex)
             {
@@ -554,128 +702,30 @@ namespace Munharaunda.Infrastructure.Database
 
             _context.Entry(identityType).State = EntityState.Modified;
 
-            try
-            {
-                var dbResponse = await _context.SaveChangesAsync();
-
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(identityType);
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ReturnCodesConstant.R05Message + "Update failed";
-                }
-
-
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!IdentityTypesExists(id))
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R99;
-                    response.ResponseMessage = ex.Message;
-                }
-            }
-            catch (Exception ex)
-            {
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await UpdateRecord(id, identityType, response);
+           
+            
         }
 
         public async Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType)
         {
             ResponseModel<IdentityTypes> response = InitializeIdType();
 
-            try
-            {
-                _context.IdentityTypes.Add(identityType);
-                var dbResponse = await _context.SaveChangesAsync();
+            return await CreateRecord(identityType, response);
 
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(identityType);
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ReturnCodesConstant.R05Message + "Record Not Created";
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-
-            return response;
+            
         }
 
         public async Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id)
         {
             ResponseModel<IdentityTypes> response = InitializeIdType();
 
-            try
-            {
-                if (IdentityTypesExists(id))
-                {
-                    var dbResponse = await _context.IdentityTypes.FindAsync(id);
-                    _context.IdentityTypes.Remove(dbResponse);
-                    var _response = await _context.SaveChangesAsync();
-
-                    if (_response > 0)
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R00;
-                        response.ResponseMessage = ReturnCodesConstant.R00Message;
-
-                    }
-                    else
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R05;
-                        response.ResponseMessage = ReturnCodesConstant.R05Message;
-                    }
-
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-
-
-
-            return response;
-        }
-        public bool IdentityTypesExists(int id)
-        {
-            return _context.IdentityTypes.Any(e => e.IdentityTypeId == id);
+            return await DeleteRecord(id, response);
         }
 
-        public bool FuneralExists(int id)
-        {
-            return _context.Funeral.Any(e => e.FuneralId == id); ;
-        }
+
+
+
         #endregion
 
         #region ProfileTypeController
@@ -688,17 +738,7 @@ namespace Munharaunda.Infrastructure.Database
             {
                 var dbResponse = await _context.ProfileTypes.ToListAsync();
 
-                if (dbResponse.Count > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData = dbResponse;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
+                response = GetResponseList(response, dbResponse);
             }
             catch (Exception ex)
             {
@@ -716,20 +756,9 @@ namespace Munharaunda.Infrastructure.Database
 
             try
             {
-                var profileTypes = await _context.ProfileTypes.FindAsync(id);
+                var dbResponse = await _context.ProfileTypes.FindAsync(id);
 
-                if (profileTypes == null)
-                {
-
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(profileTypes);
-                }
+                response = GetResponse(response, dbResponse);
             }
             catch (Exception ex)
             {
@@ -746,119 +775,27 @@ namespace Munharaunda.Infrastructure.Database
 
             _context.Entry(profileTypes).State = EntityState.Modified;
 
-            try
-            {
-                var dbResponse = await _context.SaveChangesAsync();
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(profileTypes);
-                }
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!ProfileTypesExists(id))
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R99;
-                    response.ResponseMessage = ex.Message;
-                }
-            }
-            catch (Exception ex)
-            {
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await UpdateRecord(id, profileTypes, response);
         }
 
         public async Task<ResponseModel<ProfileTypes>> CreateProfileType(ProfileTypes profileTypes)
         {
             ResponseModel<ProfileTypes> response = InitializeProfileType();
 
-            try
-            {
-                _context.ProfileTypes.Add(profileTypes);
-                var dbResponse = await _context.SaveChangesAsync();
-
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(profileTypes);
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ReturnCodesConstant.R05Message;
-                   
-                }
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await CreateRecord(profileTypes, response);
         }
 
-        public  async Task<ResponseModel<ProfileTypes>> DeleteProfileType(int id)
+        public async Task<ResponseModel<ProfileTypes>> DeleteProfileType(int id)
         {
             ResponseModel<ProfileTypes> response = InitializeProfileType();
 
-            try
-            {
-                if (ProfileTypesExists(id))
-                {
-                    var profileTypes = await _context.ProfileTypes.FindAsync(id);
-
-                    _context.ProfileTypes.Remove(profileTypes);
-
-                    var dbResponse = await _context.SaveChangesAsync();
-
-                    if (dbResponse > 0)
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R00;
-                        response.ResponseMessage = ReturnCodesConstant.R00Message;
-
-                    }
-                    else
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R05;
-                        response.ResponseMessage = ReturnCodesConstant.R05Message;
-                    }
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-
-            
-            return response;
+            return await DeleteRecord(id, response);
         }
-        public bool ProfileTypesExists(int id)
-        {
-            return _context.ProfileTypes.Any(e => e.ProfileTypeId == id);
-        }
+
         #endregion
 
         #region StatusController
-        
+
         public async Task<ResponseModel<Statuses>> GetStatuses()
         {
             ResponseModel<Statuses> response = InitializeStatuses();
@@ -867,17 +804,7 @@ namespace Munharaunda.Infrastructure.Database
             {
                 var dbResponse = await _context.Statuses.ToListAsync();
 
-                if (dbResponse.Count > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData = dbResponse;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
+                response = GetResponseList(response, dbResponse);
             }
             catch (Exception ex)
             {
@@ -894,22 +821,11 @@ namespace Munharaunda.Infrastructure.Database
 
             try
             {
-                var statuses = await _context.Statuses.FindAsync(id);
+                var dbResponse = await _context.Statuses.FindAsync(id);
 
-                if (statuses == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                    
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(statuses);
-                }
+                response = GetResponse(response, dbResponse);
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
 
                 response.ResponseCode = ReturnCodesConstant.R99;
@@ -924,37 +840,7 @@ namespace Munharaunda.Infrastructure.Database
 
             _context.Entry(statuses).State = EntityState.Modified;
 
-            try
-            {
-                var dbResponse = await _context.SaveChangesAsync();
-
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(statuses);
-                }
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!StatusesExists(id))
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ex.Message;
-                }
-            }
-            catch (Exception ex)
-            {
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-
-            return response;
+            return await UpdateRecord(id, statuses, response);
 
         }
 
@@ -962,81 +848,16 @@ namespace Munharaunda.Infrastructure.Database
         {
             ResponseModel<Statuses> response = InitializeStatuses();
 
-            try
-            {
-                _context.Statuses.Add(statuses);
-                var dbResponse = await _context.SaveChangesAsync();
-
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(statuses);
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ReturnCodesConstant.R05Message;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await CreateRecord(statuses, response);
         }
 
         public async Task<ResponseModel<Statuses>> DeleteStatus(int id)
         {
             ResponseModel<Statuses> response = InitializeStatuses();
 
-            try
-            {
-                var statuses = await _context.Statuses.FindAsync(id);
-                if (statuses == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                    
-                }
-                else
-                {
-
-                    _context.Statuses.Remove(statuses);
-                    var dbResponse = await _context.SaveChangesAsync();
-
-                    if (dbResponse > 0)
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R00;
-                        response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    }
-                    else
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R05;
-                        response.ResponseMessage = ReturnCodesConstant.R05Message;
-                    }
-
-                }
-
-
-
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await DeleteRecord(id, response);
         }
-        private static ResponseModel<Statuses> InitializeStatuses()
-        {
-            var response = new ResponseModel<Statuses>();
-            response.ResponseData = new List<Statuses>();
-            return response;
-        }
+        
 
         private bool StatusesExists(int id)
         {
@@ -1054,17 +875,7 @@ namespace Munharaunda.Infrastructure.Database
             {
                 var dbResponse = await _context.Transactions.ToListAsync();
 
-                if (dbResponse.Count > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData = dbResponse;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
+                response = GetResponseList(response, dbResponse);
             }
             catch (Exception ex)
             {
@@ -1081,20 +892,9 @@ namespace Munharaunda.Infrastructure.Database
 
             try
             {
-                var transactions = await _context.Transactions.FindAsync(id);
+                var dbResponse = await _context.Transactions.FindAsync(id);
 
-                if (transactions == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(transactions);
-                }
+                response = GetResponse(response, dbResponse);
             }
             catch (Exception ex)
             {
@@ -1111,37 +911,7 @@ namespace Munharaunda.Infrastructure.Database
 
             _context.Entry(Transaction).State = EntityState.Modified;
 
-            try
-            {
-                var dbResponse = await _context.SaveChangesAsync();
-
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(Transaction);
-                }
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!StatusesExists(id))
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ex.Message;
-                }
-            }
-            catch (Exception ex)
-            {
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-
-            return response;
+            return await UpdateRecord(id, Transaction, response);            
 
         }
 
@@ -1149,82 +919,17 @@ namespace Munharaunda.Infrastructure.Database
         {
             ResponseModel<Transactions> response = InitializeTransactions();
 
-            try
-            {
-                _context.Transactions.Add(transaction);
-                var dbResponse = await _context.SaveChangesAsync();
-
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(transaction);
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ReturnCodesConstant.R05Message;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await CreateRecord(transaction, response);
         }
 
         public async Task<ResponseModel<Transactions>> DeleteTransaction(int id)
         {
             ResponseModel<Transactions> response = InitializeTransactions();
 
-            try
-            {
-                var transaction = await _context.Transactions.FindAsync(id);
-                if (transaction == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-
-                }
-                else
-                {
-
-                    _context.Transactions.Remove(transaction);
-                    var dbResponse = await _context.SaveChangesAsync();
-
-                    if (dbResponse > 0)
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R00;
-                        response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    }
-                    else
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R05;
-                        response.ResponseMessage = ReturnCodesConstant.R05Message;
-                    }
-
-                }
-
-
-
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await DeleteRecord(id, response);
         }
 
-        private static ResponseModel<Transactions> InitializeTransactions()
-        {
-            var response = new ResponseModel<Transactions>();
-            response.ResponseData = new List<Transactions>();
-            return response;
-        }
+        
 
         #endregion
 
@@ -1238,17 +943,7 @@ namespace Munharaunda.Infrastructure.Database
             {
                 var dbResponse = await _context.TransactionCodes.ToListAsync();
 
-                if (dbResponse.Count > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData = dbResponse;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
+                response = GetResponseList(response, dbResponse);
             }
             catch (Exception ex)
             {
@@ -1265,20 +960,9 @@ namespace Munharaunda.Infrastructure.Database
 
             try
             {
-                var transactionCodes = await _context.TransactionCodes.FindAsync(id);
+                var dbResponse = await _context.TransactionCodes.FindAsync(id);
 
-                if (transactionCodes == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(transactionCodes);
-                }
+                response = GetResponse(response, dbResponse);
             }
             catch (Exception ex)
             {
@@ -1295,37 +979,7 @@ namespace Munharaunda.Infrastructure.Database
 
             _context.Entry(TransactionCode).State = EntityState.Modified;
 
-            try
-            {
-                var dbResponse = await _context.SaveChangesAsync();
-
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(TransactionCode);
-                }
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                if (!StatusesExists(id))
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ex.Message;
-                }
-            }
-            catch (Exception ex)
-            {
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-
-            return response;
+            return await UpdateRecord(id, TransactionCode, response);
 
         }
 
@@ -1333,81 +987,16 @@ namespace Munharaunda.Infrastructure.Database
         {
             ResponseModel<TransactionCodes> response = InitializeTransactionCodes();
 
-            try
-            {
-                _context.TransactionCodes.Add(transactionCode);
-                var dbResponse = await _context.SaveChangesAsync();
-
-                if (dbResponse > 0)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R00;
-                    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    response.ResponseData.Add(transactionCode);
-                }
-                else
-                {
-                    response.ResponseCode = ReturnCodesConstant.R05;
-                    response.ResponseMessage = ReturnCodesConstant.R05Message;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await CreateRecord(transactionCode, response);
         }
 
         public async Task<ResponseModel<TransactionCodes>> DeleteTransactionCode(int id)
         {
             ResponseModel<TransactionCodes> response = InitializeTransactionCodes();
 
-            try
-            {
-                var transactionCode = await _context.TransactionCodes.FindAsync(id);
-                if (transactionCode == null)
-                {
-                    response.ResponseCode = ReturnCodesConstant.R06;
-                    response.ResponseMessage = ReturnCodesConstant.R06Message;
-
-                }
-                else
-                {
-
-                    _context.TransactionCodes.Remove(transactionCode);
-                    var dbResponse = await _context.SaveChangesAsync();
-
-                    if (dbResponse > 0)
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R00;
-                        response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    }
-                    else
-                    {
-                        response.ResponseCode = ReturnCodesConstant.R05;
-                        response.ResponseMessage = ReturnCodesConstant.R05Message;
-                    }
-
-                }
-
-
-
-            }
-            catch (Exception ex)
-            {
-
-                response.ResponseCode = ReturnCodesConstant.R99;
-                response.ResponseMessage = ex.Message;
-            }
-            return response;
+            return await DeleteRecord(id, response);
         }
-        private static ResponseModel<TransactionCodes> InitializeTransactionCodes()
-        {
-            var response = new ResponseModel<TransactionCodes>();
-            response.ResponseData = new List<TransactionCodes>();
-            return response;
-        }
+
         #endregion
 
 

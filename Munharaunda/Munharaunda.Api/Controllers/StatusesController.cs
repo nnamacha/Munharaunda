@@ -18,11 +18,13 @@ namespace Munharaunda.Api.Controllers
     {
         
         private readonly IMunharaundaRepository _db;
+        private readonly IResponsesService _responsesService;
 
-        public StatusesController(IMunharaundaRepository db)
+        public StatusesController(IMunharaundaRepository db, IResponsesService responsesService)
         {
            
             _db = db;
+            _responsesService = responsesService;
         }
 
         // GET: api/Statuses
@@ -31,16 +33,7 @@ namespace Munharaunda.Api.Controllers
         {
             var response =  await _db.GetStatuses();
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            return _responsesService.GetResponse(response);
         }
 
         // GET: api/Statuses/5
@@ -49,19 +42,8 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.GetStatuses(id);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06Message)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
-                
+            return _responsesService.GetResponse(response);
+
         }
 
         // PUT: api/Statuses/5
@@ -76,20 +58,9 @@ namespace Munharaunda.Api.Controllers
 
             var response = await _db.UpdateStatuses(id, statuses);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return StatusCode(StatusCodes.Status202Accepted, response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.PutResponse(response);
 
-            
+
         }
 
         // POST: api/Statuses
@@ -99,16 +70,9 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.CreateStatus(statuses);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return CreatedAtAction("GetStatuses",  statuses);
-            }
-            else 
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.PostResponse(response);
 
-            
+
         }
 
         // DELETE: api/Statuses/5
@@ -117,14 +81,7 @@ namespace Munharaunda.Api.Controllers
         {
             var response = await _db.DeleteStatus(id);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return StatusCode(StatusCodes.Status202Accepted, response);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+            return _responsesService.DeleteResponse(response);
         }
 
        

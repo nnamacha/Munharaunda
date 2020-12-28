@@ -15,41 +15,31 @@ namespace Munharaunda.Api.Controllers
     {
         
         private readonly IMunharaundaRepository _db;
+        private readonly IResponsesService _responsesService;
 
-        public ProfilesController(IMunharaundaRepository db)
+        public ProfilesController(IMunharaundaRepository db, IResponsesService responsesService)
         {
            
             _db = db;
+            _responsesService = responsesService;
         }
 
         // GET: api/Profiles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProfileResponse>>> GetProfile()
+        public async Task<IActionResult> GetProfile()
         {
             var response = await _db.GetProfiles();
-            if (response == null)
-            {
-                return NotFound();
-            }
 
-            return Ok(response);
+            return _responsesService.GetResponse(response);
         }
 
         // GET: api/Profiles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProfileResponse>> GetProfile(int id)
+        public async Task<IActionResult> GetProfile(int id)
         {
             var response = await _db.GetProfile(id);
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
+
+            return _responsesService.GetResponse(response);
 
 
         }
@@ -66,38 +56,20 @@ namespace Munharaunda.Api.Controllers
 
             var response = await _db.UpdateProfile(id, profile);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return NoContent();
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06 || (response.ResponseCode == ReturnCodesConstant.R07))
-            {
-                return BadRequest(response);
-            }
-            else 
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            
+            return _responsesService.PutResponse(response);
+
         }
 
         // POST: api/Profiles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Profile>> PostProfile(Profile profile)
+        public async Task<IActionResult> PostProfile(Profile profile)
         {
 
             var response = await _db.CreateProfile(profile);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return CreatedAtAction("GetProfile", response);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-                
+            return _responsesService.PostResponse(response);
+
 
         }
 
@@ -105,27 +77,10 @@ namespace Munharaunda.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProfile(int id)
         {
-            var profile = await _db.GetProfile(id);
-
-            if (profile == null)
-            {
-                return NotFound();
-            }
             var response = await _db.DeleteProfile(id);
 
-            if (response.ResponseCode == ReturnCodesConstant.R00)
-            {
-                return NoContent();
-            }
-            else if(response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-                
+            return _responsesService.DeleteResponse(response);
+
 
 
         }
