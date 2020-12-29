@@ -33,15 +33,52 @@ namespace Munharaunda.Web.WebServices
             return await response.Content.ReadAsAsync<ResponseModel<T>>();
         }
 
+        private async Task<ResponseModel<T>> CallDelete<T>(int id)
+        {
+            typeName = typeof(T).Name;
+
+            var response = await _httpClient.DeleteAsync($"/api/{typeName}/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<T>>();
+        }
+
+        private async Task<ResponseModel<T>> CallGetAll<T>()
+        {
+            typeName = typeof(T).Name;
+            var response = await _httpClient.GetAsync($"/api/{typeName}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<T>>();
+        }
+
+        private async Task<ResponseModel<T>> CallGetById<T>(int id)
+        {
+            typeName = typeof(T).Name;
+            var response = await _httpClient.GetAsync($"/api/{typeName}/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<T>>();
+        }
+
+        private async Task<ResponseModel<T>> CallUpdate<T>(int id, T rec)
+        {
+            typeName = typeof(T).Name;
+
+            var response = await _httpClient.PutAsJsonAsync($"/api/{typeName}/{id}", rec);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<T>>();
+        }
         #endregion
 
         public async Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral)
         {
-            var response = await _httpClient.PostAsJsonAsync($"/api/Funeral", funeral);
-
-            response.EnsureSuccessStatusCode();
-
-            return await  response.Content.ReadAsAsync<ResponseModel<Funeral>>();
+            return await CallCreate<Funeral>(funeral);
         }
 
         public async Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType)
@@ -49,305 +86,180 @@ namespace Munharaunda.Web.WebServices
             return await CallCreate<IdentityTypes>(identityType);
         }
 
-       
-
         public async Task<ResponseModel<Profile>> CreateProfile(Profile profile)
         {
-            var response = await _httpClient.PostAsJsonAsync($"/api/Profile", profile);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
+            return await CallCreate<Profile>(profile);
         }
 
         public async Task<ResponseModel<ProfileTypes>> CreateProfileType(ProfileTypes profileType)
         {
-            var response = await _httpClient.PostAsJsonAsync($"/api/ProfileTypes", profileType);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
+            return await CallCreate<ProfileTypes>(profileType);
         }
 
         public async Task<ResponseModel<Statuses>> CreateStatuses(Statuses status)
         {
-            var response = await _httpClient.PostAsJsonAsync($"/api/Statuses", status);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>(); 
+            return await CallCreate<Statuses>(status);
         }
 
         public async Task<ResponseModel<TransactionCodes>> CreateTransactionCode(TransactionCodes transactionCode)
         {
-            var response = await _httpClient.PostAsJsonAsync($"/api/TransactionCodes", transactionCode);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
+            return await CallCreate<TransactionCodes>(transactionCode);
         }
 
         public async Task<ResponseModel<Transactions>> CreateTransactions(Transactions transaction)
         {
-            var response = await _httpClient.PostAsJsonAsync($"/api/Transactions", transaction);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
+            return await CallCreate<Transactions>(transaction);
         }
 
         public async Task<ResponseModel<Funeral>> DeleteFuneralById(int id)
         {
-            var response = await _httpClient.DeleteAsync($"/api/Funeral/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Funeral>>();
+            return await CallDelete<Funeral>(id);
         }
+
+        
 
         public async Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id)
         {
-            var response = await _httpClient.DeleteAsync($"/api/IdentityTypes/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<IdentityTypes>>();
+            return await CallDelete<IdentityTypes>(id);
         }
 
 
         public async Task<ResponseModel<Profile>> DeleteProfile(int id)
         {
-            var response = await _httpClient.DeleteAsync($"/api/Profile/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
+            return await CallDelete<Profile>(id);
 
         }
         public async Task<ResponseModel<ProfileTypes>> DeleteProfileType(int id)
         {
-            var response = await _httpClient.DeleteAsync($"/api/ProfileTypes/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
+            return await CallDelete<ProfileTypes>(id);
         }
 
         public async Task<ResponseModel<Statuses>> DeleteStatus(int id)
         {
-            var response = await _httpClient.DeleteAsync($"/api/Statuses/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>();
+            return await CallDelete<Statuses>(id);
         }
 
         public async Task<ResponseModel<TransactionCodes>> DeleteTransactionCode(int id)
         {
-            var response = await _httpClient.DeleteAsync($"/api/TransactionCodes/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
+            return await CallDelete<TransactionCodes>(id);
         }
 
         public async Task<ResponseModel<Transactions>> DeleteTransactions(int id)
         {
-            var response = await _httpClient.DeleteAsync($"/api/Transactions/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
+            return await CallDelete<Transactions>(id);
         }
 
         public async Task<ResponseModel<Funeral>> GetAllFunerals()
         {
-            var response = await _httpClient.GetAsync("/api/sessions");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Funeral>>();
+            
+            return await CallGetAll<Funeral>();
         }
+
+        
 
         public async Task<ResponseModel<IdentityTypes>> GetAllIdentityTypes()
         {
-            var response = await _httpClient.GetAsync("/api/IdentityTypes");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<IdentityTypes>>();
+            return await CallGetAll<IdentityTypes>();
         }
 
         public async Task<ResponseModel<Profile>> GetAllProfiles()
         {
-            var response = await _httpClient.GetAsync("/api/Profile");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
+            return await CallGetAll<Profile>();
         }
 
         public async Task<ResponseModel<ProfileTypes>> GetAllProfileTypes()
         {
-            var response = await _httpClient.GetAsync("/api/ProfileTypes");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
+            return await CallGetAll<ProfileTypes>();
         }
 
         public async Task<ResponseModel<Statuses>> GetAllStatuses()
         {
-            var response = await _httpClient.GetAsync("/api/Statuses");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>();
+            return await CallGetAll<Statuses>();
         }
 
         public async Task<ResponseModel<TransactionCodes>> GetAllTransactionCodes()
         {
-            var response = await _httpClient.GetAsync("/api/TransactionCodes");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
+            return await CallGetAll<TransactionCodes>();
         }
 
         public async Task<ResponseModel<Transactions>> GetAllTransactions()
         {
-            var response = await _httpClient.GetAsync("/api/Transactions");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
+            return await CallGetAll<Transactions>();
         }
 
         public async Task<ResponseModel<Funeral>> GetFuneralById(int id)
         {
-            var response = await _httpClient.GetAsync($"/api/Funeral/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Funeral>>();
+            return await CallGetById<Funeral>(id);
         }
+
+        
 
         public async Task<ResponseModel<IdentityTypes>> GetIdentityTypeById(int id)
         {
-            var response = await _httpClient.GetAsync($"/api/IdentityTypes/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<IdentityTypes>>();
+            return await CallGetById<IdentityTypes>(id);
         }
 
         public async Task<ResponseModel<Profile>> GetProfileById(int id)
         {
-            var response = await _httpClient.GetAsync($"/api/Profile/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
+            return await CallGetById<Profile>(id);
         }
 
         public async Task<ResponseModel<ProfileTypes>> GetProfileTypeById(int id)
         {
-            var response = await _httpClient.GetAsync($"/api/ProfileTypes/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
+            return await CallGetById<ProfileTypes>(id);
         }
 
         public async Task<ResponseModel<Statuses>> GetStatusById(int id)
         {
-            var response = await _httpClient.GetAsync($"/api/Statuses/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>();
+            return await CallGetById<Statuses>(id);
         }
 
         public async Task<ResponseModel<Transactions>> GetTransactionById(int id)
         {
-            var response = await _httpClient.GetAsync($"/api/Transactions/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
+            return await CallGetById<Transactions>(id);
         }
 
         public async Task<ResponseModel<TransactionCodes>> GetTransactionCodeById(int id)
         {
-            var response = await _httpClient.GetAsync($"/api/TransactionCodes/{id}");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
+            return await CallGetById<TransactionCodes>(id);
         }
 
         public async Task<ResponseModel<Funeral>> UpdateFuneral(int id, Funeral funeral)
         {
-            var response = await _httpClient.PutAsJsonAsync($"/api/Funeral/{id}", funeral);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Funeral>>();
+            return await CallUpdate<Funeral>(id, funeral);
         }
+
+        
 
         public async Task<ResponseModel<IdentityTypes>> UpdateIdentityType(int id, IdentityTypes identityType)
         {
-            var response = await _httpClient.PutAsJsonAsync($"/api/IdentityTypes/{id}", identityType);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<IdentityTypes>>();
+            return await CallUpdate<IdentityTypes>(id, identityType);
         }
 
         public async Task<ResponseModel<Profile>> UpdateProfile(int id, Profile profile)
         {
-            var response = await _httpClient.PutAsJsonAsync($"/api/Profile/{id}", profile);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
+            return await CallUpdate<Profile>(id, profile);
         }
 
         public async Task<ResponseModel<ProfileTypes>> UpdateProfileType(int id, ProfileTypes profileType)
         {
-            var response = await _httpClient.PutAsJsonAsync($"/api/ProfileTypes/{id}", profileType);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
+            return await CallUpdate<ProfileTypes>(id, profileType);
         }
 
 
         public async Task<ResponseModel<Statuses>> UpdateStatus(int id, Statuses status)
         {
-            var response = await _httpClient.PutAsJsonAsync($"/api/Statuses/{id}", status);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>();
+            return await CallUpdate<Statuses>(id, status);
 
         }
         public async Task<ResponseModel<TransactionCodes>> UpdateTransactionCode(int id, TransactionCodes transactionCode)
         {
-            var response = await _httpClient.PutAsJsonAsync($"/api/TransactionCodes/{id}", transactionCode);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
+            return await CallUpdate<TransactionCodes>(id, transactionCode);
         }
 
         public async Task<ResponseModel<Transactions>> UpdateTransactions(int id, Transactions transaction)
         {
-            var response = await _httpClient.PutAsJsonAsync($"/api/Transactions/{id}", transaction);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
+            return await CallUpdate<Transactions>(id, transaction);
         }
     }
 }
