@@ -3,6 +3,7 @@ using Munharaunda.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -11,184 +12,342 @@ namespace Munharaunda.Web.WebServices
     public class ApiClient : IApiClient
     {
         private readonly HttpClient _httpClient;
+        private String typeName;
+
 
         public ApiClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-        public Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral)
+
+        #region Private Methods
+
+        private async Task<ResponseModel<T>> CallCreate<T>(T rec)
         {
-            throw new NotImplementedException();
+            typeName = rec.GetType().Name;
+
+            var response = await _httpClient.PostAsJsonAsync($"/api/{typeName}", rec);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<T>>();
         }
 
-        public Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType)
+        #endregion
+
+        public async Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync($"/api/Funeral", funeral);
+
+            response.EnsureSuccessStatusCode();
+
+            return await  response.Content.ReadAsAsync<ResponseModel<Funeral>>();
         }
 
-        public Task<ResponseModel<Profile>> CreateProfile(Profile Profile)
+        public async Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType)
         {
-            throw new NotImplementedException();
+            return await CallCreate<IdentityTypes>(identityType);
         }
 
-        public Task<ResponseModel<ProfileTypes>> CreateProfileType(ProfileTypes profileType)
+       
+
+        public async Task<ResponseModel<Profile>> CreateProfile(Profile profile)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync($"/api/Profile", profile);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
         }
 
-        public Task<ResponseModel<Statuses>> CreateStatuses(Statuses status)
+        public async Task<ResponseModel<ProfileTypes>> CreateProfileType(ProfileTypes profileType)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync($"/api/ProfileTypes", profileType);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
         }
 
-        public Task<ResponseModel<TransactionCodes>> CreateTransactionCode(TransactionCodes transactionCode)
+        public async Task<ResponseModel<Statuses>> CreateStatuses(Statuses status)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync($"/api/Statuses", status);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>(); 
         }
 
-        public Task<ResponseModel<Transactions>> CreateTransactions(Transactions transaction)
+        public async Task<ResponseModel<TransactionCodes>> CreateTransactionCode(TransactionCodes transactionCode)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync($"/api/TransactionCodes", transactionCode);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
         }
 
-        public Task<ResponseModel<Funeral>> DeleteFuneralById(int id)
+        public async Task<ResponseModel<Transactions>> CreateTransactions(Transactions transaction)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync($"/api/Transactions", transaction);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
         }
 
-        public Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id)
+        public async Task<ResponseModel<Funeral>> DeleteFuneralById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/api/Funeral/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Funeral>>();
         }
 
-        public Task<ResponseModel<Profile>> DeleteProfile(int id)
+        public async Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/api/IdentityTypes/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<IdentityTypes>>();
         }
 
-        public Task<ResponseModel<ProfileTypes>> DeleteProfileType(int id)
+
+        public async Task<ResponseModel<Profile>> DeleteProfile(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/api/Profile/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
+
+        }
+        public async Task<ResponseModel<ProfileTypes>> DeleteProfileType(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"/api/ProfileTypes/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
         }
 
-        public Task<ResponseModel<Statuses>> DeleteStatus(int id)
+        public async Task<ResponseModel<Statuses>> DeleteStatus(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/api/Statuses/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>();
         }
 
-        public Task<ResponseModel<TransactionCodes>> DeleteTransactionCode(int id)
+        public async Task<ResponseModel<TransactionCodes>> DeleteTransactionCode(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/api/TransactionCodes/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
         }
 
-        public Task<ResponseModel<Transactions>> DeleteTransactions(int id)
+        public async Task<ResponseModel<Transactions>> DeleteTransactions(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/api/Transactions/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
         }
 
-        public Task<ResponseModel<Funeral>> GetAllFunerals()
+        public async Task<ResponseModel<Funeral>> GetAllFunerals()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("/api/sessions");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Funeral>>();
         }
 
-        public Task<ResponseModel<IdentityTypes>> GetAllIdentityTypes()
+        public async Task<ResponseModel<IdentityTypes>> GetAllIdentityTypes()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("/api/IdentityTypes");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<IdentityTypes>>();
         }
 
-        public Task<ResponseModel<Profile>> GetAllProfiles()
+        public async Task<ResponseModel<Profile>> GetAllProfiles()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("/api/Profile");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
         }
 
-        public Task<ResponseModel<ProfileTypes>> GetAllProfileTypes()
+        public async Task<ResponseModel<ProfileTypes>> GetAllProfileTypes()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("/api/ProfileTypes");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
         }
 
-        public Task<ResponseModel<Statuses>> GetAllStatuses()
+        public async Task<ResponseModel<Statuses>> GetAllStatuses()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("/api/Statuses");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>();
         }
 
-        public Task<ResponseModel<TransactionCodes>> GetAllTransactionCodes()
+        public async Task<ResponseModel<TransactionCodes>> GetAllTransactionCodes()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("/api/TransactionCodes");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
         }
 
-        public Task<ResponseModel<Transactions>> GetAllTransactions()
+        public async Task<ResponseModel<Transactions>> GetAllTransactions()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("/api/Transactions");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
         }
 
-        public Task<ResponseModel<Funeral>> GetFuneralById(int id)
+        public async Task<ResponseModel<Funeral>> GetFuneralById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/Funeral/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Funeral>>();
         }
 
-        public Task<ResponseModel<IdentityTypes>> GetIdentityTypeById(int id)
+        public async Task<ResponseModel<IdentityTypes>> GetIdentityTypeById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/IdentityTypes/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<IdentityTypes>>();
         }
 
-        public Task<ResponseModel<Profile>> GetProfileById(int id)
+        public async Task<ResponseModel<Profile>> GetProfileById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/Profile/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
         }
 
-        public Task<ResponseModel<ProfileTypes>> GetProfileTypeById(int id)
+        public async Task<ResponseModel<ProfileTypes>> GetProfileTypeById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/ProfileTypes/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
         }
 
-        public Task<ResponseModel<Statuses>> GetStatusById(int id)
+        public async Task<ResponseModel<Statuses>> GetStatusById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/Statuses/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>();
         }
 
-        public Task<ResponseModel<Transactions>> GetTransactionById(int id)
+        public async Task<ResponseModel<Transactions>> GetTransactionById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/Transactions/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
         }
 
-        public Task<ResponseModel<TransactionCodes>> GetTransactionCodeById(int id)
+        public async Task<ResponseModel<TransactionCodes>> GetTransactionCodeById(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/TransactionCodes/{id}");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
         }
 
-        public Task<ResponseModel<Funeral>> UpdateFuneral(int id, Funeral funeral)
+        public async Task<ResponseModel<Funeral>> UpdateFuneral(int id, Funeral funeral)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PutAsJsonAsync($"/api/Funeral/{id}", funeral);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Funeral>>();
         }
 
-        public Task<ResponseModel<IdentityTypes>> UpdateIdentityType(int id, IdentityTypes identityType)
+        public async Task<ResponseModel<IdentityTypes>> UpdateIdentityType(int id, IdentityTypes identityType)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PutAsJsonAsync($"/api/IdentityTypes/{id}", identityType);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<IdentityTypes>>();
         }
 
-        public Task<ResponseModel<Profile>> UpdateProfile(int id, Profile Profile)
+        public async Task<ResponseModel<Profile>> UpdateProfile(int id, Profile profile)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PutAsJsonAsync($"/api/Profile/{id}", profile);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Profile>>();
         }
 
-        public Task<ResponseModel<ProfileTypes>> UpdateProfileType(int id, ProfileTypes profileType)
+        public async Task<ResponseModel<ProfileTypes>> UpdateProfileType(int id, ProfileTypes profileType)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PutAsJsonAsync($"/api/ProfileTypes/{id}", profileType);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<ProfileTypes>>();
         }
 
-        public Task<ResponseModel<Statuses>> UpdateStatus(int id, Statuses status)
+
+        public async Task<ResponseModel<Statuses>> UpdateStatus(int id, Statuses status)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PutAsJsonAsync($"/api/Statuses/{id}", status);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Statuses>>();
+
+        }
+        public async Task<ResponseModel<TransactionCodes>> UpdateTransactionCode(int id, TransactionCodes transactionCode)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"/api/TransactionCodes/{id}", transactionCode);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<TransactionCodes>>();
         }
 
-        public Task<ResponseModel<TransactionCodes>> UpdateTransactionCode(int id, TransactionCodes transactionCode)
+        public async Task<ResponseModel<Transactions>> UpdateTransactions(int id, Transactions transaction)
         {
-            throw new NotImplementedException();
-        }
+            var response = await _httpClient.PutAsJsonAsync($"/api/Transactions/{id}", transaction);
 
-        public Task<ResponseModel<Transactions>> UpdateTransactions(int id, Transactions transaction)
-        {
-            throw new NotImplementedException();
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<ResponseModel<Transactions>>();
         }
     }
 }
