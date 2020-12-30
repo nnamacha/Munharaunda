@@ -10,6 +10,7 @@ namespace Munharaunda.Domain.Contracts
     {
         Task<ResponseModel<Funeral>> GetAllFunerals();
         Task<ResponseModel<Funeral>> GetFuneralById(int id);
+        Task<ResponseModel<ActiveFuneralResponse>> GetActiveFunerals();
         Task<ResponseModel<Funeral>> UpdateFuneral(int id, Funeral funeral);
         Task<ResponseModel<Funeral>> CreateFuneral(Funeral funeral);
         Task<ResponseModel<Funeral>> DeleteFuneralById(int id);

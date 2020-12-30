@@ -7,6 +7,9 @@ namespace Munharaunda.Domain.Contracts
     public interface IMunharaundaRepository
     {
         Task<ResponseModel<Funeral>> GetFuneral(int id);
+
+        Task<ResponseModel<ActiveFuneralResponse>> GetActiveFuneral();
+
         Task<ICollection<Funeral>> GetPaidFunerals(int profileId);
         Task<ResponseModel<Profile>> GetProfile(int id);
         Task<ResponseModel<Profile>> GetProfiles();

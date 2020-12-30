@@ -24,7 +24,7 @@ namespace Munharaunda.Web.WebServices
 
         private async Task<ResponseModel<T>> CallCreate<T>(T rec)
         {
-            typeName = rec.GetType().Name;
+            typeName = typeof(T).Name; ;
 
             var response = await _httpClient.PostAsJsonAsync($"/api/{typeName}", rec);
 
@@ -155,7 +155,24 @@ namespace Munharaunda.Web.WebServices
             return await CallGetAll<Funeral>();
         }
 
-        
+        public async Task<ResponseModel<ActiveFuneralResponse>> GetActiveFunerals()
+        {
+
+            
+            var response = await _httpClient.GetAsync($"/api/Funeral/Active");
+
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                response.EnsureSuccessStatusCode();
+            }
+
+           
+            
+                
+
+            return await response.Content.ReadAsAsync<ResponseModel<ActiveFuneralResponse>>();
+        }
+
 
         public async Task<ResponseModel<IdentityTypes>> GetAllIdentityTypes()
         {

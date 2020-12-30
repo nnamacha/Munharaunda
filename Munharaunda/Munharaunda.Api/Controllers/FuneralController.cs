@@ -44,8 +44,17 @@ namespace Munharaunda.Api.Controllers
 
         }
 
+        //GET:api/Funeral/Active
+        [HttpGet("Active")]
+
+        public async Task<IActionResult> ActiveFuneral()
+        {
+            var response = await _db.GetActiveFuneral();
+
+            return _responsesService.GetResponse(response);
+        }
         // PUT: api/Funerals/5
-        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFuneral(int id, Funeral funeral)
         {

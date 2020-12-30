@@ -543,7 +543,64 @@ namespace Munharaunda.Infrastructure.Database
 
         }
 
-        
+        public async Task<ResponseModel<ActiveFuneralResponse>> GetActiveFuneral()
+        {
+
+            ResponseModel<ActiveFuneralResponse> response = new ResponseModel<ActiveFuneralResponse>();
+            response.ResponseData = new List<ActiveFuneralResponse>();
+            List<ActiveFuneralResponse> dbResponse = new List<ActiveFuneralResponse>();
+
+            try
+            {
+                var activeStatus = await _context.Statuses.Where(s => s.StatusDescription == "Active").FirstOrDefaultAsync();
+
+                if (activeStatus == null)
+                {
+                    response.ResponseCode = ReturnCodesConstant.R06;
+                    response.ResponseMessage = ReturnCodesConstant.R06Message;
+                }
+                else
+                {
+
+                     var _response = await _context.Funeral.Where(x => x.StatusId == activeStatus.StatusId).ToListAsync();
+
+                    foreach (var item in _response)
+                    {
+                        var deceasedProfile = await _context.Profile.FindAsync(item.DeceasedsProfileNumber);
+
+                        ActiveFuneralResponse activeFuneral = new ActiveFuneralResponse
+                        {
+                            FuneralId = item.FuneralId,
+                            DeceasedsProfileNumber = item.DeceasedsProfileNumber,
+                            AddressForFuneral = item.AddressForFuneral,
+                            Comment = item.Comment,
+                            DeceasedFullName = deceasedProfile.Name + " " + deceasedProfile.Surname,
+                            DeceasedProfileStatus = (await _context.Statuses.FindAsync(deceasedProfile.Status)).StatusDescription.ToString()
+                    };                      
+                       
+                        dbResponse.Add(activeFuneral);
+
+                    }
+                    response = GetResponseList(response, dbResponse);
+                }
+               
+                
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+
+
+            return response;
+
+        }
+
+
         public async Task<ResponseModel<Funeral>> GetFuneral(int id)
         {
             ResponseModel<Funeral> response = InitializeFuneral();
@@ -553,18 +610,6 @@ namespace Munharaunda.Infrastructure.Database
 
                 response = GetResponse(response, dbResponse);
 
-                //if (dbResponse == null)
-                //{
-                //    response.ResponseCode = ReturnCodesConstant.R06;
-                //    response.ResponseMessage = ReturnCodesConstant.R06Message;
-
-                //}
-                //else
-                //{
-                //    response.ResponseCode = ReturnCodesConstant.R00;
-                //    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                //    response.ResponseData.Add(dbResponse);
-                //}
 
 
             }
