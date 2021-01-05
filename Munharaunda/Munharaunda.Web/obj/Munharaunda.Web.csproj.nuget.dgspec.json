@@ -4,6 +4,115 @@
     "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\Munharaunda.Web.csproj": {}
   },
   "projects": {
+    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Api\\Munharaunda.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Api\\Munharaunda.Api.csproj",
+        "projectName": "Munharaunda.Api",
+        "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Api\\Munharaunda.Api.csproj",
+        "packagesPath": "C:\\Users\\NB181916\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Api\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\NB181916\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.1, )",
+              "noWarn": [
+                "NU1605"
+              ]
+            },
+            "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
+              "target": "Package",
+              "version": "[5.0.1, )",
+              "noWarn": [
+                "NU1605"
+              ]
+            },
+            "Microsoft.AspNetCore.Mvc.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.6.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -148,14 +257,14 @@
         }
       }
     },
-    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\Munharaunda.Web.csproj": {
+    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\Munharaunda.Web.csproj",
-        "projectName": "Munharaunda.Web",
-        "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\Munharaunda.Web.csproj",
+        "projectUniqueName": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj",
+        "projectName": "Munharaunda.Infrastructure",
+        "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\NB181916\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\obj\\",
+        "outputPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\NB181916\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -188,9 +297,114 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\Munharaunda.Web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\Munharaunda.Web.csproj",
+        "projectName": "Munharaunda.Web",
+        "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\Munharaunda.Web.csproj",
+        "packagesPath": "C:\\Users\\NB181916\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Web\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\NB181916\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Api\\Munharaunda.Api.csproj": {
+                "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Api\\Munharaunda.Api.csproj"
+              },
+              "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj": {
+                "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
             "Microsoft.AspNet.WebApi.Client": {
               "target": "Package",
               "version": "[5.2.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.1, )"
             }
           },
           "imports": [

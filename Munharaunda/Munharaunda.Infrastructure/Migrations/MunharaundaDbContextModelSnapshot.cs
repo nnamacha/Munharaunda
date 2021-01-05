@@ -43,9 +43,6 @@ namespace Munharaunda.Infrastructure.Migrations
                     b.Property<int>("DeceasedsProfileNumber")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProfileNumber")
-                        .HasColumnType("int");
-
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
@@ -57,9 +54,33 @@ namespace Munharaunda.Infrastructure.Migrations
 
                     b.HasKey("FuneralId");
 
-                    b.HasIndex("ProfileNumber");
-
                     b.ToTable("Funeral");
+
+                    b.HasData(
+                        new
+                        {
+                            FuneralId = 1,
+                            AddressForFuneral = "15 Albany Crescent Warren Park",
+                            Comment = "Test Funeral",
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            DeceasedsProfileNumber = 5,
+                            StatusId = 5,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            FuneralId = 2,
+                            AddressForFuneral = "15 Albany Crescent Warren Park",
+                            Comment = "Test Funeral",
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            DeceasedsProfileNumber = 4,
+                            StatusId = 3,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        });
                 });
 
             modelBuilder.Entity("Munharaunda.Domain.Models.IdentityTypes", b =>
@@ -76,6 +97,18 @@ namespace Munharaunda.Infrastructure.Migrations
                     b.HasKey("IdentityTypeId");
 
                     b.ToTable("IdentityTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            IdentityTypeId = 1,
+                            Description = "Id"
+                        },
+                        new
+                        {
+                            IdentityTypeId = 2,
+                            Description = "PassPort"
+                        });
                 });
 
             modelBuilder.Entity("Munharaunda.Domain.Models.Profile", b =>
@@ -132,9 +165,6 @@ namespace Munharaunda.Infrastructure.Migrations
                     b.Property<int>("IdentityTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdentityTypesIdentityTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -173,9 +203,159 @@ namespace Munharaunda.Infrastructure.Migrations
 
                     b.HasKey("ProfileNumber");
 
-                    b.HasIndex("IdentityTypesIdentityTypeId");
-
                     b.ToTable("Profile");
+
+                    b.HasData(
+                        new
+                        {
+                            ProfileNumber = 1,
+                            ActiveDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Address = "15 Albany Crescent Parklands CapeTown",
+                            Approve1 = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            DateOfBirth = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdentityNumber = "System",
+                            IdentityTypeId = 0,
+                            Name = "Alpha",
+                            NextOfKin = 0,
+                            PhoneNumber = "000000000000",
+                            ProfileTypeId = 5,
+                            ReOpen = false,
+                            ReOpened = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReOpenedBy = 0,
+                            Status = 3,
+                            Surname = "System",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            ProfileNumber = 2,
+                            ActiveDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Address = "15 Albany Crescent Parklands CapeTown",
+                            Approve1 = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            DateOfBirth = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdentityNumber = "System",
+                            IdentityTypeId = 0,
+                            Name = "Test",
+                            NextOfKin = 0,
+                            PhoneNumber = "000000000000",
+                            ProfileTypeId = 5,
+                            ReOpen = false,
+                            ReOpened = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReOpenedBy = 0,
+                            Status = 3,
+                            Surname = "User1",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            ProfileNumber = 3,
+                            ActiveDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Address = "15 Albany Crescent Parklands CapeTown",
+                            Approve1 = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            DateOfBirth = new DateTime(1982, 8, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdentityNumber = "MA9XX057XX",
+                            IdentityTypeId = 2,
+                            Name = "Nicholas",
+                            NextOfKin = 0,
+                            PhoneNumber = "0846994704",
+                            ProfileTypeId = 6,
+                            ReOpen = false,
+                            ReOpened = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReOpenedBy = 0,
+                            Status = 3,
+                            Surname = "Namacha",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            ProfileNumber = 4,
+                            ActiveDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Address = "15 Albany Crescent Parklands CapeTown",
+                            Approve1 = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            DateOfBirth = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdentityNumber = "System",
+                            IdentityTypeId = 0,
+                            Name = "Test",
+                            NextOfKin = 0,
+                            PhoneNumber = "000000000000",
+                            ProfileTypeId = 5,
+                            ReOpen = false,
+                            ReOpened = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReOpenedBy = 0,
+                            Status = 3,
+                            Surname = "User2",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            ProfileNumber = 5,
+                            ActiveDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Address = "15 Albany Crescent Parklands CapeTown",
+                            Approve1 = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            DateOfBirth = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdentityNumber = "System",
+                            IdentityTypeId = 0,
+                            Name = "Test",
+                            NextOfKin = 0,
+                            PhoneNumber = "000000000000",
+                            ProfileTypeId = 5,
+                            ReOpen = false,
+                            ReOpened = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReOpenedBy = 0,
+                            Status = 5,
+                            Surname = "User3",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        });
                 });
 
             modelBuilder.Entity("Munharaunda.Domain.Models.ProfileTypes", b =>
@@ -192,22 +372,38 @@ namespace Munharaunda.Infrastructure.Migrations
                     b.HasKey("ProfileTypeId");
 
                     b.ToTable("ProfileTypes");
-                });
 
-            modelBuilder.Entity("Munharaunda.Domain.Models.ReturnCodes", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("ReturnCodes");
+                    b.HasData(
+                        new
+                        {
+                            ProfileTypeId = 1,
+                            Description = "Admin"
+                        },
+                        new
+                        {
+                            ProfileTypeId = 2,
+                            Description = "Member"
+                        },
+                        new
+                        {
+                            ProfileTypeId = 3,
+                            Description = "NextOfKin"
+                        },
+                        new
+                        {
+                            ProfileTypeId = 4,
+                            Description = "Dependent"
+                        },
+                        new
+                        {
+                            ProfileTypeId = 5,
+                            Description = "ColdBody"
+                        },
+                        new
+                        {
+                            ProfileTypeId = 6,
+                            Description = "Alpha"
+                        });
                 });
 
             modelBuilder.Entity("Munharaunda.Domain.Models.Statuses", b =>
@@ -245,16 +441,11 @@ namespace Munharaunda.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CreatedBy")
-                        .HasMaxLength(200)
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("StatusDescription")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
@@ -265,6 +456,110 @@ namespace Munharaunda.Infrastructure.Migrations
                     b.HasKey("StatusId");
 
                     b.ToTable("Statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            StatusId = 1,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            StatusDescription = "Terminated",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            StatusId = 2,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            StatusDescription = "Pending Authorisation",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            StatusId = 3,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            StatusDescription = "Active",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            StatusId = 4,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            StatusDescription = "Inarrears",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            StatusId = 5,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            StatusDescription = "Closed",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            StatusId = 6,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            StatusDescription = "Authorised",
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        });
                 });
 
             modelBuilder.Entity("Munharaunda.Domain.Models.StatusesHistory", b =>
@@ -359,6 +654,128 @@ namespace Munharaunda.Infrastructure.Migrations
                     b.HasKey("TransactionCodeId");
 
                     b.ToTable("TransactionCodes");
+
+                    b.HasData(
+                        new
+                        {
+                            TransactionCodeId = 1,
+                            Contribution = true,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = true,
+                            Description = "Funeral Contribution",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 2,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = false,
+                            Description = "Funeral Expense",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 3,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = true,
+                            Description = "Joining Fee",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 4,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = true,
+                            Description = "Debit Reversal",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 5,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = false,
+                            Description = "Credit Reversal",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 6,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = false,
+                            Description = "Joining Fee Reversal",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 7,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = true,
+                            Description = "Expense Reversal",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 8,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = false,
+                            Description = "General Expense",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 9,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = true,
+                            Description = "Deposit",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        },
+                        new
+                        {
+                            TransactionCodeId = 10,
+                            Contribution = false,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 1,
+                            Credit = true,
+                            Description = "Funeral PayOut",
+                            Status = 6,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedBy = 0
+                        });
                 });
 
             modelBuilder.Entity("Munharaunda.Domain.Models.TransactionCodesHistory", b =>
@@ -456,6 +873,103 @@ namespace Munharaunda.Infrastructure.Migrations
                     b.HasKey("TransactionId");
 
                     b.ToTable("Transactions");
+
+                    b.HasData(
+                        new
+                        {
+                            TransactionId = 1,
+                            Amount = 100m,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Contribution = true,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 3,
+                            FuneralId = 1,
+                            Status = 0,
+                            TransactionCode = 1
+                        },
+                        new
+                        {
+                            TransactionId = 2,
+                            Amount = 100m,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Contribution = true,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 2,
+                            FuneralId = 1,
+                            Status = 0,
+                            TransactionCode = 1
+                        },
+                        new
+                        {
+                            TransactionId = 3,
+                            Amount = 100m,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Contribution = true,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 3,
+                            FuneralId = 1,
+                            Status = 0,
+                            TransactionCode = 1
+                        },
+                        new
+                        {
+                            TransactionId = 4,
+                            Amount = 100m,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Contribution = true,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 4,
+                            FuneralId = 1,
+                            Status = 0,
+                            TransactionCode = 1
+                        },
+                        new
+                        {
+                            TransactionId = 5,
+                            Amount = 100m,
+                            Approve1 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve2 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve3 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approve4 = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Approver1 = 0,
+                            Approver2 = 0,
+                            Approver3 = 0,
+                            Approver4 = 0,
+                            Contribution = true,
+                            Created = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = 3,
+                            FuneralId = 2,
+                            Status = 0,
+                            TransactionCode = 1
+                        });
                 });
 
             modelBuilder.Entity("Munharaunda.Domain.Models.TransactionsArchive", b =>
@@ -513,30 +1027,6 @@ namespace Munharaunda.Infrastructure.Migrations
                     b.HasKey("TransactionId");
 
                     b.ToTable("TransactionsArchive");
-                });
-
-            modelBuilder.Entity("Munharaunda.Domain.Models.Funeral", b =>
-                {
-                    b.HasOne("Munharaunda.Domain.Models.Profile", null)
-                        .WithMany("PaidFuneral")
-                        .HasForeignKey("ProfileNumber");
-                });
-
-            modelBuilder.Entity("Munharaunda.Domain.Models.Profile", b =>
-                {
-                    b.HasOne("Munharaunda.Domain.Models.IdentityTypes", null)
-                        .WithMany("Profiles")
-                        .HasForeignKey("IdentityTypesIdentityTypeId");
-                });
-
-            modelBuilder.Entity("Munharaunda.Domain.Models.IdentityTypes", b =>
-                {
-                    b.Navigation("Profiles");
-                });
-
-            modelBuilder.Entity("Munharaunda.Domain.Models.Profile", b =>
-                {
-                    b.Navigation("PaidFuneral");
                 });
 #pragma warning restore 612, 618
         }

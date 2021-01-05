@@ -13,7 +13,7 @@ namespace Munharaunda.Infrastructure.Database
     public class MunharaundaRepository : IMunharaundaRepository
     {
         private readonly MunharaundaDbContext _context;
-        
+
 
         public MunharaundaRepository(MunharaundaDbContext context)
         {
@@ -25,6 +25,13 @@ namespace Munharaunda.Infrastructure.Database
         {
             var response = new ResponseModel<Funeral>();
             response.ResponseData = new List<Funeral>();
+            return response;
+        }
+
+        private static ResponseModel<ActiveFuneralResponse> InitializeActiveFuneral()
+        {
+            ResponseModel<ActiveFuneralResponse> response = new ResponseModel<ActiveFuneralResponse>();
+            response.ResponseData = new List<ActiveFuneralResponse>();
             return response;
         }
 
@@ -112,8 +119,8 @@ namespace Munharaunda.Infrastructure.Database
         {
 
             return await SaveToDb(response);
-                
-            
+
+
         }
 
         private async Task<ResponseModel<T>> CreateRecord<T>(T rec, ResponseModel<T> response)
@@ -124,15 +131,15 @@ namespace Munharaunda.Infrastructure.Database
                 if (typeof(T).Equals(typeof(Profile)))
                 {
                     var profile = rec as Profile;
-                   
+
                     _context.Profile.Add(profile);
-                    
+
                 }
                 else if (typeof(T).Equals(typeof(Funeral)))
                 {
                     var funeral = rec as Funeral;
                     _context.Funeral.Add(funeral);
-                   
+
                 }
                 else if (typeof(T).Equals(typeof(IdentityTypes)))
                 {
@@ -164,12 +171,12 @@ namespace Munharaunda.Infrastructure.Database
                     throw new ArgumentException("Invalid Type", paramName: nameof(rec));
 
                 }
-                              
-               
+
+
 
                 response = await SaveToDb(response);
                 response.ResponseData.Add(rec);
-                
+
 
             }
             catch (Exception ex)
@@ -325,7 +332,7 @@ namespace Munharaunda.Infrastructure.Database
                 {
                     response.ResponseCode = ReturnCodesConstant.R00;
                     response.ResponseMessage = ReturnCodesConstant.R00Message;
-                    
+
 
                 }
                 else
@@ -349,7 +356,7 @@ namespace Munharaunda.Infrastructure.Database
         #region ProfileController
 
 
-        private async Task<ProfileResponse> GenerateProfileDetails(Profile profile)
+        public async Task<ProfileResponse> GenerateProfileDetails(Profile profile)
         {
             return new ProfileResponse
             {
@@ -472,7 +479,7 @@ namespace Munharaunda.Infrastructure.Database
             return response;
         }
 
-        
+
 
         public async Task<ResponseModel<Profile>> UpdateProfile(int id, Profile profile)
         {
@@ -481,11 +488,11 @@ namespace Munharaunda.Infrastructure.Database
 
             _context.Entry(profile).State = EntityState.Modified;
 
-            
+
             return await UpdateRecord(id, profile, response);
         }
 
-        
+
 
         public async Task<ResponseModel<Profile>> CreateProfile(Profile profile)
         {
@@ -495,7 +502,7 @@ namespace Munharaunda.Infrastructure.Database
             return await CreateRecord(profile, response);
         }
 
-        
+
 
         public async Task<ResponseModel<Profile>> DeleteProfile(int id)
         {
@@ -504,16 +511,16 @@ namespace Munharaunda.Infrastructure.Database
             return await DeleteRecord(id, response);
         }
 
-        
 
-        
+
+
 
         public bool ProfileExists(int id)
         {
             return _context.Profile.Any(e => e.ProfileNumber == id);
         }
 
-        
+
 
         #endregion
 
@@ -546,8 +553,7 @@ namespace Munharaunda.Infrastructure.Database
         public async Task<ResponseModel<ActiveFuneralResponse>> GetActiveFuneral()
         {
 
-            ResponseModel<ActiveFuneralResponse> response = new ResponseModel<ActiveFuneralResponse>();
-            response.ResponseData = new List<ActiveFuneralResponse>();
+            ResponseModel<ActiveFuneralResponse> response = InitializeActiveFuneral();
             List<ActiveFuneralResponse> dbResponse = new List<ActiveFuneralResponse>();
 
             try
@@ -562,29 +568,31 @@ namespace Munharaunda.Infrastructure.Database
                 else
                 {
 
-                     var _response = await _context.Funeral.Where(x => x.StatusId == activeStatus.StatusId).ToListAsync();
+                    var _response = await _context.Funeral.Where(x => x.StatusId == activeStatus.StatusId).ToListAsync();
 
-                    foreach (var item in _response)
-                    {
-                        var deceasedProfile = await _context.Profile.FindAsync(item.DeceasedsProfileNumber);
+                    //foreach (var item in _response)
+                    //{
+                    //    var deceasedProfile = await _context.Profile.FindAsync(item.DeceasedsProfileNumber);
 
-                        ActiveFuneralResponse activeFuneral = new ActiveFuneralResponse
-                        {
-                            FuneralId = item.FuneralId,
-                            DeceasedsProfileNumber = item.DeceasedsProfileNumber,
-                            AddressForFuneral = item.AddressForFuneral,
-                            Comment = item.Comment,
-                            DeceasedFullName = deceasedProfile.Name + " " + deceasedProfile.Surname,
-                            DeceasedProfileStatus = (await _context.Statuses.FindAsync(deceasedProfile.Status)).StatusDescription.ToString()
-                    };                      
-                       
-                        dbResponse.Add(activeFuneral);
+                    //    ActiveFuneralResponse activeFuneral = new ActiveFuneralResponse
+                    //    {
+                    //        FuneralId = item.FuneralId,
+                    //        DeceasedsProfileNumber = item.DeceasedsProfileNumber,
+                    //        AddressForFuneral = item.AddressForFuneral,
+                    //        Comment = item.Comment,
+                    //        DeceasedFullName = deceasedProfile.Name + " " + deceasedProfile.Surname,
+                    //        DeceasedProfileStatus = (await _context.Statuses.FindAsync(deceasedProfile.Status)).StatusDescription.ToString()
+                    //    };
 
-                    }
-                    response = GetResponseList(response, dbResponse);
+                    //    dbResponse.Add(activeFuneral);
+
+                    //}
+                    //response = GetResponseList(response, dbResponse);
+                    response = await GetActiveFuneralResponse(_response);
                 }
-               
                 
+
+
 
             }
             catch (Exception ex)
@@ -630,24 +638,14 @@ namespace Munharaunda.Infrastructure.Database
         {
             ResponseModel<Funeral> response = InitializeFuneral();
 
-            
-                _context.Entry(funeral).State = EntityState.Modified;              
 
-                response = await UpdateRecord(id, funeral, response);
+            _context.Entry(funeral).State = EntityState.Modified;
 
-                //if (dbResponse > 0)
-                //{
-                //    response.ResponseCode = ReturnCodesConstant.R00;
-                //    response.ResponseMessage = ReturnCodesConstant.R00Message;
-                //    response.ResponseData.Add(funeral);
-                //}
-                //else
-                //{
-                //    response.ResponseCode = ReturnCodesConstant.R05;
-                //    response.ResponseMessage = ReturnCodesConstant.R05Message + "Funeral Not Updated";
-                //}
+            response = await UpdateRecord(id, funeral, response);
 
-            
+
+
+
 
             return response;
         }
@@ -658,7 +656,7 @@ namespace Munharaunda.Infrastructure.Database
 
             return await CreateRecord(funeral, response);
 
-           
+
         }
 
         public async Task<ResponseModel<Funeral>> DeleteFuneral(int id)
@@ -671,23 +669,7 @@ namespace Munharaunda.Infrastructure.Database
 
                 return await DeleteRecord(id, response);
 
-                //if (dbResponse.ResponseCode == ReturnCodesConstant.R00)
-                //{
-                //    _context.Funeral.Remove(dbResponse.ResponseData[0]);
-                //    var _response = await _context.SaveChangesAsync();
 
-                //    if (_response > 0)
-                //    {
-                //        response.ResponseCode = ReturnCodesConstant.R00;
-                //        response.ResponseMessage = ReturnCodesConstant.R00Message;
-                //    }
-                //    else
-                //    {
-                //        response.ResponseCode = ReturnCodesConstant.R05;
-                //        response.ResponseMessage = ReturnCodesConstant.R05Message + " Record not deleted";
-                //    }
-
-                //}
 
             }
             catch (Exception ex)
@@ -729,7 +711,7 @@ namespace Munharaunda.Infrastructure.Database
                 var dbResponse = await _context.IdentityTypes.FindAsync(id);
 
                 response = GetResponse(response, dbResponse);
-            
+
             }
             catch (Exception ex)
             {
@@ -748,8 +730,8 @@ namespace Munharaunda.Infrastructure.Database
             _context.Entry(identityType).State = EntityState.Modified;
 
             return await UpdateRecord(id, identityType, response);
-           
-            
+
+
         }
 
         public async Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType)
@@ -758,7 +740,7 @@ namespace Munharaunda.Infrastructure.Database
 
             return await CreateRecord(identityType, response);
 
-            
+
         }
 
         public async Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id)
@@ -902,7 +884,7 @@ namespace Munharaunda.Infrastructure.Database
 
             return await DeleteRecord(id, response);
         }
-        
+
 
         private bool StatusesExists(int id)
         {
@@ -956,7 +938,7 @@ namespace Munharaunda.Infrastructure.Database
 
             _context.Entry(Transaction).State = EntityState.Modified;
 
-            return await UpdateRecord(id, Transaction, response);            
+            return await UpdateRecord(id, Transaction, response);
 
         }
 
@@ -974,7 +956,7 @@ namespace Munharaunda.Infrastructure.Database
             return await DeleteRecord(id, response);
         }
 
-        
+
 
         #endregion
 
@@ -1042,6 +1024,75 @@ namespace Munharaunda.Infrastructure.Database
             return await DeleteRecord(id, response);
         }
 
+        #endregion
+
+        #region ReportsController
+
+        public async Task<ResponseModel<ActiveFuneralResponse>> GetFuneralsPaidByProfile(int profileId, bool paid)
+        {
+            ResponseModel<ActiveFuneralResponse> response = InitializeActiveFuneral();
+            
+
+            try
+            {
+
+                // MSSQL Bit DataType in SQL Server USED to store boolean data
+                int Sqlpaid;
+
+                if(paid)
+                {
+                     Sqlpaid = 1;
+                }
+                else
+                     Sqlpaid = 0;
+
+                var command = $"EXEC GetFuneralsByProfile @ProfileID = {profileId}, @PaidFunerals = {Sqlpaid}";
+                
+                var dbResponse = await _context.Funeral.FromSqlRaw(command).ToListAsync();
+
+                response = await GetActiveFuneralResponse(dbResponse);
+
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+
+
+            return response;
+        }
+
+        
+
+        private async Task<ResponseModel<ActiveFuneralResponse>> GetActiveFuneralResponse(List<Funeral> dbResponse)
+        {
+            List<ActiveFuneralResponse> _response = new List<ActiveFuneralResponse>();
+            ResponseModel<ActiveFuneralResponse> response = InitializeActiveFuneral();
+
+            foreach (var item in dbResponse)
+            {
+                var deceasedProfile = await _context.Profile.FindAsync(item.DeceasedsProfileNumber);
+
+                ActiveFuneralResponse funeralRecord = new ActiveFuneralResponse
+                {
+                    FuneralId = item.FuneralId,
+                    DeceasedsProfileNumber = item.DeceasedsProfileNumber,
+                    AddressForFuneral = item.AddressForFuneral,
+                    Comment = item.Comment,
+                    DeceasedFullName = deceasedProfile.Name + " " + deceasedProfile.Surname,
+                    DeceasedProfileStatus = (await _context.Statuses.FindAsync(deceasedProfile.Status)).StatusDescription.ToString()
+                };
+
+                _response.Add(funeralRecord);
+
+            }
+            response = GetResponseList(response, _response);
+
+            return response;
+        }
         #endregion
 
 

@@ -21,7 +21,7 @@ namespace Munharaunda.Domain.Contracts
         Task<ResponseModel<IdentityTypes>> UpdateIdentityType(int id, IdentityTypes identityType);
         Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id);
 
-        Task<ResponseModel<Profile>> GetAllProfiles();
+        Task<ResponseModel<ProfileResponse>> GetAllProfiles();
         Task<ResponseModel<Profile>> GetProfileById(int id);
         Task<ResponseModel<Profile>> CreateProfile(Profile Profile);
         Task<ResponseModel<Profile>> UpdateProfile(int id, Profile Profile);
@@ -50,6 +50,8 @@ namespace Munharaunda.Domain.Contracts
         Task<ResponseModel<Transactions>> CreateTransactions(Transactions transaction);
         Task<ResponseModel<Transactions>> UpdateTransactions(int id, Transactions transaction);
         Task<ResponseModel<Transactions>> DeleteTransactions(int id);
+
+        Task<ResponseModel<ActiveFuneralResponse>> GetFuneralsPaidByProfile(int id,bool paid);
 
 
     }

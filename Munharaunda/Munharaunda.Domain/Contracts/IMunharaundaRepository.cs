@@ -58,5 +58,10 @@ namespace Munharaunda.Domain.Contracts
         Task<ResponseModel<TransactionCodes>> CreateTransactionCode(TransactionCodes transactionCode);
         Task<ResponseModel<TransactionCodes>> DeleteTransactionCode(int id);
 
+        Task<ResponseModel<ActiveFuneralResponse>> GetFuneralsPaidByProfile(int profileId, bool paid);
+        Task<ProfileResponse> GenerateProfileDetails(Profile profile);
+
+
+
     }
 }

@@ -12,12 +12,14 @@ namespace Munharaunda.Web.WebServices
     public class ApiClient : IApiClient
     {
         private readonly HttpClient _httpClient;
+        private readonly IMunharaundaRepository _db;
         private String typeName;
 
 
-        public ApiClient(HttpClient httpClient)
+        public ApiClient(HttpClient httpClient, IMunharaundaRepository db)
         {
             _httpClient = httpClient;
+            _db = db;
         }
 
         #region Private Methods
@@ -173,15 +175,47 @@ namespace Munharaunda.Web.WebServices
             return await response.Content.ReadAsAsync<ResponseModel<ActiveFuneralResponse>>();
         }
 
+        public async Task<ResponseModel<ActiveFuneralResponse>> GetFuneralsPaidByProfile(int id, bool paid)
+        {
+
+
+            var response = await _httpClient.GetAsync($"/api/Reports/FuneralsPaidByProfile/{id}/{paid}");
+
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                response.EnsureSuccessStatusCode();
+            }
+
+
+
+
+
+            return await response.Content.ReadAsAsync<ResponseModel<ActiveFuneralResponse>>();
+        }
+
 
         public async Task<ResponseModel<IdentityTypes>> GetAllIdentityTypes()
         {
             return await CallGetAll<IdentityTypes>();
         }
 
-        public async Task<ResponseModel<Profile>> GetAllProfiles()
+        public async Task<ResponseModel<ProfileResponse>> GetAllProfiles()
         {
-            return await CallGetAll<Profile>();
+            ResponseModel<ProfileResponse> response = new ResponseModel<ProfileResponse>
+            {
+                ResponseData = new List<ProfileResponse>()
+            };
+
+            var dbResponse = await CallGetAll<Profile>();
+
+            foreach (var item in dbResponse.ResponseData)
+            {
+                var profileResponse = await _db.GenerateProfileDetails(item);
+                response.ResponseData.Add(profileResponse);
+            }
+            response.ResponseCode = dbResponse.ResponseCode;
+            response.ResponseMessage = dbResponse.ResponseMessage;
+            return response;
         }
 
         public async Task<ResponseModel<ProfileTypes>> GetAllProfileTypes()

@@ -15,13 +15,9 @@ namespace Munharaunda.Domain.Services
     {
         public IActionResult GetResponse<T>(ResponseModel<T> response)
         {
-            if (response.ResponseCode == ReturnCodesConstant.R00)
+            if (response.ResponseCode == ReturnCodesConstant.R00 || response.ResponseCode == ReturnCodesConstant.R06)
             {
                 return Ok(response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
             }
             else
             {
@@ -31,13 +27,9 @@ namespace Munharaunda.Domain.Services
 
         public IActionResult PutResponse<T>(ResponseModel<T> response)
         {
-            if (response.ResponseCode == ReturnCodesConstant.R00)
+            if (response.ResponseCode == ReturnCodesConstant.R00 || response.ResponseCode == ReturnCodesConstant.R06)
             {
                 return StatusCode(StatusCodes.Status202Accepted, response);
-            }
-            else if (response.ResponseCode == ReturnCodesConstant.R06)
-            {
-                return NotFound();
             }
             else
             {

@@ -18,6 +18,9 @@ namespace Munharaunda.Web.Pages
         public ResponseModel<Profile> Profile { get; set; }
         public ResponseModel<ActiveFuneralResponse> ActiveFunerals { get; set; }
 
+        public ResponseModel<ActiveFuneralResponse> PaidFunerals { get; set; }
+
+        public ResponseModel<ActiveFuneralResponse> NotPaidFunerals { get; set; }
         public IndexModel(ILogger<IndexModel> logger, IApiClient apiClient )
         {
             _logger = logger;
@@ -26,7 +29,10 @@ namespace Munharaunda.Web.Pages
 
         public async Task OnGet()
         {
+            Profile = await _apiClient.GetProfileById(3);
             ActiveFunerals = await _apiClient.GetActiveFunerals();
+            PaidFunerals = await _apiClient.GetFuneralsPaidByProfile(Profile.ResponseData[0].ProfileNumber, true);
+            NotPaidFunerals = await _apiClient.GetFuneralsPaidByProfile(Profile.ResponseData[0].ProfileNumber, false);
         }
     }
 }

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Munharaunda.Core", "Munhara
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Munharaunda.Infrastructure", "Munharaunda.Infrastructure\Munharaunda.Infrastructure.csproj", "{E24B518E-EEAC-4DA5-A70C-E118B38F75A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Munharaunda.Web", "Munharaunda.Web\Munharaunda.Web.csproj", "{78C599E1-370E-4475-B99A-294E95D32E2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Munharaunda.Web", "Munharaunda.Web\Munharaunda.Web.csproj", "{78C599E1-370E-4475-B99A-294E95D32E2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

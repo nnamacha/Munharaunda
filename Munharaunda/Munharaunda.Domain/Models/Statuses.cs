@@ -12,7 +12,7 @@ namespace Munharaunda.Domain.Models
 
         [Required]
         public string StatusDescription { get; set; }
-        public int Status { get; set; }
+        
 
         [Required]
         public int CreatedBy { get; set; }

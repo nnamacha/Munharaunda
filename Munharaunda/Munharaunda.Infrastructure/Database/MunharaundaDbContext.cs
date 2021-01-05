@@ -23,9 +23,15 @@ namespace Munharaunda.Infrastructure.Database
         public DbSet<TransactionCodesHistory> TransactionCodesHistory { get; set; }
         public DbSet<Transactions> Transactions { get; set; }
         public DbSet<TransactionsArchive> TransactionsArchive { get; set; }
-        public DbSet<ReturnCodes> ReturnCodes { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Seed();
+        }
     }
+
+    
 }
 
 
