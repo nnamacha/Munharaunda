@@ -356,28 +356,45 @@ namespace Munharaunda.Infrastructure.Database
         #region ProfileController
 
 
-        public async Task<ProfileResponse> GenerateProfileDetails(Profile profile)
+        public async Task<ResponseModel<ProfileResponse>> GenerateProfileDetails(Profile profile)
         {
-            return new ProfileResponse
+            var response = new ResponseModel<ProfileResponse>();
+            response.ResponseData = new List<ProfileResponse>();
+            try
             {
-                ProfileNumber = profile.ProfileNumber,
-                ProfileType = await GetProfileType(profile.ProfileTypeId),
-                FullName = profile.Name + " " + profile.Surname,
-                IdentityType = await GetIdentityTypes(profile.IdentityTypeId),
-                IdentityNumber = profile.IdentityNumber,
-                DateOfBirth = profile.DateOfBirth,
-                PhoneNumber = profile.PhoneNumber,
-                PaidFuneral = await GetPaidFunerals(profile.ProfileNumber),
-                StatusDescription = await GetStatus(profile.Status),
-                Address = profile.Address,
-                ActiveDate = profile.ActiveDate,
-                NextOfKin = profile.NextOfKin,
-                Created = profile.Created,
-                CreatedBy = profile.CreatedBy,
-                Updated = profile.Updated,
-                UpdatedBy = profile.UpdatedBy
+                var profileResponse = new ProfileResponse
+                {                
+                    ProfileNumber = profile.ProfileNumber,
+                    ProfileType = await GetProfileType(profile.ProfileTypeId),
+                    FullName = profile.Name + " " + profile.Surname,
+                    IdentityType = await GetIdentityTypes(profile.IdentityTypeId),
+                    IdentityNumber = profile.IdentityNumber,
+                    DateOfBirth = profile.DateOfBirth,
+                    PhoneNumber = profile.PhoneNumber,
+                    PaidFuneral = await GetPaidFunerals(profile.ProfileNumber),
+                    StatusDescription = await GetStatus(profile.Status),
+                    Address = profile.Address,
+                    ActiveDate = profile.ActiveDate,
+                    NextOfKin = profile.NextOfKin,
+                    Created = profile.Created,
+                    CreatedBy = profile.CreatedBy,
+                    Updated = profile.Updated,
+                    UpdatedBy = profile.UpdatedBy
 
-            };
+                };
+                response.ResponseData.Add(profileResponse);
+                response.ResponseCode = ReturnCodesConstant.R00;
+                response.ResponseMessage = ReturnCodesConstant.R00Message;
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = ReturnCodesConstant.R99;
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+            
         }
 
         public async Task<ICollection<Funeral>> GetPaidFunerals(int profileId)

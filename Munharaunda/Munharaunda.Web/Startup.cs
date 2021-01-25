@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Munharaunda.Domain.Contracts;
 using Munharaunda.Infrastructure;
-using Munharaunda.Web.WebServices;
 using System;
 
 namespace Munharaunda.Web

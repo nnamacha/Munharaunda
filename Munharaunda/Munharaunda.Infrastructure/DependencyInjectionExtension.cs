@@ -19,8 +19,13 @@ namespace Munharaunda.Infrastructure
             #region DBContext
             // Register Entity Framework
             services.AddDbContext<MunharaundaDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default"), x => x.MigrationsAssembly("Munharaunda.Infrastructure")));
-            
-            
+
+            services.AddHttpClient<IApiClient, ApiClient>(client =>
+            {
+                client.BaseAddress = new Uri(configuration["ApiUrl"]);
+            });
+
+
             #endregion
             return services;
         }

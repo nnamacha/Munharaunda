@@ -1,0 +1,315 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.blazor\\Munharaunda.blazor.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.blazor\\Munharaunda.blazor.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.blazor\\Munharaunda.blazor.csproj",
+        "projectName": "Munharaunda.blazor",
+        "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.blazor\\Munharaunda.blazor.csproj",
+        "packagesPath": "C:\\Users\\NB181916\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.blazor\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\NB181916\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nexus.nednet.co.za/repository/nuget-group": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj": {
+                "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj"
+              },
+              "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj": {
+                "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj"
+              },
+              "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj",
+        "projectName": "Munharaunda.Core",
+        "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj",
+        "packagesPath": "C:\\Users\\NB181916\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\NB181916\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nexus.nednet.co.za/repository/nuget-group": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "System.ComponentModel.Annotations": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj",
+        "projectName": "Munharaunda.Domain",
+        "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj",
+        "packagesPath": "C:\\Users\\NB181916\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\NB181916\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nexus.nednet.co.za/repository/nuget-group": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj": {
+                "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj",
+        "projectName": "Munharaunda.Infrastructure",
+        "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\Munharaunda.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\NB181916\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\NB181916\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nexus.nednet.co.za/repository/nuget-group": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj": {
+                "projectPath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Domain\\Munharaunda.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

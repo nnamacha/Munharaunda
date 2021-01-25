@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Munharaunda.Infrastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Munharaunda.Web", "Munharaunda.Web\Munharaunda.Web.csproj", "{78C599E1-370E-4475-B99A-294E95D32E2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Munharaunda.blazor", "Munharaunda.blazor\Munharaunda.blazor.csproj", "{C7572A9B-C072-47B2-8918-7E5B71DA6F7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{78C599E1-370E-4475-B99A-294E95D32E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78C599E1-370E-4475-B99A-294E95D32E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78C599E1-370E-4475-B99A-294E95D32E2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7572A9B-C072-47B2-8918-7E5B71DA6F7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7572A9B-C072-47B2-8918-7E5B71DA6F7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7572A9B-C072-47B2-8918-7E5B71DA6F7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7572A9B-C072-47B2-8918-7E5B71DA6F7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

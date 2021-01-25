@@ -1,0 +1,59 @@
+﻿@page
+@model Munharaunda.Web.Pages.MembersListModel
+@using Munharaunda.Core.Constants;
+@{
+    string test = "";
+}
+
+@if (Model.Profiles.ResponseCode == ReturnCodesConstant.R00)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table  table-hover table-bordered">
+                <thead>
+                    <tr>
+                        
+                        <th>Profile Number</th>
+                        <th>Full Name</th>
+                        <th>Status</th>
+                        <th>Active Since</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Profiles.ResponseData)
+                    {
+                        @if (@item.StatusDescription == "Closed")
+                        {
+                            test = "alert-danger";
+                        }
+                        <tr class=@test>
+                            <td>
+                                @item.ProfileNumber
+                            </td>
+                            <td>
+                                @item.FullName
+                            </td>
+                            <td>
+                                @item.StatusDescription
+                            </td>
+                            <td>
+                                @item.ActiveDate.ToString("dd-MMM-yyyy")
+                            </td>
+                            
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <p>No Records Founds</p>
+    </div>
+    <p></p>
+}
+

@@ -15,7 +15,7 @@ namespace Munharaunda.Web.Pages
         private readonly ILogger<IndexModel> _logger;
         private readonly IApiClient _apiClient;
 
-        public ResponseModel<Profile> Profile { get; set; }
+        public ResponseModel<ProfileResponse> Profile { get; set; }
         public ResponseModel<ActiveFuneralResponse> ActiveFunerals { get; set; }
 
         public ResponseModel<ActiveFuneralResponse> PaidFunerals { get; set; }

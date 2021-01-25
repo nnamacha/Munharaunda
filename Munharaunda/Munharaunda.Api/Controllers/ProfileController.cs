@@ -33,13 +33,23 @@ namespace Munharaunda.Api.Controllers
             return _responsesService.GetResponse(response);
         }
 
-        // GET: api/Profiles/5
+        // GET: api/Profile/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProfile(int id)
         {
-            var response = await _db.GetProfile(id);
+            var dbResponse = await _db.GetProfile(id);
 
-            return _responsesService.GetResponse(response);
+            if (dbResponse.ResponseCode == ReturnCodesConstant.R00)
+            {
+                var response = await _db.GenerateProfileDetails(dbResponse.ResponseData[0]);               
+
+                return _responsesService.GetResponse(response);
+            }
+            else
+            {
+                return _responsesService.GetResponse(dbResponse);
+            }    
+            
 
 
         }

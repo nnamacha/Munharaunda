@@ -22,7 +22,7 @@ namespace Munharaunda.Domain.Contracts
         Task<ResponseModel<IdentityTypes>> DeleteIdentityType(int id);
 
         Task<ResponseModel<ProfileResponse>> GetAllProfiles();
-        Task<ResponseModel<Profile>> GetProfileById(int id);
+        Task<ResponseModel<ProfileResponse>> GetProfileById(int id);
         Task<ResponseModel<Profile>> CreateProfile(Profile Profile);
         Task<ResponseModel<Profile>> UpdateProfile(int id, Profile Profile);
         Task<ResponseModel<Profile>> DeleteProfile(int id);
