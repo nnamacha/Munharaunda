@@ -25,19 +25,26 @@
                         {
                             test = "alert-danger";
                         }
-                        <tr class=@test>
-                            <td>
-                                @item.ProfileNumber
-                            </td>
-                            <td>
-                                @item.FullName
-                            </td>
-                            <td>
-                                @item.StatusDescription
-                            </td>
-                            <td>
-                                @item.ActiveDate.ToString("dd-MMM-yyyy")
-                            </td>
+                        <tr>
+                           
+                                <td>
+                                    <a asp-controller="member" asp-action="Details" asp-route-id="@item.ProfileNumber">
+                                        @item.ProfileNumber
+                                    </a>
+                                    
+                                </td>
+                            
+                                <td>
+                                    @item.FullName
+                                </td>
+                                <td>
+                                    @item.StatusDescription
+                                </td>
+                                <td>
+                                    @item.ActiveDate.ToString("dd-MMM-yyyy")
+                                </td>
+                            
+                            
 
                         </tr>
                     }

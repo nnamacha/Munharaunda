@@ -30,10 +30,7 @@ namespace Munharaunda.MVC
             services.AddControllersWithViews();
             
             services.AddInfrastructure(Configuration);
-            services.AddHttpClient<IApiClient, ApiClient>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44330");
-            });
+
             
         }
 
@@ -60,7 +57,7 @@ namespace Munharaunda.MVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id:int?}");
             });
         }
     }
