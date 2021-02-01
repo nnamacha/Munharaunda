@@ -18,11 +18,13 @@ namespace Munharaunda.Infrastructure
             services.AddScoped<IMunharaundaRepository, MunharaundaRepository>();
             #region DBContext
             // Register Entity Framework
+
+            var test = configuration.GetConnectionString("Default");
             services.AddDbContext<MunharaundaDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default"), x => x.MigrationsAssembly("Munharaunda.Infrastructure")));
 
             services.AddHttpClient<IApiClient, ApiClient>(client =>
             {
-                client.BaseAddress = new Uri(configuration["ApiUrl"]);
+                client.BaseAddress = new Uri("https://localhost:44330");
             });
 
 

@@ -372,6 +372,7 @@ namespace Munharaunda.Infrastructure.Database
                     DateOfBirth = profile.DateOfBirth,
                     PhoneNumber = profile.PhoneNumber,
                     PaidFuneral = await GetPaidFunerals(profile.ProfileNumber),
+                    NotPaidFuneral = await GetNotPaidFunerals(profile.ProfileNumber),
                     StatusDescription = await GetStatus(profile.Status),
                     Address = profile.Address,
                     ActiveDate = profile.ActiveDate,
@@ -397,10 +398,59 @@ namespace Munharaunda.Infrastructure.Database
             
         }
 
-        public async Task<ICollection<Funeral>> GetPaidFunerals(int profileId)
+        public async Task<ICollection<ActiveFuneralResponse>> GetNotPaidFunerals(int profileId)
         {
-            var Funerals = new List<Funeral>();
+            var response = new List<ActiveFuneralResponse>();
+
+            var profile =  await _context.Profile.FindAsync(profileId);
+
+            if (profile != null)
+            {
+                var profileCreateDate = profile.Created;
+
+                
+                var funeral = await _context.Funeral.Where(f => f.Created > profileCreateDate).ToListAsync();
+
+                foreach (var item in funeral)
+                {
+                    var transactions = await _context.Transactions.Where(f => f.Contribution == true && f.CreatedBy == profileId && f.FuneralId == item.FuneralId).ToListAsync();
+
+                    if (transactions.Count > 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        var funeralDetails = await GetFuneral(item.FuneralId);
+
+                        if (funeralDetails != null)
+                        {
+
+                            foreach (var i in funeralDetails.ResponseData)
+                            {
+                                var activeFuneralResponse = new ActiveFuneralResponse();
+
+
+                                activeFuneralResponse.DeceasedFullName = _context.Profile.Find(i.DeceasedsProfileNumber).Name + " " + _context.Profile.Find(i.DeceasedsProfileNumber).Surname;
+                                activeFuneralResponse.DeceasedsProfileNumber = i.DeceasedsProfileNumber;
+                                activeFuneralResponse.Created = i.Created;
+                                response.Add(activeFuneralResponse);
+                            }
+
+                        }
+                    }
+                }
+            }
+            
+
+            return response;
+        }
+
+        public async Task<ICollection<ActiveFuneralResponse>> GetPaidFunerals(int profileId)
+        {
+            var Funerals = new List<ActiveFuneralResponse>();
             var transactions = await _context.Transactions.Where(f => f.Contribution == true && f.CreatedBy == profileId).ToListAsync();
+
 
             foreach (var item in transactions)
             {
@@ -408,9 +458,16 @@ namespace Munharaunda.Infrastructure.Database
 
                 if (funeral != null)
                 {
+                    
                     foreach (var i in funeral.ResponseData)
                     {
-                        Funerals.Add(i);
+                        var funeralDetail = new ActiveFuneralResponse();
+                        
+
+                        funeralDetail.DeceasedFullName = _context.Profile.Find(i.DeceasedsProfileNumber).Name + " " + _context.Profile.Find(i.DeceasedsProfileNumber).Surname;
+                        funeralDetail.DeceasedsProfileNumber = i.DeceasedsProfileNumber;
+                        funeralDetail.Created = i.Created;
+                        Funerals.Add(funeralDetail);
                     }
 
                 }
@@ -495,6 +552,8 @@ namespace Munharaunda.Infrastructure.Database
             }
             return response;
         }
+
+        
 
 
 

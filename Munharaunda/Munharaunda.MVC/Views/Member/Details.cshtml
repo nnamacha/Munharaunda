@@ -1,0 +1,195 @@
+﻿
+@model ResponseModel<ProfileResponse>
+
+@{
+
+    ProfileResponse currentProfile = Model.ResponseData[0];
+
+}
+<h1 class="page-title text-center">Details for @currentProfile.FullName</h1>
+
+
+
+@if (Model.ResponseCode == ReturnCodesConstant.R00)
+{
+    <div class="col-12 row">
+        @*<div class="col-2">
+                <img src="@($"https://gillcleerenpluralsight.blob.core.windows.net/person/{Employee.EmployeeId}.jpg")" class="img-responsive rounded-circle employee-detail-img" />
+            </div>*@
+        <div class="col-10 row">
+            <div class="col-xs-12 col-sm-8">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Profile Number</label>
+                    <div class="col-sm-8">
+                        <label type="text" class="form-control-plaintext">@currentProfile.ProfileNumber</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Full name</label>
+                    <div class="col-sm-8">
+                        <label type="text" readonly class="form-control-plaintext">@currentProfile.FullName</label>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Birthdate</label>
+                    <div class="col-sm-8">
+                        <label type="text" readonly class="form-control-plaintext">@currentProfile.DateOfBirth.ToShortDateString()</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Email</label>
+                    <div class="col-sm-8">
+                        <label type="text" readonly class="form-control-plaintext">@currentProfile.</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Address</label>
+                    <div class="col-sm-8">
+                        <label type="text" readonly class="form-control-plaintext">@currentProfile.Address</label>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Phone number</label>
+                    <div class="col-sm-8">
+                        <label type="text" readonly class="form-control-plaintext">@currentProfile.PhoneNumber</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Profile Status</label>
+                    <div class="col-sm-8">
+                        <label type="text" readonly class="form-control-plaintext">@currentProfile.StatusDescription</label>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Profile Activation Date</label>
+                    <div class="col-sm-8">
+                        <label type="text" readonly class="form-control-plaintext">@currentProfile.ActiveDate.ToShortDateString()</label>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="align-content-center"><em>No Record Found </em></div>
+}
+
+<br />
+<br />
+
+
+<h3 class="text-center">Funeral Contributions Paid</h3>
+
+<br />
+
+@if (currentProfile.PaidFuneral.Count > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table  table-hover table-striped table-bordered ">
+                <thead class="table-success">
+                    <tr>
+
+                        <th>Profile Number for Deceased</th>
+                        <th>Full Name for Deceased</th>
+                        <th>Funeral Date</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in currentProfile.PaidFuneral)
+                    {
+
+                        <tr>
+                            <td>
+                                @item.DeceasedsProfileNumber
+                            </td>
+
+                            <td>
+                                @item.DeceasedFullName
+                            </td>
+                            <td>
+                                @item.Created.ToShortDateString()
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <p>No Records Founds</p>
+    </div>
+    <p></p>
+}
+
+<h3 class="text-center">Skipped Funeral Contributions</h3>
+
+<br />
+
+@if (currentProfile.NotPaidFuneral.Count > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table  table-hover table-striped table-bordered ">
+                <thead class="table-danger">
+                    <tr>
+
+                        <th>Profile Number for Deceased</th>
+                        <th>Full Name for Deceased</th>
+                        <th>Funeral Date</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in currentProfile.NotPaidFuneral)
+                    {
+
+                        <tr>
+                            <td>
+                                @item.DeceasedsProfileNumber
+                            </td>
+
+                            <td>
+                                @item.DeceasedFullName
+                            </td>
+                            <td>
+                                @item.Created.ToShortDateString()
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <p>No Records Founds</p>
+    </div>
+    <p></p>
+}

@@ -10,7 +10,7 @@ namespace Munharaunda.Domain.Contracts
 
         Task<ResponseModel<ActiveFuneralResponse>> GetActiveFuneral();
 
-        Task<ICollection<Funeral>> GetPaidFunerals(int profileId);
+        Task<ICollection<ActiveFuneralResponse>> GetPaidFunerals(int profileId);
         Task<ResponseModel<Profile>> GetProfile(int id);
         Task<ResponseModel<Profile>> GetProfiles();
         Task<ResponseModel<Profile>> UpdateProfile(int id, Profile profile);

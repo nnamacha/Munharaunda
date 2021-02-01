@@ -8,7 +8,8 @@ namespace Munharaunda.Domain.Models
 {
     public class ProfileResponse : Profile
     {
-        public ICollection<Funeral> PaidFuneral { get; set; } = new List<Funeral>();
+        public ICollection<ActiveFuneralResponse> PaidFuneral { get; set; } = new List<ActiveFuneralResponse>();
+        public ICollection<ActiveFuneralResponse> NotPaidFuneral { get; set; } = new List<ActiveFuneralResponse>();
         public virtual string FullName { get; set;  }
         public virtual IdentityTypes IdentityType { get; set; }
         public virtual string StatusDescription { get; set; }
