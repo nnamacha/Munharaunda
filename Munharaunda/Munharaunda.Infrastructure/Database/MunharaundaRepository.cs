@@ -371,8 +371,7 @@ namespace Munharaunda.Infrastructure.Database
                     IdentityNumber = profile.IdentityNumber,
                     DateOfBirth = profile.DateOfBirth,
                     PhoneNumber = profile.PhoneNumber,
-                    PaidFuneral = await GetPaidFunerals(profile.ProfileNumber),
-                    NotPaidFuneral = await GetNotPaidFunerals(profile.ProfileNumber),
+                    Funerals = await GetFunerals(profile.ProfileNumber),                    
                     StatusDescription = await GetStatus(profile.Status),
                     Address = profile.Address,
                     ActiveDate = profile.ActiveDate,
@@ -398,7 +397,7 @@ namespace Munharaunda.Infrastructure.Database
             
         }
 
-        public async Task<ICollection<ActiveFuneralResponse>> GetNotPaidFunerals(int profileId)
+        public async Task<ICollection<ActiveFuneralResponse>> GetFunerals(int profileId)
         {
             var response = new List<ActiveFuneralResponse>();
 
@@ -409,39 +408,49 @@ namespace Munharaunda.Infrastructure.Database
                 var profileCreateDate = profile.Created;
 
                 
-                var funeral = await _context.Funeral.Where(f => f.Created > profileCreateDate).ToListAsync();
+                var funerals = await _context.Funeral.Where(f => f.Created > profileCreateDate).ToListAsync();
+                
 
-                foreach (var item in funeral)
+                foreach (var funeral in funerals)
                 {
-                    var transactions = await _context.Transactions.Where(f => f.Contribution == true && f.CreatedBy == profileId && f.FuneralId == item.FuneralId).ToListAsync();
+                    var transactions = await _context.Transactions.Where(f => f.Contribution == true && f.CreatedBy == profileId && f.FuneralId == funeral.FuneralId).ToListAsync();
 
                     if (transactions.Count > 0)
                     {
-                        continue;
+                        return await GetFuneralDetails(funeral, true);
                     }
                     else
                     {
-                        var funeralDetails = await GetFuneral(item.FuneralId);
-
-                        if (funeralDetails != null)
-                        {
-
-                            foreach (var i in funeralDetails.ResponseData)
-                            {
-                                var activeFuneralResponse = new ActiveFuneralResponse();
-
-
-                                activeFuneralResponse.DeceasedFullName = _context.Profile.Find(i.DeceasedsProfileNumber).Name + " " + _context.Profile.Find(i.DeceasedsProfileNumber).Surname;
-                                activeFuneralResponse.DeceasedsProfileNumber = i.DeceasedsProfileNumber;
-                                activeFuneralResponse.Created = i.Created;
-                                response.Add(activeFuneralResponse);
-                            }
-
-                        }
+                        return await GetFuneralDetails(funeral, false);
                     }
                 }
             }
             
+
+            return response;
+        }
+
+        private async Task<List<ActiveFuneralResponse>>GetFuneralDetails(Funeral funeral, bool contributed)
+        {
+            var response = new List<ActiveFuneralResponse>();
+            var funeralDetails = await GetFuneral(funeral.FuneralId);
+
+            if (funeralDetails != null)
+            {
+
+                foreach (var i in funeralDetails.ResponseData)
+                {
+                    var activeFuneralResponse = new ActiveFuneralResponse();
+
+                    var deceasedProfile = await _context.Profile.FindAsync(i.DeceasedsProfileNumber);
+                    activeFuneralResponse.DeceasedFullName = deceasedProfile.Name + " " + deceasedProfile.Surname;
+                    activeFuneralResponse.DeceasedsProfileNumber = i.DeceasedsProfileNumber;
+                    activeFuneralResponse.Created = i.Created;
+                    activeFuneralResponse.Contributed = contributed;
+                    response.Add(activeFuneralResponse);
+                }
+
+            }
 
             return response;
         }

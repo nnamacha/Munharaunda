@@ -1,8 +1,6 @@
 ﻿@model ResponseModel<ProfileResponse>
 
-@{
-    string test = "";
-}
+
 
 @if (Model.ResponseCode == ReturnCodesConstant.R00)
 {
@@ -21,10 +19,7 @@
                 <tbody>
                     @foreach (var item in Model.ResponseData)
                     {
-                        @if (@item.StatusDescription == "Closed")
-                        {
-                            test = "alert-danger";
-                        }
+                        
                         <tr>
                            
                                 <td>

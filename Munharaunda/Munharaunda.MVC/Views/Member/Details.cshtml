@@ -4,6 +4,8 @@
 @{
 
     ProfileResponse currentProfile = Model.ResponseData[0];
+    List<ActiveFuneralResponse> paidFunerals = currentProfile.Funerals.Where(f => f.Contributed == true).ToList();
+    List<ActiveFuneralResponse> notPaidFunerals = currentProfile.Funerals.Where(f => f.Contributed == false).ToList();
 
 }
 <h1 class="page-title text-center">Details for @currentProfile.FullName</h1>
@@ -96,100 +98,10 @@ else
 
 <br />
 
-@if (currentProfile.PaidFuneral.Count > 0)
-{
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table  table-hover table-striped table-bordered ">
-                <thead class="table-success">
-                    <tr>
-
-                        <th>Profile Number for Deceased</th>
-                        <th>Full Name for Deceased</th>
-                        <th>Funeral Date</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in currentProfile.PaidFuneral)
-                    {
-
-                        <tr>
-                            <td>
-                                @item.DeceasedsProfileNumber
-                            </td>
-
-                            <td>
-                                @item.DeceasedFullName
-                            </td>
-                            <td>
-                                @item.Created.ToShortDateString()
-                            </td>
-
-                        </tr>
-                    }
-
-                </tbody>
-
-            </table>
-        </div>
-    </div>
-}
-else
-{
-    <div class="row">
-        <p>No Records Founds</p>
-    </div>
-    <p></p>
-}
+<partial name="_FuneralsList" model="paidFunerals" />
 
 <h3 class="text-center">Skipped Funeral Contributions</h3>
 
 <br />
 
-@if (currentProfile.NotPaidFuneral.Count > 0)
-{
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table  table-hover table-striped table-bordered ">
-                <thead class="table-danger">
-                    <tr>
-
-                        <th>Profile Number for Deceased</th>
-                        <th>Full Name for Deceased</th>
-                        <th>Funeral Date</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in currentProfile.NotPaidFuneral)
-                    {
-
-                        <tr>
-                            <td>
-                                @item.DeceasedsProfileNumber
-                            </td>
-
-                            <td>
-                                @item.DeceasedFullName
-                            </td>
-                            <td>
-                                @item.Created.ToShortDateString()
-                            </td>
-
-                        </tr>
-                    }
-
-                </tbody>
-
-            </table>
-        </div>
-    </div>
-}
-else
-{
-    <div class="row">
-        <p>No Records Founds</p>
-    </div>
-    <p></p>
-}
+<partial name="_FuneralsList" model="notPaidFunerals"  />

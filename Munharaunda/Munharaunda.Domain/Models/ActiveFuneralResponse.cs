@@ -10,6 +10,7 @@ namespace Munharaunda.Domain.Models
     {
         public string DeceasedFullName { get; set; }
         public string DeceasedProfileStatus { get; set; }
+        public bool Contributed { get; set; }
 
     }
 }
