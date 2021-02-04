@@ -25,6 +25,7 @@ namespace Munharaunda.Domain.Contracts
         
 
         Task<ResponseModel<IdentityTypes>> GetIdentityTypes();
+        
         Task<ResponseModel<IdentityTypes>> GetIdentityType(int id);
         Task<ResponseModel<IdentityTypes>> UpdateIdentityType(int id, IdentityTypes identityType);
         Task<ResponseModel<IdentityTypes>> CreateIdentityType(IdentityTypes identityType);
@@ -61,7 +62,7 @@ namespace Munharaunda.Domain.Contracts
         Task<ResponseModel<ActiveFuneralResponse>> GetFuneralsPaidByProfile(int profileId, bool paid);
         Task<ResponseModel<ProfileResponse>> GenerateProfileDetails(Profile profile);
 
-
-
+        Task<bool> AddPayment(Payment payment);
+        Task<bool> ClearPayments(string cartId);
     }
 }

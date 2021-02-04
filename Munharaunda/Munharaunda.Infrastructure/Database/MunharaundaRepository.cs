@@ -12,8 +12,12 @@ namespace Munharaunda.Infrastructure.Database
 
     public class MunharaundaRepository : IMunharaundaRepository
     {
+        public MunharaundaRepository(ICommonUtilities util)
+        {
+            _util = util;
+        }
         private readonly MunharaundaDbContext _context;
-
+        private readonly ICommonUtilities _util;
 
         public MunharaundaRepository(MunharaundaDbContext context)
         {
@@ -1178,6 +1182,40 @@ namespace Munharaunda.Infrastructure.Database
 
             return response;
         }
+
+
+        #endregion
+
+        #region Payments
+
+        public async Task<bool> AddPayment(Payment payment)
+        {
+            await _context.Payments.AddAsync(payment);
+
+            var response = await _context.SaveChangesAsync();
+
+            return response > 0;
+        }
+
+        public async Task<bool> ClearPayments(string cartId)
+        {
+
+            try
+            {
+                var paymentsToClear =  _context.Payments.Where(x => x.CartId == cartId);
+
+                _context.Payments.RemoveRange(paymentsToClear);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                _util.LogMessage(ex.Message);
+                return false;
+            }
+        }
+
         #endregion
 
 
