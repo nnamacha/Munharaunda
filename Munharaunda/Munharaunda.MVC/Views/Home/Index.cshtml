@@ -1,0 +1,86 @@
+﻿@using Munharaunda.Core.Constants;
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="jumbotron alert-danger align-content-center">
+    <h1 class="alert-warning">Welcome to Zimbabwe Parklands Community</h1>
+    <blockquote>
+        “When there is no enemy within, the enemies outside cannot hurt you.”
+        ― Winston S. Churchill
+    </blockquote>
+</div>
+<div class="row">
+    <div class="list-group col-md-4">
+
+        <h3>Why ZPC was formed?</h3>
+        <p>
+            Information to be provided
+        </p>
+        <p><a class="btn btn-success" href="#">More Information>></a></p>
+
+
+    </div>
+    <div class="list-group col-md-4">
+
+        <h3>How do I join ZPC?</h3>
+        <p>
+            <dl>
+                <dt>You deposit R100 joining fee into the FNB Account;</dt>
+
+                <dd>Account Name: ZPC STOKVEL</dd>
+                <dd>Account Number: 62872199411</dd>
+
+                <dt>Put your name and Surname as reference.</dt>
+                <dt>Send your proof of payment to 0784773876.</dt>
+                <dt>A membership form will be sent to you to sign and return</dt>
+            </dl>
+        </p>
+        <p><a class="btn btn-success" asp-controller="home" asp-action="Faq">More Information>></a></p>
+
+
+    </div>
+    <div class="list-group col-md-4">
+
+        <h2>Membership List</h2>
+        <p>
+            To check the membership status of a deceased family member click below.
+        </p>
+
+        <p><a class="btn btn-success" asp-controller="member" asp-action="List" >More Information>></a></p>
+        
+
+
+    </div>
+
+
+</div>
+
+
+
+
+@*@if (Model.ActiveFunerals.ResponseCode == ReturnCodesConstant.R06)
+    {
+
+        <div class="alert alert-success" role="alert">
+            Currently Not Active Funeral
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model.ActiveFunerals.ResponseData)
+        {
+
+
+            <div class="alert alert-danger " role="alert">
+
+                Funeral id @item.FuneralId for @item.DeceasedFullName is active. The venue for funeral is @item.AddressForFuneral
+
+            </div>
+
+
+
+        }*@
+
+        }
+

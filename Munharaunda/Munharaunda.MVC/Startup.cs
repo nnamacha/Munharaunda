@@ -28,7 +28,8 @@ namespace Munharaunda.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            
+            services.AddHttpContextAccessor();
+            services.AddSession();
             services.AddInfrastructure(Configuration);
 
             
@@ -50,6 +51,7 @@ namespace Munharaunda.MVC
             app.UseHttpsRedirection();
             app.UseStatusCodePages();
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseRouting();
 

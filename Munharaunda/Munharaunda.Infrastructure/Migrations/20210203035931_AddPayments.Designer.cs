@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Munharaunda.Infrastructure.Database;
 
 namespace Munharaunda.Infrastructure.Migrations
 {
     [DbContext(typeof(MunharaundaDbContext))]
-    partial class MunharaundaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210203035931_AddPayments")]
+    partial class AddPayments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
