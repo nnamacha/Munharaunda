@@ -1216,6 +1216,26 @@ namespace Munharaunda.Infrastructure.Database
             }
         }
 
+        public async Task<List<Payment>> GetPayments(string cartId)
+        {
+            try
+            {
+                return await _context.Payments.Where(x => x.CartId == cartId).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                _util.LogMessage(ex.Message);
+                return new List<Payment>();
+            }
+            
+        }
+
+        public Task<Payment> NewPayment(string sessionId)
+        {
+            
+        }
+
         #endregion
 
 

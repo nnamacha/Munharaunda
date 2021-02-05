@@ -31,6 +31,10 @@ namespace Munharaunda.Core.Constants
         public const string R05Message = "Database Error";
         public const string R06Message = "Record not found";
         public const string R07Message = "Record already exist";
-        public const string R08Message = "Invalid request. Expected requesttype should be sent or received";
+        public const string R08Message = "Invalid request. ";
+
+        //Error Message
+
+        public const string CREATE_NEW_PAYMENT_FAILED = "Error was encountered when trying to create a new payment";
     }
 }

@@ -56,6 +56,8 @@ namespace Munharaunda.Domain.Contracts
         Task<ResponseModel<TransactionCodes>> GetTransactionCodes();
         Task<ResponseModel<TransactionCodes>> GetTransactionCode(int id);
         Task<ResponseModel<TransactionCodes>> UpdateTransactionCodes(int id, TransactionCodes TransactionCode);
+        
+        
         Task<ResponseModel<TransactionCodes>> CreateTransactionCode(TransactionCodes transactionCode);
         Task<ResponseModel<TransactionCodes>> DeleteTransactionCode(int id);
 
@@ -64,5 +66,7 @@ namespace Munharaunda.Domain.Contracts
 
         Task<bool> AddPayment(Payment payment);
         Task<bool> ClearPayments(string cartId);
+        Task<List<Payment>> GetPayments(string cartId);
+        Task<Payment> NewPayment(string sessionId);
     }
 }

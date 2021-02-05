@@ -16,7 +16,7 @@ namespace Munharaunda.Domain.Models
             //this.ResponseMessage = ResponseConstants.R00Message;
         }
 
-        public List<T> ResponseData { get; set; }
+        public T ResponseData { get; set; }
 
         public string ResponseCode { get; set; }
 

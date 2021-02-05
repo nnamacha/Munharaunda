@@ -11,7 +11,7 @@ namespace Munharaunda.Domain
         public static IServiceCollection AddApplications(this IServiceCollection services, IConfiguration configuration)
         {
 
-            //services.AddScoped<IResponsesService, ResponsesService>();
+            services.AddScoped<IResponsesService, ResponsesService>();
 
             services.AddScoped<ICommonUtilities, CommonUtilities>();
 
