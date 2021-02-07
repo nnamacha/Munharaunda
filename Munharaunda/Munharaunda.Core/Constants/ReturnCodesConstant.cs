@@ -36,5 +36,8 @@ namespace Munharaunda.Core.Constants
         //Error Message
 
         public const string CREATE_NEW_PAYMENT_FAILED = "Error was encountered when trying to create a new payment";
+        public const string PAYMENT_RECORD_REMOVED_SUCCESSFULLY = "Payment record removed  successfully.";
+        public const string PAYMENT_DELETE_FAILED = "Failed to delete Payment record:";
+        public const string CARTID_IS_NULL = "CartId cannot be null";
     }
 }

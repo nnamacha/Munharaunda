@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Munharaunda.Domain.Models
 {
+    [Serializable]
     public class Payment
     {
         public int PaymentId { get; set; }

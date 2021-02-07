@@ -19,30 +19,64 @@ namespace Munharaunda.Domain.Services
         {
             _dbRepo = dbRepo;
         }
-        public async Task<bool> AddPayment(Payment payment)
+        public async Task<ResponseModel<Payment>> AddPayment(Payment payment)
         {
-            if (payment != null)
+            var response = new ResponseModel<Payment>()
             {
-                return await _dbRepo.AddPayment(payment);
+                ResponseData = new List<Payment>()
+            };
+
+            if (await _dbRepo.AddPayment(payment))
+            {
+                response.ResponseCode = ReturnCodesConstant.R00;
+                response.ResponseMessage = ReturnCodesConstant.R00Message;
+                response.ResponseData.Add(payment);
+                return response;
             }
             else
-                return false;
+            {
+                response.ResponseCode = ReturnCodesConstant.R05;
+                response.ResponseMessage = ReturnCodesConstant.R05Message;
+                response.ResponseData.Add(payment);
+                return response;
+            }
+               
 
         }
 
-        public async Task<bool> ClearPayments(string cartId)
+        public async Task<ResponseModel<string>> ClearPayments(string cartId)
         {
+            var response = new ResponseModel<string>()
+            {
+                ResponseData = new List<string>()
+            };
+
             if (String.IsNullOrEmpty(cartId) || String.IsNullOrWhiteSpace(cartId))
             {
-                return false;
+                response.ResponseCode = ReturnCodesConstant.R02;
+                response.ResponseMessage = ReturnCodesConstant.R02Message;
+                response.Errors.Add(ReturnCodesConstant.CARTID_IS_NULL);
+                return response;
             }
 
-            return await _dbRepo.ClearPayments(cartId);
+            if (await _dbRepo.ClearPayments(cartId))
+            {
+                response.ResponseCode = ReturnCodesConstant.R00;
+                response.ResponseMessage = ReturnCodesConstant.R00Message;
+                return response;
+
+            }
+            else
+            {
+                response.ResponseCode = ReturnCodesConstant.R05;
+                response.ResponseMessage = ReturnCodesConstant.R05Message;
+                return response;
+            }
         }
 
-        public async Task<ResponseModel<List<Payment>>> GetPayments(string cartId)
+        public async Task<ResponseModel<Payment>> GetPayments(string cartId)
         {
-            var response = new ResponseModel<List<Payment>>()
+            var response = new ResponseModel<Payment>()
             {
                 ResponseData = new List<Payment>()
             };
@@ -73,36 +107,60 @@ namespace Munharaunda.Domain.Services
 
         }
 
-        public async Task<ResponseModel<Payment>> NewPayment(IServiceProvider services)
+        public async Task<ResponseModel<Payment>> NewPayment(IServiceProvider services, Payment payment)
         {
-            ResponseModel<Payment> response = new ResponseModel<Payment>();
+            ResponseModel<Payment> response = new ResponseModel<Payment>()
+            {
+                ResponseData = new List<Payment>()
+            };
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?
                 .HttpContext.Session;
             string sessionId = session.GetString(SessionId) ?? Guid.NewGuid().ToString();
             session.SetString("SessionId", sessionId);
-            var dbResponse = await _dbRepo.NewPayment(sessionId);
 
-            if (dbResponse != null)
+            payment.CartId = sessionId;
+
+            
+
+            if (await _dbRepo.NewPayment(payment))
             {
                 response.ResponseCode = ReturnCodesConstant.R00;
                 response.ResponseMessage = ReturnCodesConstant.R00Message;
-                response.ResponseData = dbResponse;
+                response.ResponseData.Add(payment);
                 return response;
 
             }
             else
             {
-                response.ResponseCode = ReturnCodesConstant.R01;
-                response.ResponseMessage = ReturnCodesConstant.R01Message;
+                response.ResponseCode = ReturnCodesConstant.R05;
+                response.ResponseMessage = ReturnCodesConstant.R05Message;
                 response.Errors.Add(ReturnCodesConstant.CREATE_NEW_PAYMENT_FAILED);
                 return response;
             }
                 
         }
 
-        public async Task<bool> RemovePayment(int paymentId, int profileNumber)
+        public async Task<ResponseModel<string>> RemovePayment(int paymentId)
         {
-            throw new NotImplementedException();
+            ResponseModel<string> response = new ResponseModel<string>()
+            {
+                ResponseData = new List<string>()
+            };
+
+            if (await _dbRepo.RemovePayment(paymentId))
+            {
+                response.ResponseCode = ReturnCodesConstant.R00;
+                response.ResponseMessage = ReturnCodesConstant.PAYMENT_RECORD_REMOVED_SUCCESSFULLY;
+                return response;
+            }
+            else
+            {
+                response.ResponseCode = ReturnCodesConstant.R05;
+                response.ResponseMessage = ReturnCodesConstant.R05Message;
+                return response;
+
+            }
+           
         }
     }
 }

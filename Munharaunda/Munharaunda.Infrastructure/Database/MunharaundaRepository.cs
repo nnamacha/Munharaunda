@@ -2,6 +2,7 @@
 using Munharaunda.Core.Constants;
 using Munharaunda.Domain.Contracts;
 using Munharaunda.Domain.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1190,11 +1191,36 @@ namespace Munharaunda.Infrastructure.Database
 
         public async Task<bool> AddPayment(Payment payment)
         {
-            await _context.Payments.AddAsync(payment);
+            var output = JsonConvert.SerializeObject(payment);
+            try
+            {
+                
+                await _context.Payments.AddAsync(payment);
 
-            var response = await _context.SaveChangesAsync();
+                var response = await _context.SaveChangesAsync();
 
-            return response > 0;
+                if (response > 0)
+                {
+                    
+                    _util.LogMessage($"Payment created successfully. {output}");
+                    return true;
+                    
+                }
+                else
+                {
+                    _util.LogMessage($"Failed to create payment record {output}");
+                    return false;
+
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+                _util.LogMessage($"Database error creating payment record {output} . {ex.Message}");
+                return false;
+            }
+            
         }
 
         public async Task<bool> ClearPayments(string cartId)
@@ -1204,9 +1230,131 @@ namespace Munharaunda.Infrastructure.Database
             {
                 var paymentsToClear =  _context.Payments.Where(x => x.CartId == cartId);
 
+               
+                if (!paymentsToClear.Any() )
+                {
+                    _util.LogMessage($"No payments found with cartId : {cartId}");
+                    return true;
+                }
+                var jsonOutput = JsonConvert.SerializeObject(paymentsToClear);
                 _context.Payments.RemoveRange(paymentsToClear);
-                await _context.SaveChangesAsync();
-                return true;
+                var response = await _context.SaveChangesAsync();
+
+                if (response > 0)
+                {
+                    _util.LogMessage($"Payment records successfully cleared.{jsonOutput}");
+                    return true;
+                }
+                else
+                {
+                    _util.LogMessage($"Zero records entities were written to the underlining database for records {jsonOutput}");
+                    return false;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _util.LogMessage($"Error while clearing payment records. {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<List<Payment>> GetPayments(string cartId)
+        {
+            List<Payment> payments = new List<Payment>();
+            try
+            {
+                payments = await _context.Payments.Where(x => x.CartId == cartId).ToListAsync();
+                var jsonOutput = JsonConvert.SerializeObject(payments);
+                if (payments.Any())
+                {
+                    
+                    _util.LogMessage($"Records founds {jsonOutput}");
+                    
+                }
+                else
+                {
+                    _util.LogMessage($"No records found for cartId: {cartId}");
+                    
+                }
+                return payments;
+            }
+            catch (Exception ex)
+            {
+
+                _util.LogMessage(ex.Message);
+                return payments;
+            }
+              
+        }
+
+        public async Task<bool> NewPayment(Payment payment)
+        {
+            var jsonOutput = JsonConvert.SerializeObject(payment);
+            try
+            {
+                if (payment == null)
+                {
+                    throw new ArgumentNullException(nameof(payment));
+                }
+
+               
+
+                _context.Payments.Add(payment);
+
+                var response = await _context.SaveChangesAsync();
+
+                if (response > 0)
+                {
+                    
+                    _util.LogMessage($"Payment records successfully created. {jsonOutput}");
+                    return true;
+                }
+                else
+                {
+                    _util.LogMessage($"Zero records entities were written to the underlining database for records {jsonOutput}");
+                    return false;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+                _util.LogMessage($" Failed to created record {jsonOutput}. {ex.Message}");
+
+                return false;
+            }
+            
+        }
+
+        public async Task<bool> RemovePayment(int paymentId)
+        {
+            try
+            {
+                if (paymentId < 1 )
+                {
+                    throw new ArgumentException("Invalid Argument", nameof(paymentId));
+                }
+
+                var payment = _context.Payments.Find(paymentId);
+                if (payment == null )
+                {
+                    _util.LogMessage($"Payment record {paymentId} not found.");
+                    return false;
+                }
+                _context.Payments.Remove(payment);
+
+                var response = await _context.SaveChangesAsync();
+                if (response > 0)
+                {
+                    _util.LogMessage($"Payment Record {paymentId} deleted successfully.");
+                    return true;
+                }
+                else
+                {
+                    _util.LogMessage($"Database failed to deleted the payment record {paymentId} ");
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -1214,26 +1362,6 @@ namespace Munharaunda.Infrastructure.Database
                 _util.LogMessage(ex.Message);
                 return false;
             }
-        }
-
-        public async Task<List<Payment>> GetPayments(string cartId)
-        {
-            try
-            {
-                return await _context.Payments.Where(x => x.CartId == cartId).ToListAsync();
-            }
-            catch (Exception ex)
-            {
-
-                _util.LogMessage(ex.Message);
-                return new List<Payment>();
-            }
-            
-        }
-
-        public Task<Payment> NewPayment(string sessionId)
-        {
-            
         }
 
         #endregion

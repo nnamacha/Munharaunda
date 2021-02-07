@@ -9,11 +9,11 @@ namespace Munharaunda.Domain.Contracts
 {
     public interface IPaymentService
     {
-        Task<ResponseModel<Payment>> NewPayment(IServiceProvider services);
-        Task<bool> AddPayment(Payment payment);
-        Task<bool> RemovePayment(int paymentId, int profileNumber);
-        Task<ResponseModel<List<Payment>>> GetPayments(string cartId);
-        Task<bool> ClearPayments(string cartId);
+        Task<ResponseModel<Payment>> NewPayment(IServiceProvider services, Payment payment);
+        Task<ResponseModel<Payment>> AddPayment(Payment payment);
+        Task<ResponseModel<string>> RemovePayment(int paymentId);
+        Task<ResponseModel<Payment>> GetPayments(string cartId);
+        Task<ResponseModel<string>> ClearPayments(string cartId);
 
     }
 }
