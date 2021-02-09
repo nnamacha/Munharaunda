@@ -1194,7 +1194,7 @@ namespace Munharaunda.Infrastructure.Database
             var output = JsonConvert.SerializeObject(payment);
             try
             {
-                
+                //TODO:Check payment for this funeral has already been made
                 await _context.Payments.AddAsync(payment);
 
                 var response = await _context.SaveChangesAsync();
