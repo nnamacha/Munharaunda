@@ -1194,12 +1194,19 @@ namespace Munharaunda.Infrastructure.Database
             var output = JsonConvert.SerializeObject(payment);
             try
             {
-                //TODO:Check payment for this funeral has already been made
+                
+
+                var response = _context.Payments.Where(x => (x.Funeral == payment.Funeral && x.ProfileNumber == payment.ProfileNumber)).FirstOrDefault();
+                if (response != null)
+                {
+                    _util.LogMessage($"Payment already exists: {output}");
+                    return false;
+                }
                 await _context.Payments.AddAsync(payment);
 
-                var response = await _context.SaveChangesAsync();
+                 var dbResponse = await _context.SaveChangesAsync();
 
-                if (response > 0)
+                if (dbResponse > 0)
                 {
                     
                     _util.LogMessage($"Payment created successfully. {output}");
@@ -1288,44 +1295,7 @@ namespace Munharaunda.Infrastructure.Database
               
         }
 
-        public async Task<bool> NewPayment(Payment payment)
-        {
-            var jsonOutput = JsonConvert.SerializeObject(payment);
-            try
-            {
-                if (payment == null)
-                {
-                    throw new ArgumentNullException(nameof(payment));
-                }
-
-               
-
-                _context.Payments.Add(payment);
-
-                var response = await _context.SaveChangesAsync();
-
-                if (response > 0)
-                {
-                    
-                    _util.LogMessage($"Payment records successfully created. {jsonOutput}");
-                    return true;
-                }
-                else
-                {
-                    _util.LogMessage($"Zero records entities were written to the underlining database for records {jsonOutput}");
-                    return false;
-                }
-                
-            }
-            catch (Exception ex)
-            {
-
-                _util.LogMessage($" Failed to created record {jsonOutput}. {ex.Message}");
-
-                return false;
-            }
-            
-        }
+        
 
         public async Task<bool> RemovePayment(int paymentId)
         {

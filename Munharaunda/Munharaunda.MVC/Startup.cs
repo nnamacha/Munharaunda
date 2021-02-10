@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Munharaunda.Domain;
 using Munharaunda.Domain.Contracts;
 using Munharaunda.Infrastructure;
 using Munharaunda.Infrastructure.Database;
@@ -30,6 +31,7 @@ namespace Munharaunda.MVC
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddSession();
+            services.AddApplications(Configuration);
             services.AddInfrastructure(Configuration);
 
             

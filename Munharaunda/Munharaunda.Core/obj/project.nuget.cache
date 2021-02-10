@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "nPO1wXLTREN8peiSR7m1dFtPagMziLjnWQgMJfyfxT7Gsl97KCaCJxdMpD2C4qiGw2cahHEUcU+foB84FJdwJw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\NB181916\\source\\repos\\munharaunda\\Munharaunda\\Munharaunda.Core\\Munharaunda.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\NB181916\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

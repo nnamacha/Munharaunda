@@ -14,6 +14,7 @@ namespace Munharaunda.Domain
             services.AddScoped<IResponsesService, ResponsesService>();
 
             services.AddScoped<ICommonUtilities, CommonUtilities>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             return services;
         }

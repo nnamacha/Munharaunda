@@ -67,7 +67,7 @@ namespace Munharaunda.Domain.Contracts
         Task<bool> AddPayment(Payment payment);
         Task<bool> ClearPayments(string cartId);
         Task<List<Payment>> GetPayments(string cartId);
-        Task<bool> NewPayment(Payment payment);
+       
         Task<bool> RemovePayment(int paymentId);
     }
 }

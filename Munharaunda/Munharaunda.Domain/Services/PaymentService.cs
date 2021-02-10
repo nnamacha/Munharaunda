@@ -21,30 +21,7 @@ namespace Munharaunda.Domain.Services
             _dbRepo = dbRepo;
             _service = service;
         }
-        public async Task<ResponseModel<Payment>> AddPayment(Payment payment)
-        {
-            var response = new ResponseModel<Payment>()
-            {
-                ResponseData = new List<Payment>()
-            };
-
-            if (await _dbRepo.AddPayment(payment))
-            {
-                response.ResponseCode = ReturnCodesConstant.R00;
-                response.ResponseMessage = ReturnCodesConstant.R00Message;
-                response.ResponseData.Add(payment);
-                return response;
-            }
-            else
-            {
-                response.ResponseCode = ReturnCodesConstant.R05;
-                response.ResponseMessage = ReturnCodesConstant.R05Message;
-                response.ResponseData.Add(payment);
-                return response;
-            }
-               
-
-        }
+        
 
         public async Task<ResponseModel<string>> ClearPayments(string cartId)
         {
@@ -136,7 +113,7 @@ namespace Munharaunda.Domain.Services
 
             
 
-            if (await _dbRepo.NewPayment(payment))
+            if (await _dbRepo.AddPayment(payment))
             {
                 response.ResponseCode = ReturnCodesConstant.R00;
                 response.ResponseMessage = ReturnCodesConstant.R00Message;
