@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Munharaunda.Core.Constants;
 using Munharaunda.Domain.Contracts;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,12 @@ namespace Munharaunda.MVC.Components
             _paymentService = paymentService;
         }
 
+        public async Task<IViewComponentResult> Invoke()
+        {
+            var items = await _paymentService.GetPayments();
+           
+                return View(items);
+            
+        }
     }
 }

@@ -1271,7 +1271,7 @@ namespace Munharaunda.Infrastructure.Database
             List<Payment> payments = new List<Payment>();
             try
             {
-                payments = await _context.Payments.Where(x => x.CartId == cartId).ToListAsync();
+                payments = await _context.Payments.Where(x => x.CartId == cartId && x.TransactionId == null).ToListAsync();
                 var jsonOutput = JsonConvert.SerializeObject(payments);
                 if (payments.Any())
                 {

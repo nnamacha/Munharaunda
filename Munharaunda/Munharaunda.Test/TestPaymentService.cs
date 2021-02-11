@@ -68,7 +68,7 @@ namespace Munharaunda.Test
         public async void TestAddPayment(bool dbResponse , string responseCode)
         {
             _mockDbRepo.Setup(x => x.AddPayment(It.IsAny<Payment>())).ReturnsAsync(dbResponse);
-            var response = await _paymentService.AddPayment(addPaymentRequest);
+            var response = await _paymentService.NewPayment(addPaymentRequest);
 
             Assert.Equal(responseCode, response.ResponseCode);
 
@@ -95,7 +95,7 @@ namespace Munharaunda.Test
         public async void TestNullCartIdGetPayments()
         {
            // _mockDbRepo.Setup(x => x.AddPayment(It.IsAny<Payment>())).ReturnsAsync(true);
-            var response = await _paymentService.GetPayments("");
+            var response = await _paymentService.GetPayments();
             Assert.Equal(ReturnCodesConstant.R08, response.ResponseCode);
         }
         [Theory]
@@ -109,7 +109,7 @@ namespace Munharaunda.Test
                 dbResponse = paymentListWithRecord;
             }
             _mockDbRepo.Setup(x => x.GetPayments(It.IsAny<string>())).ReturnsAsync(dbResponse);
-            var response = await _paymentService.GetPayments("123");
+            var response = await _paymentService.GetPayments();
 
             Assert.Equal(responseCode, response.ResponseCode);
         }

@@ -1,0 +1,13 @@
+﻿@model ResponseModel<Payment>
+
+@if (Model.ResponseData.Count > 0)
+{
+    <li>
+        <a>
+            <i class="fa fa-credit-card" aria-hidden="true"></i>
+            <span id="cart-status">
+                @Model.ResponseData.Count
+            </span>
+        </a>
+    </li>
+}

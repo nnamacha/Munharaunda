@@ -13,7 +13,7 @@ namespace Munharaunda.Domain.Models
         public string CartId { get; set; }
         public int ProfileNumber { get; set; }
         public Funeral Funeral { get; set; }
-        public int TransactionId { get; set; }
+        public int? TransactionId { get; set; }
         public decimal Amount { get; set; }
     }
 }

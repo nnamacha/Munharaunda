@@ -12,7 +12,7 @@ namespace Munharaunda.Domain.Contracts
         
         Task<ResponseModel<Payment>> NewPayment(Payment payment);
         Task<ResponseModel<string>> RemovePayment(int paymentId);
-        Task<ResponseModel<Payment>> GetPayments(string cartId);
+        Task<ResponseModel<Payment>> GetPayments();
         Task<ResponseModel<string>> ClearPayments(string cartId);
 
     }

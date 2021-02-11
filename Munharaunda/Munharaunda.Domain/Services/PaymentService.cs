@@ -14,7 +14,7 @@ namespace Munharaunda.Domain.Services
         private readonly IMunharaundaRepository _dbRepo;
         private readonly IServiceProvider _service;
 
-        public string SessionId { get; set; }
+        private string sessionId;
 
         public PaymentService(IMunharaundaRepository dbRepo, IServiceProvider service)
         {
@@ -54,15 +54,15 @@ namespace Munharaunda.Domain.Services
             }
         }
 
-        public async Task<ResponseModel<Payment>> GetPayments(string cartId)
+        public async Task<ResponseModel<Payment>> GetPayments()
         {
             var response = new ResponseModel<Payment>()
             {
                 ResponseData = new List<Payment>(),
                 Errors= new List<string>()
             };
-
-            if (String.IsNullOrEmpty(cartId) || String.IsNullOrWhiteSpace(cartId))
+            sessionId = GetSessionId();
+            if (String.IsNullOrEmpty(sessionId) || String.IsNullOrWhiteSpace(sessionId))
             {
                 response.ResponseCode = ReturnCodesConstant.R08;
                 response.ResponseMessage = ReturnCodesConstant.R08Message;
@@ -70,7 +70,7 @@ namespace Munharaunda.Domain.Services
                 return response;
             };
 
-            var dbResponse =  await _dbRepo.GetPayments(cartId);
+            var dbResponse =  await _dbRepo.GetPayments(sessionId);
 
             if (dbResponse.Count == 0)
             {
@@ -103,15 +103,12 @@ namespace Munharaunda.Domain.Services
                 response.Errors.Add("No payment record provided.");
                 return response;
             };
-           
-            ISession session = _service.GetRequiredService<IHttpContextAccessor>()?
-                .HttpContext.Session;
-            string sessionId = session.GetString(SessionId) ?? Guid.NewGuid().ToString();
-            session.SetString("SessionId", sessionId);
+
+             sessionId = GetSessionId();
 
             payment.CartId = sessionId;
 
-            
+
 
             if (await _dbRepo.AddPayment(payment))
             {
@@ -128,7 +125,16 @@ namespace Munharaunda.Domain.Services
                 response.Errors.Add(ReturnCodesConstant.CREATE_NEW_PAYMENT_FAILED);
                 return response;
             }
-                
+
+        }
+
+        private string GetSessionId()
+        {
+            ISession session = _service.GetRequiredService<IHttpContextAccessor>()?
+                            .HttpContext.Session;
+            sessionId = session.GetString(sessionId) ?? Guid.NewGuid().ToString();
+            session.SetString("SessionId", sessionId);
+            return sessionId;
         }
 
         public async Task<ResponseModel<string>> RemovePayment(int paymentId)

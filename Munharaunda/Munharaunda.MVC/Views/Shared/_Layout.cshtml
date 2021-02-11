@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/css/fontawesome.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/css/site.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital@1&display=swap" rel="stylesheet">
 
@@ -33,6 +34,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="member" asp-action="List">Members</a>
                         </li>
+                        @await Component.InvokeAsync("PaymentSummary") 
                     </ul>
                 </div>
             </div>
