@@ -130,9 +130,10 @@ namespace Munharaunda.Domain.Services
 
         private string GetSessionId()
         {
-            ISession session = _service.GetRequiredService<IHttpContextAccessor>()?
+            ISession session = _service.GetRequiredService<IHttpContextAccessor>()
                             .HttpContext.Session;
-            sessionId = session.GetString(sessionId) ?? Guid.NewGuid().ToString();
+            
+            sessionId = session.GetString("SessionId") ?? Guid.NewGuid().ToString();
             session.SetString("SessionId", sessionId);
             return sessionId;
         }

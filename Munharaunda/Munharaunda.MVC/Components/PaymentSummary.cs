@@ -17,7 +17,7 @@ namespace Munharaunda.MVC.Components
             _paymentService = paymentService;
         }
 
-        public async Task<IViewComponentResult> Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var items = await _paymentService.GetPayments();
            

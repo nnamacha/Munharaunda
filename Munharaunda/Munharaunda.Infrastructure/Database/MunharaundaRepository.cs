@@ -13,16 +13,14 @@ namespace Munharaunda.Infrastructure.Database
 
     public class MunharaundaRepository : IMunharaundaRepository
     {
-        public MunharaundaRepository(ICommonUtilities util)
-        {
-            _util = util;
-        }
+      
         private readonly MunharaundaDbContext _context;
         private readonly ICommonUtilities _util;
 
-        public MunharaundaRepository(MunharaundaDbContext context)
+        public MunharaundaRepository(MunharaundaDbContext context , ICommonUtilities util)
         {
             _context = context;
+            _util = util;
         }
 
         #region Initialize
